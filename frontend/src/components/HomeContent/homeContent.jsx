@@ -19,6 +19,22 @@ class HomeContent extends Component {
         }}>
           <Listing/>
         </Paper>
+
+        <Paper elevation={3} style = {{
+          width: 256,
+          height: 256,
+          margin: 16
+        }}>
+          <Listing/>
+        </Paper>
+
+        <Paper elevation={3} style = {{
+          width: 256,
+          height: 256,
+          margin: 16
+        }}>
+          <Listing/>
+        </Paper>
       </div>
     )
   }
