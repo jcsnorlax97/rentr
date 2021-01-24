@@ -1,2 +1,0 @@
-# rentr
-Software Engineering II - 

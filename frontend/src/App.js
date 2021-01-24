@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import {React} from "react";
+import { Router, Route, Switch } from "react-router-dom";
+import Home from "./pages/Home";
+import Apartment from "./pages/Apartment";
+import Profile from "./pages/Profile";
+import Listing from "./pages/Listing";
+import { createBrowserHistory } from "history";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import "./App.css";
+
+function App (){
+	let history = createBrowserHistory();
+	return(
+		<Router history = {history}>
+			<div className = "App">
+				<Switch>
+					{/* disable partial matching */}
+					<Route exact path="/" component={Home} />
+					<Route path="/apartment" component={Apartment} />
+					<Route path="/profile" component={Profile} />
+					<Route path="/listing" component={Listing} />
+				</Switch>
+			</div>
+		</Router>
+	)
 }
 
 export default App;
