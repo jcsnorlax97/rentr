@@ -1,0 +1,4 @@
+.homeContent{
+  display: flex;
+  flex-wrap: wrap;
+}
