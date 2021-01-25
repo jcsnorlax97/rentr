@@ -4,7 +4,7 @@ Software Engineering II - Rentr
 ## The Team 
 - Ronnie D'Souza (RonnieDsouza)
 - Justin Choi (jcsnorlax97)
-- Hualong Qiao ()
+- Hualong Qiao (Mik3Qiao)
 - Azizul Hakim (AzizulHakim96)
 
 ## Languages/Technogies
