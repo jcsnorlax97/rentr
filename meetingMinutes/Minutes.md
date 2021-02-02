@@ -1,4 +1,4 @@
-# Standup meetings
+# Standup meeting minutes
 
 ## Sprint 1
 
