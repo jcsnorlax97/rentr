@@ -6,6 +6,7 @@ Software Engineering II - Rentr
 - Justin Choi (jcsnorlax97)
 - Hualong Qiao (Mik3Qiao)
 - Azizul Hakim (AzizulHakim96)
+- Nathan Carriere (NathanCarriere)
 
 ## Languages/Technogies
 - **FrontEnd** React.js
