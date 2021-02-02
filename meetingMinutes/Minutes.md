@@ -2,7 +2,7 @@
 
 ## Sprint 1
 
-### Week 1
+### Week 1: meeting 1
 
 ##### Jan 20th, 2021 (Wed)
 - Participants: all team members
@@ -16,7 +16,7 @@
   - choose some favourate topics and give reasons
 
 
-### Week 2
+### Week 1: meeting 2
 
 ##### Jan 21st, 2021 (Thur)
 - Participants: all team members
