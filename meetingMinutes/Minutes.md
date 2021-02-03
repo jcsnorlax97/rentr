@@ -108,3 +108,23 @@
 
 - TODO:
   - Have to finish writing user stories and acceptance tests for the new core feature.
+  
+### Week 3: meeting 3
+
+##### Feb 3rd, 2021 (Wednesday)
+- Participants: all team members
+
+- What we discussed:
+  - Had gone over the update on the project summary — Two highlights of the projects: (i) Searching & (ii) FAQ.
+  - Had gone over the user stories and acceptance criteria for the fifth feature — FAQ.
+  - Had gone over the sprint 1 grading scheme to ensure we’re not missing anything.
+  - Had discussed the following questions: 
+      1. Would exceeding two pages for the project proposal be fine? (Yes, it'd be fine, based on the reply from the Professor.)
+      2. What kind of document formats should be submit, e.g. PDF or Github link?
+  - Had discussed and assign tasks for the presentation: each of us will responsible for creating a slide associated to a feature for the presentation.
+  - Had briefly discussed branch protection rules
+ 
+- TODO:
+  - Confirm submission format with the professor tomorrow during class.
+  - Ensure all Sprint 1 materials in Github are up-to-date, such that (i) we can close all issues & (ii) deploy from `develop` branch to `master` branch.
+  - Start to prepare a presentation slide for the assigned feature.
