@@ -4,7 +4,7 @@
 
 ### Week 1: meeting 1
 
-##### Jan 20th, 2021 (Wed)
+##### Jan 20th, 2021 (Wednesday)
 - Participants: all team members
 
 - What we discussed: 
@@ -18,7 +18,7 @@
 
 ### Week 1: meeting 2
 
-##### Jan 21st, 2021 (Thur)
+##### Jan 21st, 2021 (Thursday)
 - Participants: all team members
 
 - What we discussed: 
@@ -32,7 +32,7 @@
 
 ### Week 1: meeting 3
 
-##### Jan 22nd, 2021 (Fri)
+##### Jan 22nd, 2021 (Friday)
 - Participants: all team members
 
 - What we discussed: 
@@ -81,3 +81,17 @@
 - TODO:
   - Acceptance Criteria
     -Each of us will write acceptance criteria for all user stories within the assigned feature.
+
+
+### Week 3: meeting 1
+
+##### Feb 1st, 2021 (Monday)
+- Participants: all team members
+
+- What we discussed: 
+  - Sending email to new member.
+  - User Stories (Acceptance Tests).
+
+- TODO:
+  - Have to fisnish reviewing rest of the acceptance tests.
+  - Have to add one more core feature. 
