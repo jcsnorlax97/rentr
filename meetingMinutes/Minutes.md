@@ -54,3 +54,16 @@
   - Project Summary (Acceptance Criteria)
   - User Stories, along with the estimates
   - chose to use git flow 
+
+
+### Week 2: meeting 2
+
+##### Jan 28th, 2021 (Thursday)
+- Participants: all team members
+
+- What we discussed: 
+  - Project summary
+  - finalized estimates for user stories
+  - prepare questions to check with TA
+  - Booked an appointment with TA (Ximing Dong) on Jan 29th (friday)
+
