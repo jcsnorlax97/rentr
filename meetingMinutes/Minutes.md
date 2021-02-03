@@ -67,3 +67,17 @@
   - prepare questions to check with TA
   - Booked an appointment with TA (Ximing Dong) on Jan 29th (friday)
 
+
+### Week 2: meeting 3
+
+##### Jan 29th, 2021 (Friday)
+- Participants: all team members
+
+- What we discussed: 
+  - Reviewed our project with TA (Ximing Dong)
+  - Decided team name: MR. AJ
+  - Switched to use tech stack: PERN
+
+- TODO:
+  - Acceptance Criteria
+    -Each of us will write acceptance criteria for all user stories within the assigned feature.
