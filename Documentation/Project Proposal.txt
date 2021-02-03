@@ -1,0 +1,13 @@
+**FAQ**
+
+1. As a tenant, I can publicly post a FAQ question about a particular listing
+  a. Priority: Medium, Estimate: TBD
+  b. Acceptance Criteria: 
+    i. After clicking on a listing, there is an option for renters to ask FAQs
+    ii. After clicking on a listing, users can see FAQs asked
+
+2. As a landlord, I can publicly answer a FAQ about a particular listing
+  a. Priority: Medium, Estimate: TBD
+  b.  Acceptance Criteria: 
+    i. Landlords can post responses to FAQs
+    ii. After clicking on a listing, users can see FAQ answers
