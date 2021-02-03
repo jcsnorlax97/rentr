@@ -93,5 +93,5 @@
   - User Stories (Acceptance Tests).
 
 - TODO:
-  - Fisnish reviewing rest of the acceptance tests.
-  - Adding one more feature. 
+  - Have to fisnish reviewing rest of the acceptance tests.
+  - Have to add one more core feature. 
