@@ -43,3 +43,14 @@
 
 - TODO:
   - Create a sample project proposal which can be discussed with TA. 
+
+
+### Week 2: meeting 1
+
+##### Jan 25nd, 2021 (Monday)
+- Participants: all team members
+
+- What we discussed: 
+  - Project Summary (Acceptance Criteria)
+  - User Stories, along with the estimates
+  - chose to use git flow 
