@@ -28,3 +28,15 @@
 
 - TODO:
   - Each team member need to write user stories for feature(s) assigned to him.
+
+
+### Week 1: meeting 3
+
+##### Jan 22nd, 2021 (Friday)
+- Participants: all team members
+
+- What we discussed:
+  - Project Summary (Target Audience & Selling Points)
+  - Core Features
+  - User stories belong to those features
+  - Technologies used for the project.
