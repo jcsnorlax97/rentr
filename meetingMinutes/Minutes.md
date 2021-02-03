@@ -95,3 +95,16 @@
 - TODO:
   - Have to fisnish reviewing rest of the acceptance tests.
   - Have to add one more core feature. 
+
+
+### Week 3: meeting 2
+
+##### Feb 2nd, 2021 (Tuesday)
+- Participants: all team members
+
+- What we discussed: 
+  - Decided the last core feature that we have to implement.
+  - Reviewed user Stories (Acceptance Tests).
+
+- TODO:
+  - Have to finish writing user stories and acceptance tests for the new core feature.
