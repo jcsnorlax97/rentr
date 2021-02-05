@@ -13,7 +13,7 @@ Software Engineering II - Rentr
 - **Backend** Node.js (w/ Express.js)
 - **Database** PostgreSQL
 
-## Project Summary
+## Descriptions/Objectives
 
 We aim to create an apartment renting website. That is, provide a space for landlords to put up listings for their apartments which tenants can peruse through, in order to find an apartment that suits their needs. The goal is to provide sufficient functionalities for both parties requirements. This includes allowing the landlords to specify all the necessary information about the apartments. Meanwhile, the renters will be able to specify their preferences and budget ranges when searching for an apartment. 
 
