@@ -87,7 +87,7 @@
   - Acceptance test:
     - I only find listings that contain the keyword(s)
 
-### FAQs
+### Q&A Section
 
 - As a tenant, I can publicly post an FAQ question about a particular listing so that I can save time for other renters.
   - Priority: Medium, Estimates: TBD
