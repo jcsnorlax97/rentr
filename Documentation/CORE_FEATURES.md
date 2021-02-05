@@ -89,13 +89,13 @@
 
 ### Q&A Section
 
-- As a tenant, I can publicly post an FAQ question about a particular listing so that I can save time for other renters.
+- As a tenant, I can publicly post a question about a particular listing so that I can save time for other renters.
   - Priority: Medium, Estimates: TBD
   - Acceptance test:
     - For each listing, users can ask questions.
     - For each listing, users can see questions from other users.
 
-- As a user, I can publicly answer an FAQ about a particular listing.
+- As a user, I can publicly answer a question about a particular listing.
   - Priority: Medium, Estimate: TBD
   - Acceptance test:
     - Users can answer the questions.
