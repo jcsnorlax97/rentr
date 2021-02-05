@@ -25,11 +25,13 @@ We will consider this project a success if the users rate our app an average of 
 
 ## Core features
 
-1. [User account management]()
-2. [Adding apartment listings]()
-3. [Modifying the rental properties]()
-4. [Searching for rental properties they desire]()
-5. [Q&A Section]()
+Link - [here](https://github.com/jcsnorlax97/rentr/blob/master/Documentation/CORE_FEATURES.md)
+
+1. User account management
+2. Adding apartment listings
+3. Modifying the rental properties
+4. Searching for rental properties they desire
+5. Q&A Section
 
 ### Project Setup Info
 to install dependencies:
