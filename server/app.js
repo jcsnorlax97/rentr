@@ -2,6 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const routes = require('./api');
+const morgan = require('morgan');
+
+// --- morgan logging middleware ---
+app.use(morgan("dev"));
 
 // --- routes --- 
 app.use('/', routes);
