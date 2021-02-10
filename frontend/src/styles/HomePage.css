@@ -1,0 +1,98 @@
+/* Height of the logo */
+#logo{
+  height: 50px;
+}
+
+/* This defines the height of the header */
+.MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters{
+  height: 64px;
+}
+
+/* This helps to style the home page */
+.homePage{
+  height: auto;
+}
+
+/* This is to adjust the header on the home page*/
+#homePage_Header{
+  background-color: #131921;
+}
+
+
+/* Adjust the style of login button in the header of homepage here
+  The four lines commented below is another way of specifying the button
+  by going through from the top level hierarchy till the bottom level hierarchy
+*/
+/* .homePage
+>.MuiPaper-root.MuiAppBar-root.MuiAppBar-positionSticky.MuiAppBar-colorPrimary.MuiPaper-elevation4 
+>.MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters
+>.MuiButtonBase-root.MuiButton-root.MuiButton-contained.homePage_Header_Login{ */
+#homePage_Header_Login{
+  margin-right: 10px;
+  color: #0F1111;
+  background-color: #f0c14b;
+  font-weight: 600;
+}
+
+/* This is the style for close button in login dialog */
+.MuiDialogTitle-root.homeDialog-title
+> .MuiTypography-root.MuiTypography-h6
+> .MuiButtonBase-root.MuiIconButton-root.homeDialog-title-closeButton{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+/* Defines the padding for area of login and register dialog
+  where username and password textfield are 
+  in: top, right, bottom, left order 
+  */
+.MuiDialogContent-root.homeDialog-Content{
+  padding: 0px 30px 30px 20px; 
+}
+
+/* Defines the email field for both dialogs */
+.MuiDialogContent-root.homeDialog-Content
+> .MuiFormControl-root.MuiTextField-root.emailField.MuiFormControl-marginDense{
+  min-width: 150px;
+  width: 80%;
+}
+
+/* Defines the password field for both dialogs */
+.MuiDialogContent-root.homeDialog-Content
+> .MuiFormControl-root.MuiTextField-root.passwordField.MuiFormControl-marginDense{
+  min-width: 150px;
+  width: 80%;
+}
+
+/* Defines the password field for both dialogs */
+.MuiDialogContent-root.homeDialog-Content
+> .MuiFormControl-root.MuiTextField-root.confirmed_passwordField.MuiFormControl-marginDense{
+  min-width: 150px;
+  width: 80%;
+}
+
+/* Defines the padding for buttons like "login", "register", "cancel" in the dialog for home page */
+.MuiDialogActions-root.homeDialog-Actions.MuiDialogActions-spacing{
+  padding: 0px 30px 10px 20px
+}
+
+/* Defines the style for normal buttons in dialog for home page such as "login", "register", and "cancel" button */
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.homeDialog-normalButton{
+  color: black;
+  background-color: #f0c14b;
+  width: 120px;
+  height: 50px;
+  font-size: large;
+  font-weight: bold;
+}
+
+/* Defines how the new user button looks like */
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.homeDialog-newUserButton{
+  color: black;
+  background-color: #f0c14b;
+  width: 200px;
+  height: 50px;
+  font-size: small;
+  font-weight: normal;
+}

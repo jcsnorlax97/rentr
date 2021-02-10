@@ -18,7 +18,7 @@ export const homeReducer = (state = initialState, action) => {
       return {...state, registerEmail: action.payload};
     case "SET_REGISTER_PASSWORD":
       return {...state, registerPassword: action.payload};
-    case "SET_REGISTER_PASSWORD_SECOND":
+    case "SET_REGISTER_CONFIRMED_PASSWORD":
       return {...state, registerPassword_second: action.payload};
     case "SET_LOGIN_DIALOG":
       return {...state, loginDialogOpen: action.payload};

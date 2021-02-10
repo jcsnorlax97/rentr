@@ -26,9 +26,9 @@ export const setRegister_password = (inputString) => {
   }
 }
 
-export const set_secondRegister_password = (inputString) => {
+export const setRegister_confirmedPassword = (inputString) => {
   return {
-    type: "SET_REGISTER_PASSWORD_SECOND",
+    type: "SET_REGISTER_CONFIRMED_PASSWORD",
     payload: inputString
   }
 }
