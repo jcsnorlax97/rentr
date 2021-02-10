@@ -1,15 +1,16 @@
-const express = require("express");
+const express = require('express');
+
 const app = express();
-const routes = require('./api');
 const morgan = require('morgan');
+const routes = require('./api');
 
 // --- morgan logging middleware ---
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 
-// --- routes --- 
+// --- routes ---
 app.use('/', routes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
-    console.log(`Server has started on port ${port}`);
-})
+  console.log(`Server has started on port ${port}`);
+});
