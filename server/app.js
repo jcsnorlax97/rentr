@@ -7,6 +7,9 @@ const routes = require('./api');
 // --- morgan logging middleware ---
 app.use(morgan('dev'));
 
+// --- new express-version bodyParser (for POST request body) ---
+app.use(express.json());
+
 // --- routes ---
 app.use('/', routes);
 
