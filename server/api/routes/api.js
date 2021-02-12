@@ -1,21 +1,12 @@
 const express = require('express');
 
 const router = express.Router();
-const api = require('../../services/api');
+const apiController = require('../../controllers/api');
 
 // --- API Welcome Message ---
-router.get('/', (req, res) => {
-  res.status(200).json(api.getWelcomeMessage());
-});
+router.get('/', apiController.getWelcomeMessage);
 
 // --- Ping ---
-router.get('/ping', async (req, res) => {
-  try {
-    const pong = await api.ping();
-    res.status(200).json(pong);
-  } catch (err) {
-    res.status(500).json({ message: `${err}'` });
-  }
-});
+router.get('/ping', apiController.ping);
 
 module.exports = router;
