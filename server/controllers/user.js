@@ -1,15 +1,13 @@
 const userService = require('../services/user');
+const ApiError = require('../error/api-error');
 
 class UserController {
-  createUser = async (req, res) => {
+  createUser = async (req, res, next) => {
     try {
-      console.log(req.body);
       const result = await userService.createUser(req.body);
-
       res.status(201).json(result);
     } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: `${err}'` });
+      next(ApiError.internal(`${err}`));
     }
   };
 }
