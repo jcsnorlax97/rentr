@@ -1,6 +1,6 @@
 const express = require('express');
-const validate = require('../../middleware/validate');
 const { container } = require('../../di-setup');
+const validate = require('../../middleware/validate');
 const userDto = require('../../dto/user');
 
 // --- get classes via container ---

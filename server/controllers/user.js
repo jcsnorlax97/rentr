@@ -7,8 +7,11 @@ class UserController {
 
   createUser = async (req, res, next) => {
     try {
-      const result = await this.userService.createUser(req.body);
-      res.status(201).json(result);
+      const userId = await this.userService.createUser(req.body);
+      res.status(201).json({
+        message: `User has been created successfully!`,
+        userId: `${userId}`,
+      });
     } catch (err) {
       next(ApiError.internal(`${err}`));
     }

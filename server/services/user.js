@@ -3,8 +3,10 @@ class UserService {
     this.userDao = userDao;
   }
 
-  createUser = ({ email, password }) =>
-    this.userDao.createUser(email, password);
+  createUser = ({ email, password }) => {
+    const userId = this.userDao.createUser(email, password);
+    return userId;
+  };
   // getUser = (email) => userDao.getUser(email);
 }
 
