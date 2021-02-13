@@ -1,12 +1,11 @@
 const express = require('express');
+const { container } = require('../../di-setup');
+
+// --- get classes via container ---
+const apiController = container.resolve('apiController');
 
 const router = express.Router();
-const apiController = require('../../controllers/api');
-
-// --- API Welcome Message ---
-router.get('/', apiController.getWelcomeMessage);
-
-// --- Ping ---
-router.get('/ping', apiController.ping);
+router.get('/', apiController.getWelcomeMessage); // API Welcome Message
+router.get('/ping', apiController.ping); // Ping & Pong
 
 module.exports = router;
