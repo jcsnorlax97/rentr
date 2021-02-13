@@ -1,8 +1,11 @@
-const userDao = require('../dao/user');
-
 class UserService {
-  createUser = ({ email, password }) => userDao.createUser(email, password);
+  constructor({ userDao }) {
+    this.userDao = userDao;
+  }
+
+  createUser = ({ email, password }) =>
+    this.userDao.createUser(email, password);
   // getUser = (email) => userDao.getUser(email);
 }
 
-module.exports = new UserService();
+module.exports = UserService;

@@ -10,4 +10,4 @@ class UserDao {
   // getUser = (id) => {};
 }
 
-module.exports = new UserDao();
+module.exports = UserDao;
