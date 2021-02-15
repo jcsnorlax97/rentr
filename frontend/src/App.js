@@ -1,6 +1,6 @@
 import {React} from "react";
 import { Router, Route, Switch } from "react-router-dom";
-import Home from "./pages/Home";
+import HomePage from "./pages/HomePage";
 import Apartment from "./pages/Apartment";
 import Profile from "./pages/Profile";
 import Listing from "./pages/Listing";
@@ -15,7 +15,7 @@ function App (){
 			<div className = "App">
 				<Switch>
 					{/* disable partial matching */}
-					<Route exact path="/" component={Home} />
+					<Route exact path="/" component={HomePage} />
 					<Route path="/apartment" component={Apartment} />
 					<Route path="/profile" component={Profile} />
 					<Route path="/listing" component={Listing} />
