@@ -9,14 +9,45 @@ import {
   setDescription,
   setImage
 } from "../../actions/ListingDetail";
-// import {apartment1} from "../../resources/apartment1.jpg";
 import apartment1 from "../../resources/apartment1.jpg";
-
+import axios from "axios";
 class Listing extends Component {
-  
+  state = {
+    imageSource: ""
+  }
+
   componentDidMount (){
-    this.props.setBedRoom(2);
-    this.props.setWashRoom(10);
+    // this.props.setBedRoom(2);
+    // this.props.setWashRoom(10);
+    // axios.get("http://localhost:3005/apartment1")
+    // .then(response =>{
+    //   this.setState({
+    //     imageSource: response.data[0].source
+    //   })
+    // })
+    this.setState({
+      imageSource: this.getEmergencyFoundImg(apartment1)
+    })
+  }
+
+  getEmergencyFoundImg = (urlImg) => {
+    var img = new Image();
+    img.src = urlImg;
+    img.crossOrigin = 'Anonymous';
+  
+    var canvas = document.createElement('canvas'),
+      ctx = canvas.getContext('2d');
+  
+    canvas.height = img.naturalHeight;
+    canvas.width = img.naturalWidth;
+    ctx.drawImage(img, 0, 0);
+  
+    var b64 = canvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '');
+    return b64;
+  };
+
+  handleClick = () => {
+    console.log("image source is: " + this.state.imageSource)
   }
 
   render() {
@@ -30,7 +61,7 @@ class Listing extends Component {
             width: "100%",
             height: "100%"
           }}
-          src = {apartment1}
+          src={`data:image/png;base64,${this.state.imageSource}`}
           alt="apartment 1"
         />
       </div>
