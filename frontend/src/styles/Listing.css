@@ -1,0 +1,76 @@
+.listingContent{
+  width: 100%;
+  height: 100%;
+}
+
+.individualListingContent{
+  display: flex;
+  flex-direction: row;
+}
+
+.listingImageArea{
+  width: 200px;
+  height: 150px;
+  margin-right: 10px;
+}
+
+.listingTextAndIcon{
+  width: calc(100% - 200px - 10px);
+  height: 100%;
+}
+
+.listingHeader{
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+}
+
+.listingTitle{
+  font-size: 28px;
+  font-weight: 700;
+  width: calc(100% - );
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.listingIconNumber{
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: larger;
+  font-weight: 700;
+}
+
+.listingPrice{
+  font-size: 28px;
+  font-weight: 700;
+  color: green;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.listingIcon{
+  margin-left: 2px;
+}
+
+.listingIconGroup{
+  width: 260px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.listingDescription{
+  font-size: 19px;
+  display: -webkit-box;
+  max-width: 100%;
+  height: 95px;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.625;
+}
