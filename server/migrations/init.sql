@@ -22,3 +22,18 @@ INSERT INTO rentr_user(email, password) VALUES
 ('nathan@gmail.com', 'nathan123');
 
 SELECT * FROM rentr_user;
+
+CREATE TABLE IF NOT EXISTS rentr_listing (
+    id BIGSERIAL PRIMARY KEY, 
+    title VARCHAR(100) NOT NULL,
+    description VARCHAR(5000) NOT NULL,
+    num_bedroom VARCHAR(10) NOT NULL,
+    num_bathroom VARCHAR(10) NOT NULL
+);
+
+INSERT INTO rentr_listing(title, description, num_bedroom, num_bathroom) VALUES 
+('Expensive one', 'one million dollars', '>10', '5'),
+('An appartment with full of bathroom', 'Smells Good.', '1', '>10'),
+('Serious appartment', ' An appartment closed to the university and the bus stop. Contact me! ', '3', '2');
+
+SELECT * FROM rentr_listing;
