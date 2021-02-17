@@ -6,4 +6,4 @@
 | GET  | /api/v1/ping              | Do a ping-pong examination to ensure database service is running. |
 | POST | /api/v1/user/registration | Register user with email & password.                              |
 | POST | /api/v1/user/login        | Sign user in with their email & password.                         |
-| POST | /api/v1/user/:id          | Given the user id, return that user JSON object.                  |
+| GET  | /api/v1/user/:id          | Given the user id, return that user JSON object.                  |
