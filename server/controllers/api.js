@@ -11,13 +11,13 @@ class ApiController {
 
   ping = async (req, res, next) => {
     try {
-      const rows = await this.dbPool.query('SELECT NOW()');
-      const { now } = rows[0];
-      const results = {
+      const results = await this.dbPool.query('SELECT NOW()');
+      const { now } = results.rows[0];
+      const pong = {
         message: 'Pong! Postgre DB is working!',
         now: `${now}`,
       };
-      res.status(200).json(results);
+      res.status(200).json(pong);
     } catch (err) {
       next(ApiError.internal(`${err}`));
     }
