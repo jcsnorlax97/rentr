@@ -24,7 +24,6 @@ class UserDao {
     const userId = rows[0].id;
     return userId;
   };
-  // getUser = (id) => {};
 }
 
 module.exports = UserDao;
