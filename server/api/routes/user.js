@@ -7,11 +7,7 @@ const userDto = require('../../dto/user');
 const userController = container.resolve('userController');
 
 const router = express.Router();
+router.get('/:id', userController.getUser);
 router.post('/registration', validate(userDto), userController.createUser);
-
-// router.get('/:id', (req, res) => {
-//   console.log(req.params);
-//   res.status(200).json({});
-// });
 
 module.exports = router;

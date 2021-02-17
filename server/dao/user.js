@@ -3,6 +3,16 @@ class UserDao {
     this.dbPool = dbPool;
   }
 
+  getUser = async (id) => {
+    const {
+      rows,
+    } = await this.dbPool.query('SELECT * FROM rentr_user WHERE id = $1;', [
+      id,
+    ]);
+    const user = rows && rows.length >= 1 ? rows[0] : null;
+    return user;
+  };
+
   createUser = async (email, password) => {
     const {
       rows,
