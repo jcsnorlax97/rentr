@@ -1,4 +1,3 @@
-// const
 const UserService = require('./user');
 
 describe('userService', () => {
