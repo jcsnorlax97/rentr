@@ -3,7 +3,7 @@ class ListingDao {
     this.dbPool = dbPool;
   }
 
-  addListing = async ({ title, description, numBedroom, numBathroom }) => {
+  addListing = async (title, description, numBedroom, numBathroom) => {
     const {
       rows,
     } = await this.dbPool.query(
