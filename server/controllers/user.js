@@ -1,3 +1,4 @@
+const UserDao = require('../dao/user');
 const ApiError = require('../error/api-error');
 
 class UserController {
@@ -19,6 +20,20 @@ class UserController {
     }
   };
 
+  getUserViaEmail = async (req, res, next) => {
+    try {
+      const userEmail = req.params.email;
+      const user = await this.userService.getUserViaEmail(req.params.email);
+      if (user == null) {
+        next(ApiError.notFound(`User with email ${userEmail} not found`));
+        return;
+      }
+      res.status(200).json(user);
+    } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
+
   createUser = async (req, res, next) => {
     try {
       const userId = await this.userService.createUser(req.body);
@@ -26,6 +41,24 @@ class UserController {
         message: `User has been created successfully!`,
         userId: `${userId}`,
       });
+    } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
+
+  authenticateUser = async (req, res, next) => {
+    try {
+      user = await this.userService.getUserViaEmail(req.body.email);
+      
+      if(!user){
+        res.status(401).json({
+          message: 'Authentication Failed.'
+        })
+      }else if(user[1] == req.body.password){
+        
+      }
+
+      
     } catch (err) {
       next(ApiError.internal(`${err}`));
     }

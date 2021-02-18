@@ -13,6 +13,16 @@ class UserDao {
     return user;
   };
 
+  getUserViaEmail = async (email) => {
+    const {
+      rows,
+    } = await this.dbPool.query('SELECT * FROM rentr_user WHERE email = $1;', [
+      email,
+    ]);
+    const user = rows && rows.length >= 1 ? rows[0] : null;
+    return user;
+  };
+
   createUser = async (email, password) => {
     const {
       rows,
