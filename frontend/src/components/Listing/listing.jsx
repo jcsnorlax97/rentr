@@ -14,6 +14,7 @@ import HotelIcon from '@material-ui/icons/Hotel';
 import LocalLaundryServiceIcon from '@material-ui/icons/LocalLaundryService';
 import PetsIcon from '@material-ui/icons/Pets';
 import Divider from '@material-ui/core/Divider';
+import Tooltip from '@material-ui/core/Tooltip';
 import { Typography } from "@material-ui/core";
 import Pagination from '@material-ui/lab/Pagination';
 
@@ -119,31 +120,46 @@ class Listing extends Component {
                     {/* number of washrooms*/}
                     <span className = "listingIconNumber">
                       {listingDetail.washroom}
-                      <BathtubIcon className = "listingIcon" fontSize = "large"/>
+                      <Tooltip title = "Washroom">
+                        <BathtubIcon className = "listingIcon" fontSize = "large"/>
+                      </Tooltip>
                     </span>
 
                     {/* Number of bedrooms */}
                     <span className = "listingIconNumber">
                       {listingDetail.bedroom}
-                      <HotelIcon className = "listingIcon" fontSize = "large"/>
+                      <Tooltip title = "Bedroom">
+                        <HotelIcon className = "listingIcon" fontSize = "large"/>
+                      </Tooltip>
                     </span>
                     
                     {/* Number of laundry rooms */}
                     <span className = "listingIconNumber">
                       {listingDetail.laundryroom}
-                      <LocalLaundryServiceIcon className = "listingIcon" fontSize = "large"/>
+                      <Tooltip title = "Laundry Room">
+                        <LocalLaundryServiceIcon className = "listingIcon" fontSize = "large"/>
+                      </Tooltip>
                     </span>
                     
                     {/* Indicate whether pets allowed or not */}
                     <span>
-                      <PetsIcon
-                        style = {
-                          listingDetail.pet 
-                          ? {color: "green"} // if allowed, show color as green
-                          : {color: "grey"}  // else, show color as grey
-                        }
-                        className = "listingIconNumber"
-                      />
+                      {
+                        listingDetail.pet 
+                        ? 
+                        <Tooltip title = "Pet allowed">
+                          <PetsIcon
+                            style = {{color: "green"}}
+                            className = "listingIconNumber"
+                          />
+                        </Tooltip>
+                        :
+                        <Tooltip title = "Pet NOT allowed">
+                          <PetsIcon
+                            style = {{color: "grey"}}
+                            className = "listingIconNumber"
+                          />
+                        </Tooltip>
+                      }
                     </span>
 
                   </span>
