@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
-  setListingArray
+  setListingArray,
+  setPageNum,
+  setNumPerPage
 } from "../../actions/ListingDetail";
 import apartment1 from "../../resources/apartment1.jpg";
 import axios from "axios";
@@ -13,6 +15,7 @@ import LocalLaundryServiceIcon from '@material-ui/icons/LocalLaundryService';
 import PetsIcon from '@material-ui/icons/Pets';
 import Divider from '@material-ui/core/Divider';
 import { Typography } from "@material-ui/core";
+import Pagination from '@material-ui/lab/Pagination';
 
 import "../../styles/Listing.css";
 
@@ -35,6 +38,11 @@ class Listing extends Component {
     })
   }
 
+  componentWillUnmount = () =>{
+    this.props.setListingArray([])
+    this.props.setPageNum(1);
+  }
+
   getEmergencyFoundImg = (urlImg) => {
     var img = new Image();
     img.src = urlImg;
@@ -53,19 +61,21 @@ class Listing extends Component {
 
   render() {
     return (
-      <div
-        className="listingContent"
-      >
+      <div className="listingContent">
         {/* {this.props.listingArray.map(listingDetail, index) => (
 
         )} */}
         {this.props.listingArray && this.props.listingArray.length !== 0 
         ? 
-          this.props.listingArray.map((listingDetail, index)=>{
+          this.props.listingArray
+          .slice((this.props.pageNum - 1) * 10, this.props.pageNum * 10)
+          .map((listingDetail, index)=>{
           // return
+          const currIndex = this.props.pageNum * 10 + index;
+          console.log(this.props.pageNum)
           return (
             <Paper
-              key = {index}
+              key = {currIndex}
               elevation = {3}
               style = {{
                 width: "90%",
@@ -140,11 +150,11 @@ class Listing extends Component {
                   
                   <Divider orientation="vertical" flexItem />
 
-                  <span
+                  <div
                     className = "listingPrice"
                   >
                     ${listingDetail.price}
-                  </span>
+                  </div>
 
                 </span>
 
@@ -164,7 +174,7 @@ class Listing extends Component {
               width: "auto",
               minWidth: 600,
               height: 150,
-              margin: 20
+              margin: 16
             }}
           >
             <h2>
@@ -180,8 +190,36 @@ class Listing extends Component {
           // src={`data:image/png;base64,${this.state.imageSource}`}
           alt="apartment 1"
         /> */}
+        <div className = "paginationArea">
+          <div className = "paginationSelect">
+            {/* Pagination for the listings, default to have 10 listings per page */}
+            <Pagination
+              style = {{
+                marginRight: 10
+              }}
+              variant="outlined"
+              showFirstButton
+              showLastButton
+              count={
+                this.props.listingArray.length % 10 === 0 
+                ? parseInt (this.props.listingArray.length / 10)
+                : parseInt (this.props.listingArray.length / 10) + 1
+              }
+              page={this.props.pageNum}
+              onChange={this.handleChange}
+            />
+          </div>
+        </div>
       </div>
     )
+  } // end of render
+
+  handleChange = (event, value) =>{
+    this.props.setPageNum(value);
+  }
+
+  handleChangeNumPerPage = (event) =>{
+    this.props.setNumPerPage(event.target.value);
   }
 }
 
@@ -189,12 +227,16 @@ class Listing extends Component {
 const mapStateToProps = state => {
   return {
     listingArray: state.listingDetail.listingArray,
+    pageNum: state.listingDetail.pageNum,
+    numPerPage: state.listingDetail.numPerPage
   };
 };
 
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setListingArray,
+    setPageNum,
+    setNumPerPage
   }, dispatch);
 };
 export default connect(mapStateToProps, matchDispatchToProps)(Listing);

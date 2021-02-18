@@ -4,3 +4,17 @@ export const setListingArray = (inputArr) => {
     payload: inputArr
   }
 }
+
+export const setPageNum = (inputInt) => {
+  return {
+    type: "SET_PAGENUM",
+    payload: inputInt
+  }
+}
+
+export const setNumPerPage = (inputInt) => {
+  return {
+    type: "SET_NUMPERPAGE",
+    payload: inputInt
+  }
+}
