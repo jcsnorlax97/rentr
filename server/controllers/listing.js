@@ -16,6 +16,20 @@ class ListingController {
       next(ApiError.internal(`${err}`));
     }
   };
+
+
+  getAllListings = async (req, res, next) => {
+    try {
+      const listing = await this.listingService.getAllListings(req.params);
+      if (listing == null) {
+        next(ApiError.notFound(`No listing found!`));
+        return;
+      }
+      res.status(200).json(listing);
+    } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
 }
 
 module.exports = ListingController;

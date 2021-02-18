@@ -7,6 +7,7 @@ const listingDto = require('../../dto/listing');
 const listingController = container.resolve('listingController');
 
 const router = express.Router();
+router.get('/', listingController.getAllListings);
 router.post('/', validate(listingDto), listingController.addListing);
 
 module.exports = router;
