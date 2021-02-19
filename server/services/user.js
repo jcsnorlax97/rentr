@@ -4,6 +4,7 @@ class UserService {
   }
 
   getUser = (id) => this.userDao.getUser(id);
+
   getUserViaEmail = (email) => this.userDao.getUserViaEmail(email);
 
   createUser = ({ email, password }) => {

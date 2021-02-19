@@ -1,8 +1,6 @@
-const { JsonWebTokenError } = require('jsonwebtoken');
-const UserDao = require('../dao/user');
-const ApiError = require('../error/api-error');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const ApiError = require('../error/api-error');
 const { env } = process;
 
 class UserController {
@@ -40,19 +38,15 @@ class UserController {
 
   createUser = async (req, res, next) => {
     try {
-      
       const hash = await bcrypt.hash(req.body.password, 10);
-
       const userId = await this.userService.createUser({
         email: req.body.email,
-        password: hash
+        password: hash,
       });
       res.status(201).json({
         message: `User has been created successfully!`,
         userId: `${userId}`,
       });
-    
-      
     } catch (err) {
       next(ApiError.internal(`${err}`));
     }
@@ -61,31 +55,27 @@ class UserController {
   authenticateUser = async (req, res, next) => {
     try {
       const user = await this.userService.getUserViaEmail(req.body.email);
-
-      if(!user){
-        console.log('No such user')
+      if (!user) {
+        console.log('No such user');
         res.status(401).json({
-          message: 'Please check your login info.'
-        })
-      }else if( await bcrypt.compare(req.body.password, user.password) ){
-        
+          message: 'Please check your login info.',
+        });
+      } else if (await bcrypt.compare(req.body.password, user.password)) {
         const token = jwt.sign(
           {
             userId: user.userId,
-            email: user.email
-          }, 
+            email: user.email,
+          },
           env.JWT_KEY,
           {
-            expiresIn: "1h"
+            expiresIn: '1h',
           }
         );
         return res.status(200).json({
           message: 'Login succesful.',
-          token: token
-        });  
+          token,
+        });
       }
-
-      
     } catch (err) {
       next(ApiError.internal(`${err}`));
     }

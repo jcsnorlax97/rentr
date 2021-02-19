@@ -14,7 +14,6 @@ class UserDao {
   };
 
   getUserViaEmail = async (email) => {
-    
     const {
       rows,
     } = await this.dbPool.query('SELECT * FROM rentr_user WHERE email = $1;', [
