@@ -48,14 +48,17 @@ class UserController {
 
   authenticateUser = async (req, res, next) => {
     try {
-      user = await this.userService.getUserViaEmail(req.body.email);
+      const user = await this.userService.getUserViaEmail(req.body.email);
       
       if(!user){
+        console.log('No such user')
         res.status(401).json({
-          message: 'Authentication Failed.'
+          message: 'Please check your login info.'
         })
-      }else if(user[1] == req.body.password){
-        
+      }else if(user.password == req.body.password){
+        return res.status(200).json({
+          message: 'Login succesful.'
+        });  
       }
 
       
