@@ -11,7 +11,7 @@ CREATE EXTENSION citext;
 CREATE TABLE IF NOT EXISTS rentr_user (
     id SERIAL PRIMARY KEY,
     email CITEXT UNIQUE NOT NULL,
-    password VARCHAR(50) NOT NULL
+    password VARCHAR(500) NOT NULL
 );
 
 INSERT INTO rentr_user(email, password) VALUES 
