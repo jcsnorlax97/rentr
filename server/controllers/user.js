@@ -73,7 +73,7 @@ class UserController {
         );
         return res.status(200).json({
           message: 'Login succesful.',
-          token,
+          token: token,
         });
       }
     } catch (err) {
