@@ -18,7 +18,7 @@ describe('listingService', () => {
     });
   });
 
-  describe('getAllListings test', () => {
+  describe('getAllListings test with no listing', () => {
     //GIVEN
     const listingDao = {
       getAllListings: () => []
@@ -35,7 +35,7 @@ describe('listingService', () => {
     });
   });
 
-  describe('getAllListings test', () => {
+  describe('getAllListings test with one listing', () => {
     //GIVEN
     const listingDao = {
       getAllListings: () => [{ "title": "Expensive one",
