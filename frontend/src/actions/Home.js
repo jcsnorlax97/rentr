@@ -1,3 +1,10 @@
+export const setStatus = (inputBool) =>{
+  return {
+    type: "SET_STATUS",
+    payload: inputBool
+  }
+}
+
 export const setLogin_email = (inputString) => {
   return {
     type: "SET_LOGIN_EMAIL",

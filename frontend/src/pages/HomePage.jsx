@@ -20,7 +20,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import EmailIcon from '@material-ui/icons/Email';
+import {VpnKey, Person} from '@material-ui/icons';
 import axios from "axios";
+import moment from "moment";
 
 import "../styles/HomePage.css"
 
@@ -52,10 +55,11 @@ class HomePage extends Component {
                 flex: 1 
               }}
             />
-
-            {/* This is the login button
-              click on it will show login dialog, instead of register dialog 
-            */}
+            
+            {!this.props.status
+            ?
+            (
+            <React.Fragment>
             <Button
               className = "homePage_Header_Login"
               id = "homePage_Header_Login"
@@ -68,7 +72,6 @@ class HomePage extends Component {
               Log In
             </Button>
             
-            {/* This is for the login dialog */}
             <Dialog
               id = "loginDialog"
               open={this.props.loginDialogOpen} 
@@ -77,7 +80,7 @@ class HomePage extends Component {
               }}
               style = {{
                 margin: "auto",
-                width: 500
+                width: "500px"
               }}
             >
 
@@ -93,35 +96,42 @@ class HomePage extends Component {
                 </IconButton>
               </DialogTitle>
 
-              <DialogContent
-                className = "homeDialog-Content"
-              >
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  className = "emailField"
-                  label="sample@email.com"
-                  type="email"
-                  onChange = {this.handleLoginEmail}
-                >
-                  {this.props.loginEmail}
-                </TextField>
+              <DialogContent className = "homeDialog-Content">
+                <div className = "homeDialog-textContent">
 
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  className = "passwordField"
-                  label="password"
-                  type="password"
-                  onChange = {this.handleLoginPassword}
-                >
-                  {this.props.loginPassword}
-                </TextField>
+                  <div className = "homeDialog-textFieldIcon"><EmailIcon/></div>
+                  <TextField
+                    variant = "outlined"
+                    autoFocus
+                    margin="dense"
+                    className = "emailField"
+                    label="sample@email.com"
+                    type="email"
+                    value = {this.props.loginEmail}
+                    onChange = {this.handleLoginEmail}
+                  />
+
+                </div>
+                
+                <div className = "homeDialog-textContent">
+
+                  <div className = "homeDialog-textFieldIcon"><VpnKey/></div>
+
+                  <TextField
+                    variant = "outlined"
+                    autoFocus
+                    margin="dense"
+                    className = "passwordField"
+                    label="password"
+                    type="password"
+                    value = {this.props.loginPassword}
+                    onChange = {this.handleLoginPassword}
+                  />
+
+                </div>
               </DialogContent>
 
-              <DialogActions
-                className = "homeDialog-Actions"
-              >
+              <DialogActions className = "homeDialog-Actions">
                 <Button
                   className = "homeDialog-normalButton"
                   onClick={this.handleClickLogin}
@@ -146,16 +156,9 @@ class HomePage extends Component {
                     </div>
                   </div>
                 </Button>
-                {/* <br/> */}
-                {/* <button
-                  onClick = {this.handleClick}
-                >
-                  click
-                </button> */}
               </DialogActions>
 
             </Dialog>
-            {/* End of login dialog */}
             
 
 
@@ -164,7 +167,6 @@ class HomePage extends Component {
 
 
 
-            {/* This is for the Register dialog */}
             <Dialog 
               open={this.props.registerDialogOpen} 
               onClose={()=>{
@@ -172,7 +174,7 @@ class HomePage extends Component {
               }}
               style = {{
                 margin: "auto",
-                width: 500
+                width: "500px"
               }}
             >
 
@@ -191,38 +193,55 @@ class HomePage extends Component {
               <DialogContent
                 className = "homeDialog-Content"
               >
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  className = "emailField"
-                  label="sample@email.com"
-                  type="email"
-                  onChange = {this.handleRegisterEmail}
-                >
-                  {this.props.registerEmail}
-                </TextField>
+                
+                <div className = "homeDialog-textContent">
 
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  className = "passwordField"
-                  label="password"
-                  type="password"
-                  onChange = {this.handleRegisterPassword}
-                >
-                  {this.props.registerPassword}
-                </TextField>
+                  <div className = "homeDialog-textFieldIcon"><EmailIcon/></div>
+                  <TextField
+                    variant = "outlined"
+                    autoFocus
+                    margin="dense"
+                    className = "emailField"
+                    label="sample@email.com"
+                    type="email"
+                    value = {this.props.registerEmail}
+                    onChange = {this.handleRegisterEmail}
+                  />
 
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  className = "confirmed_passwordField"
-                  label="re-enter password"
-                  type="password"
-                  onChange = {this.handleSecondRegisterPassword}
-                >
-                  {this.props.registerPassword_second}
-                </TextField>
+                </div>
+                
+                <div className = "homeDialog-textContent">
+
+                  <div className = "homeDialog-textFieldIcon"><VpnKey/></div>
+                  <TextField
+                    variant = "outlined"
+                    autoFocus
+                    margin="dense"
+                    className = "passwordField"
+                    label="password"
+                    type="password"
+                    value = {this.props.registerPassword}
+                    onChange = {this.handleRegisterPassword}
+                  />
+
+                </div>
+
+                <div className = "homeDialog-textContent">
+
+                  <div className = "homeDialog-textFieldIcon"><VpnKey/></div>
+                  <TextField
+                    variant = "outlined"
+                    autoFocus
+                    margin="dense"
+                    className = "confirmed_passwordField"
+                    label="re-enter password"
+                    type="password"
+                    value = {this.props.registerPassword_confirmed}
+                    onChange = {this.handleSecondRegisterPassword}
+                  />
+
+                </div>
+
               </DialogContent>
 
               <DialogActions
@@ -247,7 +266,21 @@ class HomePage extends Component {
               </DialogActions>
 
             </Dialog>
-
+            </React.Fragment>
+            )
+            :
+            (
+              <React.Fragment>
+                <Person
+                  fontSize = "large"
+                  style = {{
+                    paddingRight: 10
+                  }}
+                />
+                {this.handleGreeting()}
+              </React.Fragment>
+            )
+            }
           </Toolbar>
         </AppBar>
         <HomeContent/>
@@ -259,6 +292,26 @@ class HomePage extends Component {
   //   console.log("email is now:" + this.props.loginEmail)
   //   console.log("password is now:" + this.props.loginPassword)
   // }
+
+  handleGreeting = () => {
+    let currMoment = new moment().format("HH");
+
+    const afternoon = 12;
+    const evening = 18;
+
+    let greeting = "";
+    
+    if (currMoment >= afternoon && currMoment <= evening){
+      greeting = "Good afternoon"
+    }
+    else if (currMoment >= evening){
+      greeting = "Good evening"
+    }
+    else{
+      greeting = "Good morning"
+    }
+    return greeting;
+  }
 
   handleCloseDialog = () => {
     this.setState({
@@ -325,9 +378,10 @@ const mapStateToProps = state => {
     loginPassword: state.homeContent.loginPassword,
     registerEmail: state.homeContent.registerEmail,
     registerPassword: state.homeContent.registerPassword,
-    registerPassword_second: state.homeContent.registerPassword_second,
+    registerPassword_confirmed: state.homeContent.registerPassword_confirmed,
     loginDialogOpen: state.homeContent.loginDialogOpen,
     registerDialogOpen: state.homeContent.registerDialogOpen,
+    status: state.homeContent.status,
   };
 };
 

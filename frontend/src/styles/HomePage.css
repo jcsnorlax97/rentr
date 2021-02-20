@@ -48,7 +48,10 @@
   in: top, right, bottom, left order 
   */
 .MuiDialogContent-root.homeDialog-Content{
-  padding: 0px 30px 30px 20px; 
+  padding: 0px 30px 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 /* Defines the email field for both dialogs */
@@ -95,4 +98,27 @@
   height: 50px;
   font-size: small;
   font-weight: normal;
+}
+
+.MuiDialogContent-root.homeDialog-Content >.homeDialog-textContent{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+}
+
+.MuiDialogContent-root.homeDialog-Content
+>.homeDialog-textContent
+>.homeDialog-textFieldIcon
+>.MuiSvgIcon-root{
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  align-items: center;
+  align-content: center;
+  height: 52px;
+  padding-right: 10px;
+}
+
+.homeDialog-title{
+  width: 388px;
 }

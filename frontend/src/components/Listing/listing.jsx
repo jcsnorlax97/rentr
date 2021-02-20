@@ -13,6 +13,7 @@ import BathtubIcon from '@material-ui/icons/Bathtub';
 import HotelIcon from '@material-ui/icons/Hotel';
 import LocalLaundryServiceIcon from '@material-ui/icons/LocalLaundryService';
 import PetsIcon from '@material-ui/icons/Pets';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import Divider from '@material-ui/core/Divider';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Typography } from "@material-ui/core";
@@ -62,169 +63,184 @@ class Listing extends Component {
 
   render() {
     return (
-      <div className="listingContent">
-        {/* {this.props.listingArray.map(listingDetail, index) => (
+      <div className = "listingContent">
+        <div className="leftPanel">
+          {/* {this.props.listingArray.map(listingDetail, index) => (
 
-        )} */}
-        {this.props.listingArray && this.props.listingArray.length !== 0 
-        ? 
-          this.props.listingArray
-          .slice((this.props.pageNum - 1) * 10, this.props.pageNum * 10)
-          .map((listingDetail, index)=>{
-          // return
-          const currIndex = this.props.pageNum * 10 + index;
-          console.log(this.props.pageNum)
-          return (
-            <Paper
-              key = {currIndex}
-              elevation = {3}
-              style = {{
-                width: "90%",
-                minWidth: 600,
-                height: 150,
-                margin: 16
-              }}
-              className = "individualListingContent"
-            >
-              {/* This is for the image area */}
-              <span className = "listingImageArea">
-                <img
-                  style = {{
-                    width: "100%",
-                    height: "100%"
-                  }}
-                  // src={`data:image/png;base64,${this.state.imageSource}`}
-                  src={apartment1}
-                  alt="apartment"
-                />
-              </span>
-
-              <div className = "listingTextAndIcon">
-                <span className = "listingHeader">
-                
-                  {/* This is for the listing title area */}
-                  <span className = "listingTitle">
-                    {listingDetail.title}
-                  </span>
-
-                  <Typography
-                    type="title"
-                    color="inherit" 
-                    style={{
-                      flex: 1 
+          )} */}
+          {this.props.listingArray && this.props.listingArray.length !== 0 
+          ? 
+            this.props.listingArray
+            .slice((this.props.pageNum - 1) * 10, this.props.pageNum * 10)
+            .map((listingDetail, index)=>{
+            // return
+            const currIndex = this.props.pageNum * 10 + index;
+            return (
+              <Paper
+                key = {currIndex}
+                elevation = {3}
+                style = {{
+                  width: "100%",
+                  minWidth: 600,
+                  height: 150,
+                  marginTop: 16,
+                  marginBottom: 16
+                }}
+                className = "individualListingContent"
+              >
+                {/* This is for the image area */}
+                <span className = "listingImageArea">
+                  <img
+                    style = {{
+                      width: "100%",
+                      height: "100%"
                     }}
+                    // src={`data:image/png;base64,${this.state.imageSource}`}
+                    src={apartment1}
+                    alt="apartment"
                   />
-            
-                  {/* This is for the listing icon area */}
-                  <span className = "listingIconGroup">
-                    {/* number of washrooms*/}
-                    <span className = "listingIconNumber">
-                      {listingDetail.washroom}
-                      <Tooltip title = "Washroom">
-                        <BathtubIcon className = "listingIcon" fontSize = "large"/>
-                      </Tooltip>
-                    </span>
-
-                    {/* Number of bedrooms */}
-                    <span className = "listingIconNumber">
-                      {listingDetail.bedroom}
-                      <Tooltip title = "Bedroom">
-                        <HotelIcon className = "listingIcon" fontSize = "large"/>
-                      </Tooltip>
-                    </span>
-                    
-                    {/* Number of laundry rooms */}
-                    <span className = "listingIconNumber">
-                      {listingDetail.laundryroom}
-                      <Tooltip title = "Laundry Room">
-                        <LocalLaundryServiceIcon className = "listingIcon" fontSize = "large"/>
-                      </Tooltip>
-                    </span>
-                    
-                    {/* Indicate whether pets allowed or not */}
-                    <span>
-                      {
-                        listingDetail.pet 
-                        ? 
-                        <Tooltip title = "Pet allowed">
-                          <PetsIcon
-                            style = {{color: "green"}}
-                            className = "listingIconNumber"
-                          />
-                        </Tooltip>
-                        :
-                        <Tooltip title = "Pet NOT allowed">
-                          <PetsIcon
-                            style = {{color: "grey"}}
-                            className = "listingIconNumber"
-                          />
-                        </Tooltip>
-                      }
-                    </span>
-
-                  </span>
-                  
-                  <Divider orientation="vertical" flexItem />
-
-                  <div
-                    className = "listingPrice"
-                  >
-                    ${listingDetail.price}
-                  </div>
-
                 </span>
 
-                <Divider/>
+                <div className = "listingTextAndIcon">
+                  <span className = "listingHeader">
+                  
+                    {/* This is for the listing title area */}
+                    <span className = "listingTitle">
+                      {listingDetail.title}
+                    </span>
 
-                <div className = "listingDescription">
-                  {listingDetail.description}
+                    <Typography
+                      type="title"
+                      color="inherit" 
+                      style={{
+                        flex: 1 
+                      }}
+                    />
+              
+                    {/* This is for the listing icon area */}
+                    <span className = "listingIconGroup">
+                      {/* number of washrooms*/}
+                      <span className = "listingIconNumber">
+                        {listingDetail.washroom}
+                        <Tooltip title = "Washroom">
+                          <BathtubIcon className = "listingIcon" fontSize = "large"/>
+                        </Tooltip>
+                      </span>
+
+                      {/* Number of bedrooms */}
+                      <span className = "listingIconNumber">
+                        {listingDetail.bedroom}
+                        <Tooltip title = "Bedroom">
+                          <HotelIcon className = "listingIcon" fontSize = "large"/>
+                        </Tooltip>
+                      </span>
+                      
+                      {/* Number of laundry rooms */}
+                      <span className = "listingIconNumber">
+                        {listingDetail.laundryroom}
+                        <Tooltip title = "Laundry Room">
+                          <LocalLaundryServiceIcon className = "listingIcon" fontSize = "large"/>
+                        </Tooltip>
+                      </span>
+                      
+                      {/* Indicate whether pets allowed or not */}
+                      <span>
+                        {
+                          listingDetail.pet 
+                          ? 
+                          <Tooltip title = "Pet allowed">
+                            <PetsIcon
+                              style = {{color: "green"}}
+                              className = "listingIconNumber"
+                            />
+                          </Tooltip>
+                          :
+                          <Tooltip title = "Pet NOT allowed">
+                            <PetsIcon
+                              style = {{color: "grey"}}
+                              className = "listingIconNumber"
+                            />
+                          </Tooltip>
+                        }
+                      </span>
+
+                    </span>
+                    
+                    <Divider orientation="vertical" flexItem />
+
+                    <div
+                      className = "listingPrice"
+                    >
+                      ${listingDetail.price}
+                    </div>
+
+                  </span>
+
+                  <Divider/>
+
+                  <div className = "listingDescription">
+                    {listingDetail.description}
+                  </div>
+
                 </div>
-
-              </div>
-            </Paper>
-          )})
-        : 
-          <Paper
-            elevation = {3}
-            style = {{
-              width: "auto",
-              minWidth: 600,
-              height: 150,
-              margin: 16
-            }}
-          >
-            <h2>
-              No listing information at the moment
-            </h2>
-          </Paper>
-        }
-        {/* <img
-          style = {{
-            width: "100%",
-            height: "100%"
-          }}
-          // src={`data:image/png;base64,${this.state.imageSource}`}
-          alt="apartment 1"
-        /> */}
-        <div className = "paginationArea">
-          <div className = "paginationSelect">
-            {/* Pagination for the listings, default to have 10 listings per page */}
-            <Pagination
+              </Paper>
+            )})
+          : 
+            <Paper
+              elevation = {3}
               style = {{
-                marginRight: 10
+                width: "auto",
+                minWidth: 600,
+                height: 150,
+                marginTop: 16,
+                marginBottom: 16
               }}
-              variant="outlined"
-              showFirstButton
-              showLastButton
-              count={
-                this.props.listingArray.length % 10 === 0 
-                ? parseInt (this.props.listingArray.length / 10)
-                : parseInt (this.props.listingArray.length / 10) + 1
-              }
-              page={this.props.pageNum}
-              onChange={this.handleChange}
-            />
+            >
+              <h2>
+                No listing information at the moment
+              </h2>
+            </Paper>
+          }
+          {/* <img
+            style = {{
+              width: "100%",
+              height: "100%"
+            }}
+            // src={`data:image/png;base64,${this.state.imageSource}`}
+            alt="apartment 1"
+          /> */}
+          <div className = "paginationArea">
+            <div className = "paginationSelect">
+              {/* Pagination for the listings, default to have 10 listings per page */}
+              <Pagination
+                style = {{
+                  marginRight: 10
+                }}
+                variant="outlined"
+                showFirstButton
+                showLastButton
+                count={
+                  this.props.listingArray.length % 10 === 0 
+                  ? parseInt (this.props.listingArray.length / 10)
+                  : parseInt (this.props.listingArray.length / 10) + 1
+                }
+                page={this.props.pageNum}
+                onChange={this.handleChange}
+              />
+            </div>
           </div>
+        </div>
+
+        <div className = "rightPanel">
+          <Tooltip title = "back to top">
+            <ExpandLessIcon
+              fontSize = "large"
+              className = "scrollTopIcon"
+              onClick = {()=>{
+                window.scrollTo({top: 0, behavior: "smooth"})
+              }}
+            />
+          </Tooltip>
         </div>
       </div>
     )

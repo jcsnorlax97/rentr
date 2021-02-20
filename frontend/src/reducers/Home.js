@@ -3,9 +3,10 @@ const initialState = {
   loginPassword:"",
   registerEmail: "",
   registerPassword: "",
-  registerPassword_second: "",
+  registerPassword_confirmed: "",
   loginDialogOpen: false,
   registerDialogOpen: false,
+  status: false
 }
 
 export const homeReducer = (state = initialState, action) => {
@@ -19,11 +20,13 @@ export const homeReducer = (state = initialState, action) => {
     case "SET_REGISTER_PASSWORD":
       return {...state, registerPassword: action.payload};
     case "SET_REGISTER_CONFIRMED_PASSWORD":
-      return {...state, registerPassword_second: action.payload};
+      return {...state, registerPassword_confirmed: action.payload};
     case "SET_LOGIN_DIALOG":
       return {...state, loginDialogOpen: action.payload};
     case "SET_REGISTER_DIALOG":
       return {...state, registerDialogOpen: action.payload};
+    case "SET_STATUS":
+      return {...state, status: action.payload};
     default: 
 			return state;
   }
