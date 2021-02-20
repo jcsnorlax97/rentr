@@ -74,117 +74,118 @@ class Listing extends Component {
             .slice((this.props.pageNum - 1) * 10, this.props.pageNum * 10)
             .map((listingDetail, index)=>{
             // return
-            const currIndex = this.props.pageNum * 10 + index;
-            return (
-              <Paper
-                key = {currIndex}
-                elevation = {3}
-                style = {{
-                  width: "100%",
-                  minWidth: 600,
-                  height: 150,
-                  marginTop: 16,
-                  marginBottom: 16
-                }}
-                className = "individualListingContent"
-              >
-                {/* This is for the image area */}
-                <span className = "listingImageArea">
-                  <img
-                    style = {{
-                      width: "100%",
-                      height: "100%"
-                    }}
-                    // src={`data:image/png;base64,${this.state.imageSource}`}
-                    src={apartment1}
-                    alt="apartment"
-                  />
-                </span>
-
-                <div className = "listingTextAndIcon">
-                  <span className = "listingHeader">
-                  
-                    {/* This is for the listing title area */}
-                    <span className = "listingTitle">
-                      {listingDetail.title}
-                    </span>
-
-                    <Typography
-                      type="title"
-                      color="inherit" 
-                      style={{
-                        flex: 1 
+              const currIndex = this.props.pageNum * 10 + index;
+              return (
+                <Paper
+                  key = {currIndex}
+                  elevation = {3}
+                  style = {{
+                    width: "100%",
+                    minWidth: 600,
+                    height: 150,
+                    marginTop: 16,
+                    marginBottom: 16
+                  }}
+                  className = "individualListingContent"
+                >
+                  {/* This is for the image area */}
+                  <span className = "listingImageArea">
+                    <img
+                      style = {{
+                        width: "100%",
+                        height: "100%"
                       }}
+                      // src={`data:image/png;base64,${this.state.imageSource}`}
+                      src={apartment1}
+                      alt="apartment"
                     />
-              
-                    {/* This is for the listing icon area */}
-                    <span className = "listingIconGroup">
-                      {/* number of washrooms*/}
-                      <span className = "listingIconNumber">
-                        {listingDetail.washroom}
-                        <Tooltip title = "Washroom">
-                          <BathtubIcon className = "listingIcon" fontSize = "large"/>
-                        </Tooltip>
-                      </span>
-
-                      {/* Number of bedrooms */}
-                      <span className = "listingIconNumber">
-                        {listingDetail.bedroom}
-                        <Tooltip title = "Bedroom">
-                          <HotelIcon className = "listingIcon" fontSize = "large"/>
-                        </Tooltip>
-                      </span>
-                      
-                      {/* Number of laundry rooms */}
-                      <span className = "listingIconNumber">
-                        {listingDetail.laundryroom}
-                        <Tooltip title = "Laundry Room">
-                          <LocalLaundryServiceIcon className = "listingIcon" fontSize = "large"/>
-                        </Tooltip>
-                      </span>
-                      
-                      {/* Indicate whether pets allowed or not */}
-                      <span>
-                        {
-                          listingDetail.pet 
-                          ? 
-                          <Tooltip title = "Pet allowed">
-                            <PetsIcon
-                              style = {{color: "green"}}
-                              className = "listingIconNumber"
-                            />
-                          </Tooltip>
-                          :
-                          <Tooltip title = "Pet NOT allowed">
-                            <PetsIcon
-                              style = {{color: "grey"}}
-                              className = "listingIconNumber"
-                            />
-                          </Tooltip>
-                        }
-                      </span>
-
-                    </span>
-                    
-                    <Divider orientation="vertical" flexItem />
-
-                    <div
-                      className = "listingPrice"
-                    >
-                      ${listingDetail.price}
-                    </div>
-
                   </span>
 
-                  <Divider/>
+                  <div className = "listingTextAndIcon">
+                    <span className = "listingHeader">
+                    
+                      {/* This is for the listing title area */}
+                      <span className = "listingTitle">
+                        {listingDetail.title}
+                      </span>
 
-                  <div className = "listingDescription">
-                    {listingDetail.description}
+                      <Typography
+                        type="title"
+                        color="inherit" 
+                        style={{
+                          flex: 1 
+                        }}
+                      />
+                
+                      {/* This is for the listing icon area */}
+                      <span className = "listingIconGroup">
+                        {/* number of washrooms*/}
+                        <span className = "listingIconNumber">
+                          {listingDetail.washroom}
+                          <Tooltip title = "Washroom">
+                            <BathtubIcon className = "listingIcon" fontSize = "large"/>
+                          </Tooltip>
+                        </span>
+
+                        {/* Number of bedrooms */}
+                        <span className = "listingIconNumber">
+                          {listingDetail.bedroom}
+                          <Tooltip title = "Bedroom">
+                            <HotelIcon className = "listingIcon" fontSize = "large"/>
+                          </Tooltip>
+                        </span>
+                        
+                        {/* Number of laundry rooms */}
+                        <span className = "listingIconNumber">
+                          {listingDetail.laundryroom}
+                          <Tooltip title = "Laundry Room">
+                            <LocalLaundryServiceIcon className = "listingIcon" fontSize = "large"/>
+                          </Tooltip>
+                        </span>
+                        
+                        {/* Indicate whether pets allowed or not */}
+                        <span>
+                          {
+                            listingDetail.pet 
+                            ? 
+                            <Tooltip title = "Pet allowed">
+                              <PetsIcon
+                                style = {{color: "green"}}
+                                className = "listingIconNumber"
+                              />
+                            </Tooltip>
+                            :
+                            <Tooltip title = "Pet NOT allowed">
+                              <PetsIcon
+                                style = {{color: "grey"}}
+                                className = "listingIconNumber"
+                              />
+                            </Tooltip>
+                          }
+                        </span>
+
+                      </span>
+                      
+                      <Divider orientation="vertical" flexItem />
+
+                      <div
+                        className = "listingPrice"
+                      >
+                        ${listingDetail.price}
+                      </div>
+
+                    </span>
+
+                    <Divider/>
+
+                    <div className = "listingDescription">
+                      {listingDetail.description}
+                    </div>
+
                   </div>
-
-                </div>
-              </Paper>
-            )})
+                </Paper>
+              )
+            })
           : 
             <Paper
               elevation = {3}
