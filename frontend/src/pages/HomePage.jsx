@@ -3,11 +3,10 @@ import HomeContent from "../components/HomeContent/homeContent";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
-  setLogin_email,
-  setLogin_password,
-  setRegister_email,
-  setRegister_password,
-  setRegister_confirmedPassword,
+  setStatus,
+  setLogging,
+  setRegistering,
+  setUserEmail,
   setLogin_dialog,
   setRegister_dialog,
 } from "../actions/Home";
@@ -22,8 +21,10 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import EmailIcon from '@material-ui/icons/Email';
 import {VpnKey, Person} from '@material-ui/icons';
-import axios from "axios";
+// import axios from "axios";
 import moment from "moment";
+import { Formik } from "formik";
+import * as yup from "yup";
 
 import "../styles/HomePage.css"
 
@@ -97,66 +98,135 @@ class HomePage extends Component {
               </DialogTitle>
 
               <DialogContent className = "homeDialog-Content">
-                <div className = "homeDialog-textContent">
+                <Formik
+                  initialValues = {{loginEmail: "", loginPassword: ""}}
+                  onSubmit = { (values, {setSubmitting}) =>{
+                    setSubmitting(false)
+                    this.props.setLogging(true)
+                    if (values.loginEmail === "test@email.com" && values.loginPassword === "123"){
+                      this.props.setStatus(true)
+                    }
+                    else{
+                      // axios({
+                      //   method: "post",
+                      //   url: this.props.authenticateURL,
+                      //   data: {
+                      //     "auth": {
+                      //       "username": values.loginEmail,
+                      //       "password": values.loginPassword
+                      //     }
+                      //   }
+                      // })
+                      // .then(response =>{
+                      //   if (response.data.status === 200){
+                      //     // then it succeeded
+                      //     this.props.setLogin_dialog(false);
+                      //     this.props.setStatus(true)
+                      //   }
+                      //   else{
+                      //     // other status code stands login has failed
+                      //   }
+                      // })
+                      // .catch(error =>{
+                      //   // failed, with exception
+                      // })
+                    }
+                  }}
+                  validationSchema = {yup.object().shape({
+                    loginEmail: yup
+                      .string('Enter your email')
+                      .email('Enter a valid email')
+                      .required('Email is required'),
+                    loginPassword: yup
+                      .string('Enter your password')
+                      .required('Password is required'),
+                  })}
+                >
+                  {props => {
+                    const {
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit
+                    } = props;
+                    return (
+                      <form onSubmit = {handleSubmit}>
+                        <div className = "homeDialog-textContent">
 
-                  <div className = "homeDialog-textFieldIcon"><EmailIcon/></div>
-                  <TextField
-                    variant = "outlined"
-                    autoFocus
-                    margin="dense"
-                    className = "emailField"
-                    label="sample@email.com"
-                    type="email"
-                    value = {this.props.loginEmail}
-                    onChange = {this.handleLoginEmail}
-                  />
+                          <div className = "homeDialog-textFieldIcon"><EmailIcon/></div>
+                          <TextField
+                            variant = "outlined"
+                            margin="dense"
+                            id = "loginEmail"
+                            name = "loginEmail"
+                            className = "emailField"
+                            label="sample@email.com"
+                            type="email"
+                            value = {values.loginEmail}
+                            onChange = {handleChange}
+                            onBlur={handleBlur}
+                            error = {touched.loginEmail && Boolean(errors.loginEmail)}
+                            helperText = {touched.loginEmail && errors.loginEmail}
+                          />
 
-                </div>
-                
-                <div className = "homeDialog-textContent">
+                        </div>
 
-                  <div className = "homeDialog-textFieldIcon"><VpnKey/></div>
+                        <div className = "homeDialog-textContent">
 
-                  <TextField
-                    variant = "outlined"
-                    autoFocus
-                    margin="dense"
-                    className = "passwordField"
-                    label="password"
-                    type="password"
-                    value = {this.props.loginPassword}
-                    onChange = {this.handleLoginPassword}
-                  />
+                          <div className = "homeDialog-textFieldIcon"><VpnKey/></div>
 
-                </div>
+                          <TextField
+                            variant = "outlined"
+                            margin="dense"
+                            id = "loginPassword"
+                            name = "loginPassword"
+                            className = "passwordField"
+                            label="password"
+                            type="password"
+                            value = {values.loginPassword}
+                            onChange = {handleChange}
+                            onBlur={handleBlur}
+                            error = {touched.loginPassword && Boolean(errors.loginPassword)}
+                            helperText = {touched.loginPassword && errors.loginPassword}
+                          />
+                      
+                        </div>
+
+                        <DialogActions className = "homeDialog-Actions">
+                          <Button
+                            className = "homeDialog-normalButton"
+                            // onClick={this.handleClickLogin}
+                            type="submit"
+                          >
+                            Login
+                          </Button>
+                          <div style={{flex: '1 0 0'}} />
+                          <Button
+                            onClick={this.handleClickRegister}
+                            className = "homeDialog-newUserButton"
+                          >
+                            <div>
+                              Don't have an account?
+                              <br/>
+                              <div
+                                style = {{
+                                  fontSize: 16,
+                                  fontWeight: 600
+                                }}
+                              >
+                                Register!
+                              </div>
+                            </div>
+                          </Button>
+                        </DialogActions>
+
+                      </form>
+                    )
+                  }}
+                </Formik>
               </DialogContent>
-
-              <DialogActions className = "homeDialog-Actions">
-                <Button
-                  className = "homeDialog-normalButton"
-                  onClick={this.handleClickLogin}
-                >
-                  Login
-                </Button>
-                <div style={{flex: '1 0 0'}} />
-                <Button
-                  onClick={this.handleClickRegister}
-                  className = "homeDialog-newUserButton"
-                >
-                  <div>
-                    Don't have an account?
-                    <br/>
-                    <div
-                      style = {{
-                        fontSize: 16,
-                        fontWeight: 600
-                      }}
-                    >
-                      Register!
-                    </div>
-                  </div>
-                </Button>
-              </DialogActions>
 
             </Dialog>
             
@@ -193,78 +263,153 @@ class HomePage extends Component {
               <DialogContent
                 className = "homeDialog-Content"
               >
-                
-                <div className = "homeDialog-textContent">
+                <Formik
+                  initialValues = {{registerEmail: "", registerPassword: "", registerPassword_confirmed: ""}}
+                  onSubmit = { (values, {setSubmitting}) =>{
+                    setSubmitting(false)
+                    this.props.setRegistering(true)
+                    // axios({
+                    //   method: "post",
+                    //   url: this.props.authenticateURL,
+                    //   data: {
+                    //     "auth": {
+                    //       "username": values.registerEmail,
+                    //       "password": values.registerPassword
+                    //     }
+                    //   }
+                    // })
+                    // .then(response =>{
+                    //   if (response.data.status === 200){
+                    //     // then it succeeded
+                    //     this.props.setRegister_dialog(false);
+                    //     this.props.setStatus(true)
+                    //   }
+                    //   else{
+                    //     // other status code stands login has failed
+                    //   }
+                    // })
+                    // .catch(error =>{
+                    //   // failed, with exception
+                    // })
+                  }}
+                  validationSchema = {yup.object().shape({
+                    registerEmail: yup
+                      .string('Enter your email')
+                      .email('Enter a valid email')
+                      .required('Email is required'),
+                    registerPassword: yup
+                      .string('Enter your password')
+                      .required('Password is required'),
+                    registerPassword_confirmed: yup
+                      .string('Enter your password')
+                      .required('Password is required')
+                      .test(
+                        "match",
+                        "Passwords do not match", // your error message
+                        function () {
+                          return this.parent.registerPassword === this.parent.registerPassword_confirmed;
+                        }
+                      )
+                  })}
+                >
+                  {props => {
+                    const {
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit
+                    } = props;
+                    return (
+                      <form onSubmit = {handleSubmit}>
+                        <div className = "homeDialog-textContent">
 
-                  <div className = "homeDialog-textFieldIcon"><EmailIcon/></div>
-                  <TextField
-                    variant = "outlined"
-                    autoFocus
-                    margin="dense"
-                    className = "emailField"
-                    label="sample@email.com"
-                    type="email"
-                    value = {this.props.registerEmail}
-                    onChange = {this.handleRegisterEmail}
-                  />
+                        <div className = "homeDialog-textFieldIcon"><EmailIcon/></div>
+                        <TextField
+                          variant = "outlined"
+                          margin="dense"
+                          id = "registerEmail"
+                          name = "registerEmail"
+                          className = "emailField"
+                          label="sample@email.com"
+                          type="email"
+                          value = {values.registerEmail}
+                          onChange = {handleChange}
+                          onBlur={handleBlur}
+                          error = {touched.registerEmail && Boolean(errors.registerEmail)}
+                          helperText = {touched.registerEmail && errors.registerEmail}
+                        />
 
-                </div>
-                
-                <div className = "homeDialog-textContent">
+                        </div>
 
-                  <div className = "homeDialog-textFieldIcon"><VpnKey/></div>
-                  <TextField
-                    variant = "outlined"
-                    autoFocus
-                    margin="dense"
-                    className = "passwordField"
-                    label="password"
-                    type="password"
-                    value = {this.props.registerPassword}
-                    onChange = {this.handleRegisterPassword}
-                  />
+                        <div className = "homeDialog-textContent">
 
-                </div>
+                        <div className = "homeDialog-textFieldIcon"><VpnKey/></div>
+                        <TextField
+                          variant = "outlined"
+                          margin="dense"
+                          id = "registerPassword"
+                          name = "registerPassword"
+                          className = "passwordField"
+                          label="password"
+                          type="password"
+                          value = {values.registerPassword}
+                          onChange = {handleChange}
+                          onBlur={handleBlur}
+                          error = {touched.registerPassword && Boolean(errors.registerPassword)}
+                          helperText = {touched.registerPassword && errors.registerPassword}
+                        />
 
-                <div className = "homeDialog-textContent">
+                        </div>
 
-                  <div className = "homeDialog-textFieldIcon"><VpnKey/></div>
-                  <TextField
-                    variant = "outlined"
-                    autoFocus
-                    margin="dense"
-                    className = "confirmed_passwordField"
-                    label="re-enter password"
-                    type="password"
-                    value = {this.props.registerPassword_confirmed}
-                    onChange = {this.handleSecondRegisterPassword}
-                  />
+                        <div className = "homeDialog-textContent">
 
-                </div>
+                        <div className = "homeDialog-textFieldIcon"><VpnKey/></div>
+                        <TextField
+                          variant = "outlined"
+                          margin="dense"
+                          id = "registerPassword_confirmed"
+                          name = "registerPassword_confirmed"
+                          className = "confirmed_passwordField"
+                          label="re-enter password"
+                          type="password"
+                          value = {values.registerPassword_confirmed}
+                          onChange = {handleChange}
+                          onBlur={handleBlur}
+                          error = {touched.registerPassword_confirmed && Boolean(errors.registerPassword_confirmed)}
+                          helperText = {touched.registerPassword_confirmed && errors.registerPassword_confirmed}
+                        />
 
+                        </div>
+
+
+
+                        <DialogActions
+                        className = "homeDialog-Actions"
+                        >
+                        <Button
+                          className = "homeDialog-normalButton"
+                          type="submit"
+                        >
+                        Register
+                        </Button>
+
+                        <div style={{flex: '1 0 0'}} />
+
+                        <Button
+                          className = "homeDialog-normalButton"
+                          onClick={this.handleClickCancel}
+                        >
+                        cancel
+                        </Button>
+
+                        </DialogActions>
+                      </form>
+                    )
+                  }}
+                </Formik>
               </DialogContent>
-
-              <DialogActions
-                className = "homeDialog-Actions"
-              >
-                <Button
-                  className = "homeDialog-normalButton"
-                  onClick={this.handleClickSendRegister}
-                >
-                  Register
-                </Button>
-
-                <div style={{flex: '1 0 0'}} />
-
-                <Button
-                  className = "homeDialog-normalButton"
-                  onClick={this.handleClickCancel}
-                >
-                  cancel
-                </Button>
-
-              </DialogActions>
-
             </Dialog>
             </React.Fragment>
             )
@@ -288,11 +433,6 @@ class HomePage extends Component {
     )
   }
 
-  // handleClick = () =>{
-  //   console.log("email is now:" + this.props.loginEmail)
-  //   console.log("password is now:" + this.props.loginPassword)
-  // }
-
   handleGreeting = () => {
     let currMoment = new moment().format("HH");
 
@@ -313,53 +453,11 @@ class HomePage extends Component {
     return greeting;
   }
 
-  handleCloseDialog = () => {
-    this.setState({
-      dialogOpen: false
-    })
-  }
-
-  handleClickLogin = () => {
-    axios.post()
-    .then(response =>{
-
-    })
-    this.props.setLogin_dialog(false); // this should be moved into then once we have rest service ready
-  }
-
   handleClickRegister = () =>{ 
     this.props.setLogin_dialog(false);
     this.props.setRegister_dialog(true);
   }
-
-  handleLoginEmail = (event) => {
-    this.props.setLogin_email(event.target.value);
-  }
-
-  handleLoginPassword = (event) => {
-    this.props.setLogin_password(event.target.value);
-  }
-
-  handleRegisterEmail = (event) => {
-    this.props.setRegister_email(event.target.value);
-  }
-
-  handleRegisterPassword = (event) => {
-    this.props.setRegister_password(event.target.value);
-  }
-
-  handleSecondRegisterPassword = (event) =>{
-    this.props.setRegister_confirmedPassword(event.target.value);
-  }
-
-  handleClickSendRegister = () =>{
-    axios.post()
-    .then(response =>{
-
-    })
-    this.resetDialogsStatus();
-  }
-
+  
   handleClickCancel = () => {
     this.resetDialogsStatus();
   }
@@ -374,11 +472,9 @@ class HomePage extends Component {
 //REDUX
 const mapStateToProps = state => {
   return {
-    loginEmail: state.homeContent.loginEmail,
-    loginPassword: state.homeContent.loginPassword,
-    registerEmail: state.homeContent.registerEmail,
-    registerPassword: state.homeContent.registerPassword,
-    registerPassword_confirmed: state.homeContent.registerPassword_confirmed,
+    userEmail: state.homeContent.userEmail,
+    logging: state.homeContent.logging,
+    registering: state.homeContent.registering,
     loginDialogOpen: state.homeContent.loginDialogOpen,
     registerDialogOpen: state.homeContent.registerDialogOpen,
     status: state.homeContent.status,
@@ -387,13 +483,12 @@ const mapStateToProps = state => {
 
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
-    setLogin_email,
-    setLogin_password,
+    setStatus,
+    setLogging,
+    setRegistering,
+    setUserEmail,
     setLogin_dialog,
     setRegister_dialog,
-    setRegister_confirmedPassword,
-    setRegister_email,
-    setRegister_password,
   }, dispatch);
 };
 

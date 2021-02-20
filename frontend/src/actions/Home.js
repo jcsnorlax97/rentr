@@ -5,40 +5,27 @@ export const setStatus = (inputBool) =>{
   }
 }
 
-export const setLogin_email = (inputString) => {
+export const setLogging = (inputString) => {
   return {
-    type: "SET_LOGIN_EMAIL",
+    type: "SET_LOGGING",
     payload: inputString
   }
 }
 
-export const setLogin_password = (inputString) => {
+export const setRegistering = (inputString) => {
   return {
-    type: "SET_LOGIN_PASSWORD",
+    type: "SET_REGISTERING",
     payload: inputString
   }
 }
 
-export const setRegister_email = (inputString) => {
+export const setUserEmail = (inputString) => {
   return {
-    type: "SET_REGISTER_EMAIL",
+    type: "SET_USER_EMAIL",
     payload: inputString
   }
 }
 
-export const setRegister_password = (inputString) => {
-  return {
-    type: "SET_REGISTER_PASSWORD",
-    payload: inputString
-  }
-}
-
-export const setRegister_confirmedPassword = (inputString) => {
-  return {
-    type: "SET_REGISTER_CONFIRMED_PASSWORD",
-    payload: inputString
-  }
-}
 
 export const setLogin_dialog = (inputBool) =>{
   return {
