@@ -124,3 +124,13 @@
 .homeDialog-title{
   width: 388px;
 }
+
+.loggedInUserMenusButton{
+  background-color: transparent;
+  color: white;
+}
+
+.loggedInUserMenusExpand{
+  display: flex;
+  flex-direction: column;
+}

@@ -4,7 +4,7 @@ const initialState = {
   registering: false,
   loginDialogOpen: false,
   registerDialogOpen: false,
-  status: false
+  status: false,
 }
 
 export const homeReducer = (state = initialState, action) => {
