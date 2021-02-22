@@ -1,8 +1,10 @@
 const { env } = process;
 
+const environment = env.DB_ENVIRONMNET || 'development';
+
 /* Please do not put password or any sensitive info here */
 const config = {
-  db: {
+  development: {
     host: env.DB_HOST || 'localhost',
     port: env.DB_PORT || 5432,
     user: env.DB_USER,
@@ -11,7 +13,16 @@ const config = {
     max: 10,
     idleTimeoutMills: 10000,
     connectionTimeoutMills: 3000,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
+  production: {
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   },
 };
 
-module.exports = config;
+module.exports = config[environment];
