@@ -19,10 +19,23 @@ class ListingController {
 
   getAllListings = async (req, res, next) => {
     try {
-      const listing = await this.listingService.getAllListings(req.params);
-   
-      res.status(200).json(listing);
+      const listings = await this.listingService.getAllListings(req.params);
+      res.status(200).json(listings);
     } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
+
+  getOneListing = async (req, res, next) => {
+    try{
+      const listingId = req.params.id;
+      const listing = await this.listingService.getOneListing(req.params.id);
+      if(listingId > this.getAllListings().length){
+        next(ApiError.notFound(`Listing with id ${listingId} not found`));
+        return; 
+      }
+      res.status(200).json(listing);
+    } catch(err){
       next(ApiError.internal(`${err}`));
     }
   };

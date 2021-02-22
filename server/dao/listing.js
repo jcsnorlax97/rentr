@@ -19,6 +19,13 @@ class ListingDao {
     const {rows} = await this.dbPool.query('SELECT * FROM rentr_listing;');
     return rows;
   };
+
+  getOneListing = async (id) => {
+    const {rows} = await this.dbPool.query('SELECT * FROM rentr_listing WHERE id = $1;', [
+      id
+    ]);
+    return rows;
+  }
 }
 
 module.exports = ListingDao;

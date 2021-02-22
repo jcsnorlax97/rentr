@@ -8,6 +8,7 @@ const listingController = container.resolve('listingController');
 
 const router = express.Router();
 router.get('/', listingController.getAllListings);
+router.get('/:id', listingController.getOneListing);
 router.post('/', validate(listingDto), listingController.addListing);
 
 module.exports = router;
