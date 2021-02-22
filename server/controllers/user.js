@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const ApiError = require('../error/api-error');
+
 const { env } = process;
 
 class UserController {
@@ -14,7 +15,6 @@ class UserController {
       const user = await this.userService.getUser(req.params.id);
       if (user == null) {
         next(ApiError.notFound(`User with id ${userId} not found`));
-        return;
       }
       res.status(200).json(user);
     } catch (err) {
@@ -28,7 +28,6 @@ class UserController {
       const user = await this.userService.getUserViaEmail(req.params.email);
       if (user == null) {
         next(ApiError.notFound(`User with email ${userEmail} not found`));
-        return;
       }
       res.status(200).json(user);
     } catch (err) {
@@ -72,8 +71,8 @@ class UserController {
           }
         );
         return res.status(200).json({
-          message: 'Login succesful.',
-          token: token,
+          message: 'Login successful.',
+          token,
         });
       }
     } catch (err) {
