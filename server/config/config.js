@@ -13,9 +13,6 @@ const config = {
     max: 10,
     idleTimeoutMills: 10000,
     connectionTimeoutMills: 3000,
-    ssl: {
-      rejectUnauthorized: false,
-    },
   },
   production: {
     connectionString: process.env.DATABASE_URL,
