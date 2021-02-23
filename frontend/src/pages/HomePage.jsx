@@ -20,7 +20,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import EmailIcon from '@material-ui/icons/Email';
-import {VpnKey, Person} from '@material-ui/icons';
+import { VpnKey, Person } from '@material-ui/icons';
 import axios from "axios";
 import moment from "moment";
 import { Formik } from "formik";
@@ -33,7 +33,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import {API_ROOT_POST} from "../data/urls";
+import { API_ROOT_POST } from "../data/urls";
+import CreateListingButton from "../components/CreateListing/CreateListingButton";
 
 import "../styles/HomePage.css"
 
@@ -46,13 +47,13 @@ class HomePage extends Component {
     loginSuccess: false
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.setRegistering(false)
     this.props.setRegister_dialog(false)
     this.props.setLogin_dialog(false)
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.setStatus(false);
   }
 
@@ -62,14 +63,14 @@ class HomePage extends Component {
         className="homePage"
       >
         <AppBar
-          id = "homePage_Header"
-          position = "sticky"
+          id="homePage_Header"
+          position="sticky"
         >
           <Toolbar>
 
             {/* this is our rentr logo */}
             <img
-              id="logo" 
+              id="logo"
               src={logo}
               alt="Rentr Logo"
             />
@@ -77,77 +78,80 @@ class HomePage extends Component {
             {/* this is used to add the space between the logo and sign in button */}
             <Typography
               type="title"
-              color="inherit" 
+              color="inherit"
               style={{
-                flex: 1 
+                flex: 1
               }}
             />
-            
+
             {!this.props.status
               ?
               (
                 <React.Fragment>
                   <Button
-                    className = "homePage_Header_Login"
-                    id = "homePage_Header_Login"
+                    className="homePage_Header_Login"
+                    id="homePage_Header_Login"
                     variant="contained"
-                    onClick = {()=>{
+                    onClick={() => {
                       this.props.setLogin_dialog(true)
                       this.props.setRegister_dialog(false)
                     }}
                   >
                     Log In
                   </Button>
-                
+
                   {this.handleShowLogInDialog()}
                   {this.handleShowRegisterDialog()}
                 </React.Fragment>
               )
               :
-                this.handleShowLoggedIn()
+              this.handleShowLoggedIn()
             }
           </Toolbar>
+
+          <CreateListingButton />
+
         </AppBar>
-        <HomeContent/>
+        <HomeContent />
       </div>
     )
   }
 
-  handleShowLogInDialog = () =>{
+  handleShowLogInDialog = () => {
     return (
       <Dialog
-        id = "loginDialog"
-        open={this.props.loginDialogOpen} 
-        onClose={()=>{
+        id="loginDialog"
+        open={this.props.loginDialogOpen}
+        onClose={() => {
           this.resetDialogsStatus()
         }}
-        style = {{
+        style={{
           margin: "auto",
           width: "500px"
         }}
       >
-        <DialogTitle className="homeDialog-title"> 
+        <DialogTitle className="homeDialog-title">
           Login
           <IconButton
-            className = "homeDialog-title-closeButton"
-            onClick={()=>{
+            className="homeDialog-title-closeButton"
+            onClick={() => {
               this.resetDialogsStatus()
             }}
           >
-            <CloseIcon/>
+            <CloseIcon />
           </IconButton>
         </DialogTitle>
 
-        <DialogContent className = "homeDialog-Content">
+        <DialogContent className="homeDialog-Content">
           <Formik
-            initialValues = {{loginEmail: "", loginPassword: ""}}
-            onSubmit = { (values, {setSubmitting}) =>{
+            initialValues={{ loginEmail: "", loginPassword: "" }}
+            onSubmit={(values, { setSubmitting }) => {
               setSubmitting(false)
               this.props.setLogging(true)
-              if (values.loginEmail === "test@email.com" && values.loginPassword === "123"){
+              if (values.loginEmail === "test@email.com" && values.loginPassword === "123") {
                 this.props.setStatus(true)
               }
-              else{
+              else {
                 // axios({
                 //   method: "post",
                 //   url: this.props.authenticateURL,
@@ -173,7 +177,7 @@ class HomePage extends Component {
                 // })
               }
             }}
-            validationSchema = {yup.object().shape({
+            validationSchema={yup.object().shape({
               loginEmail: yup
                 .string('Enter your email')
                 .email('Enter a valid email')
@@ -193,66 +197,66 @@ class HomePage extends Component {
                 handleSubmit
               } = props;
               return (
-                <form onSubmit = {handleSubmit}>
-                  <div className = "homeDialog-textContent">
+                <form onSubmit={handleSubmit}>
+                  <div className="homeDialog-textContent">
 
-                    <div className = "homeDialog-textFieldIcon"><EmailIcon/></div>
+                    <div className="homeDialog-textFieldIcon"><EmailIcon /></div>
                     <TextField
-                      variant = "outlined"
+                      variant="outlined"
                       margin="dense"
-                      id = "loginEmail"
-                      name = "loginEmail"
-                      className = "emailField"
+                      id="loginEmail"
+                      name="loginEmail"
+                      className="emailField"
                       label="sample@email.com"
                       type="email"
-                      value = {values.loginEmail}
-                      onChange = {handleChange}
+                      value={values.loginEmail}
+                      onChange={handleChange}
                       onBlur={handleBlur}
-                      error = {touched.loginEmail && Boolean(errors.loginEmail)}
-                      helperText = {touched.loginEmail && errors.loginEmail}
+                      error={touched.loginEmail && Boolean(errors.loginEmail)}
+                      helperText={touched.loginEmail && errors.loginEmail}
                     />
 
                   </div>
 
-                  <div className = "homeDialog-textContent">
+                  <div className="homeDialog-textContent">
 
-                    <div className = "homeDialog-textFieldIcon"><VpnKey/></div>
+                    <div className="homeDialog-textFieldIcon"><VpnKey /></div>
 
                     <TextField
-                      variant = "outlined"
+                      variant="outlined"
                       margin="dense"
-                      id = "loginPassword"
-                      name = "loginPassword"
-                      className = "passwordField"
+                      id="loginPassword"
+                      name="loginPassword"
+                      className="passwordField"
                       label="password"
                       type="password"
-                      value = {values.loginPassword}
-                      onChange = {handleChange}
+                      value={values.loginPassword}
+                      onChange={handleChange}
                       onBlur={handleBlur}
-                      error = {touched.loginPassword && Boolean(errors.loginPassword)}
-                      helperText = {touched.loginPassword && errors.loginPassword}
+                      error={touched.loginPassword && Boolean(errors.loginPassword)}
+                      helperText={touched.loginPassword && errors.loginPassword}
                     />
-                
+
                   </div>
 
-                  <DialogActions className = "homeDialog-Actions">
+                  <DialogActions className="homeDialog-Actions">
                     <Button
-                      className = "homeDialog-normalButton"
+                      className="homeDialog-normalButton"
                       // onClick={this.handleClickLogin}
                       type="submit"
                     >
                       Login
                     </Button>
-                    <div style={{flex: '1 0 0'}} />
+                    <div style={{ flex: '1 0 0' }} />
                     <Button
                       onClick={this.handleClickRegister}
-                      className = "homeDialog-newUserButton"
+                      className="homeDialog-newUserButton"
                     >
                       <div>
                         Don't have an account?
-                        <br/>
+                        <br />
                         <div
-                          style = {{
+                          style={{
                             fontSize: 16,
                             fontWeight: 600
                           }}
@@ -273,38 +277,38 @@ class HomePage extends Component {
     )
   }
 
-  handleShowRegisterDialog = () =>{
+  handleShowRegisterDialog = () => {
     return (
-      <Dialog 
-        open={this.props.registerDialogOpen} 
-        onClose={()=>{
+      <Dialog
+        open={this.props.registerDialogOpen}
+        onClose={() => {
           this.resetDialogsStatus()
         }}
-        style = {{
+        style={{
           margin: "auto",
           width: "500px"
         }}
       >
         {this.handleRegisterMessage()}
-        <DialogTitle className="homeDialog-title"> 
+        <DialogTitle className="homeDialog-title">
           Register
           <IconButton
-            className = "homeDialog-title-closeButton"
-            disabled = {this.props.registering}
-            onClick={()=>{
+            className="homeDialog-title-closeButton"
+            disabled={this.props.registering}
+            onClick={() => {
               this.resetDialogsStatus()
             }}
           >
-            <CloseIcon/>
+            <CloseIcon />
           </IconButton>
         </DialogTitle>
 
         <DialogContent
-          className = "homeDialog-Content"
+          className="homeDialog-Content"
         >
           <Formik
-            initialValues = {{registerEmail: "", registerPassword: "", registerPassword_confirmed: ""}}
-            onSubmit = { (values, {setSubmitting}) =>{
+            initialValues={{ registerEmail: "", registerPassword: "", registerPassword_confirmed: "" }}
+            onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true)
               this.props.setRegistering(true)
               console.log(this.props.registering)
@@ -314,40 +318,40 @@ class HomePage extends Component {
                 password: String(values.registerPassword)
               }
               axios.post(url, content)
-              .then(response =>{
-                // If the account is registered successfully
-                if (response.data && response.data.userId){
-                  this.setState({
-                    registerSuccess: true,
-                    registerMessage: true
-                  })
-                  setTimeout(() => {
-                    this.resetDialogsStatus()
-                    this.props.setStatus(true)
-                  }, 5000);
-                }
+                .then(response => {
+                  // If the account is registered successfully
+                  if (response.data && response.data.userId) {
+                    this.setState({
+                      registerSuccess: true,
+                      registerMessage: true
+                    })
+                    setTimeout(() => {
+                      this.resetDialogsStatus()
+                      this.props.setStatus(true)
+                    }, 5000);
+                  }
+                  // If the account is registered NOT successfully
+                  else {
+                    this.props.setStatus(false)
+                    this.setState({
+                      registerSuccess: false,
+                      registerMessage: true
+                    })
+                  }
+                  this.props.setRegistering(false)
+                })
                 // If the account is registered NOT successfully
-                else{
+                .catch(error => {
                   this.props.setStatus(false)
                   this.setState({
-                    registerSuccess: false,
-                    registerMessage: true
+                    registerMessage: true,
+                    registerSuccess: false
                   })
-                }
-                this.props.setRegistering(false)
-              })
-              // If the account is registered NOT successfully
-              .catch(error =>{
-                this.props.setStatus(false)
-                this.setState({
-                  registerMessage: true,
-                  registerSuccess: false
+                  this.props.setRegistering(false)
+                  console.log(error)
                 })
-                this.props.setRegistering(false)
-                console.log(error)
-              })
             }}
-            validationSchema = {yup.object().shape({
+            validationSchema={yup.object().shape({
               registerEmail: yup
                 .string('Enter your email')
                 .email('Enter a valid email')
@@ -377,63 +381,63 @@ class HomePage extends Component {
                 handleSubmit
               } = props;
               return (
-                <form onSubmit = {handleSubmit}>
-                  <div className = "homeDialog-textContent">
+                <form onSubmit={handleSubmit}>
+                  <div className="homeDialog-textContent">
 
-                    <div className = "homeDialog-textFieldIcon"><EmailIcon/></div>
+                    <div className="homeDialog-textFieldIcon"><EmailIcon /></div>
                     <TextField
-                      variant = "outlined"
+                      variant="outlined"
                       margin="dense"
-                      id = "registerEmail"
-                      name = "registerEmail"
-                      className = "emailField"
+                      id="registerEmail"
+                      name="registerEmail"
+                      className="emailField"
                       label="sample@email.com"
                       type="email"
-                      value = {values.registerEmail}
-                      onChange = {handleChange}
+                      value={values.registerEmail}
+                      onChange={handleChange}
                       onBlur={handleBlur}
-                      error = {touched.registerEmail && Boolean(errors.registerEmail)}
-                      helperText = {touched.registerEmail && errors.registerEmail}
+                      error={touched.registerEmail && Boolean(errors.registerEmail)}
+                      helperText={touched.registerEmail && errors.registerEmail}
                     />
 
                   </div>
 
-                  <div className = "homeDialog-textContent">
+                  <div className="homeDialog-textContent">
 
-                    <div className = "homeDialog-textFieldIcon"><VpnKey/></div>
+                    <div className="homeDialog-textFieldIcon"><VpnKey /></div>
                     <TextField
-                      variant = "outlined"
+                      variant="outlined"
                       margin="dense"
-                      id = "registerPassword"
-                      name = "registerPassword"
-                      className = "passwordField"
+                      id="registerPassword"
+                      name="registerPassword"
+                      className="passwordField"
                       label="password"
                       type="password"
-                      value = {values.registerPassword}
-                      onChange = {handleChange}
+                      value={values.registerPassword}
+                      onChange={handleChange}
                       onBlur={handleBlur}
-                      error = {touched.registerPassword && Boolean(errors.registerPassword)}
-                      helperText = {touched.registerPassword && errors.registerPassword}
+                      error={touched.registerPassword && Boolean(errors.registerPassword)}
+                      helperText={touched.registerPassword && errors.registerPassword}
                     />
 
                   </div>
 
-                  <div className = "homeDialog-textContent">
+                  <div className="homeDialog-textContent">
 
-                    <div className = "homeDialog-textFieldIcon"><VpnKey/></div>
+                    <div className="homeDialog-textFieldIcon"><VpnKey /></div>
                     <TextField
-                      variant = "outlined"
+                      variant="outlined"
                       margin="dense"
-                      id = "registerPassword_confirmed"
-                      name = "registerPassword_confirmed"
-                      className = "confirmed_passwordField"
+                      id="registerPassword_confirmed"
+                      name="registerPassword_confirmed"
+                      className="confirmed_passwordField"
                       label="re-enter password"
                       type="password"
-                      value = {values.registerPassword_confirmed}
-                      onChange = {handleChange}
+                      value={values.registerPassword_confirmed}
+                      onChange={handleChange}
                       onBlur={handleBlur}
-                      error = {touched.registerPassword_confirmed && Boolean(errors.registerPassword_confirmed)}
-                      helperText = {touched.registerPassword_confirmed && errors.registerPassword_confirmed}
+                      error={touched.registerPassword_confirmed && Boolean(errors.registerPassword_confirmed)}
+                      helperText={touched.registerPassword_confirmed && errors.registerPassword_confirmed}
                     />
 
                   </div>
@@ -441,30 +445,30 @@ class HomePage extends Component {
 
 
                   <DialogActions
-                    className = "homeDialog-Actions"
+                    className="homeDialog-Actions"
                   >
                     <Button
-                      className = {
-                        this.props.registering 
-                        ? "homeDialog-inProgressButton" 
-                        : "homeDialog-normalButton"
+                      className={
+                        this.props.registering
+                          ? "homeDialog-inProgressButton"
+                          : "homeDialog-normalButton"
                       }
                       type="submit"
-                      disabled = {this.props.registering}
+                      disabled={this.props.registering}
                     >
-                      {this.props.registering ? 'Registering':'Register'}
+                      {this.props.registering ? 'Registering' : 'Register'}
                     </Button>
 
-                    <div style={{flex: '1 0 0'}} />
+                    <div style={{ flex: '1 0 0' }} />
 
                     <Button
-                      className = {
-                        this.props.registering 
-                        ? "homeDialog-inProgressButton" 
-                        : "homeDialog-normalButton"
+                      className={
+                        this.props.registering
+                          ? "homeDialog-inProgressButton"
+                          : "homeDialog-normalButton"
                       }
                       onClick={this.handleClickCancel}
-                      disabled = {this.props.registering}
+                      disabled={this.props.registering}
                     >
                       cancel
                     </Button>
@@ -479,19 +483,19 @@ class HomePage extends Component {
     )
   }
 
-  handleShowLoggedIn = () =>{
+  handleShowLoggedIn = () => {
     const open = Boolean(this.state.anchorEl);
     return (
       <React.Fragment>
         <Button
-          onClick = {(event)=> this.handleOpenPopover(event)}
-          style = {{
+          onClick={(event) => this.handleOpenPopover(event)}
+          style={{
             color: "white"
-          }} 
+          }}
         >
           <Person
-            fontSize = "large"
-            style = {{
+            fontSize="large"
+            style={{
               paddingRight: 10
             }}
           />
@@ -515,11 +519,11 @@ class HomePage extends Component {
             <Paper>
               <MenuList>
                 {/* This is for the logout function */}
-                <MenuItem onClick = {this.handleLogout}>
-                    <ListItemIcon>
-                      <ExitToAppIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText>Log Out</ListItemText>
+                <MenuItem onClick={this.handleLogout}>
+                  <ListItemIcon>
+                    <ExitToAppIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Log Out</ListItemText>
                 </MenuItem>
               </MenuList>
             </Paper>
@@ -529,33 +533,33 @@ class HomePage extends Component {
     )
   }
 
-  handleRegisterMessage = () =>{
+  handleRegisterMessage = () => {
     return (
       <Snackbar open={this.state.registerMessage} autoHideDuration={6000} onClose={this.handleCloseRegisterSnackBar}>
         {this.state.registerSuccess
-        ? (
-          <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseRegisterSnackBar} severity="success">
-            Your account is registered successfully, you'll be taken back to homePage shortly.
-          </MuiAlert>
+          ? (
+            <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseRegisterSnackBar} severity="success">
+              Your account is registered successfully, you'll be taken back to homePage shortly.
+            </MuiAlert>
           )
-        :
+          :
           (
-          <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseRegisterSnackBar} severity="error">
-            Account with current email has already been registered
-          </MuiAlert>
+            <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseRegisterSnackBar} severity="error">
+              Account with current email has already been registered
+            </MuiAlert>
           )
         }
       </Snackbar>
     )
   }
 
-  handleCloseRegisterSnackBar = () =>{
+  handleCloseRegisterSnackBar = () => {
     this.setState({
       registerMessage: false
     })
   }
 
-  handleLogout = () =>{
+  handleLogout = () => {
     this.setState({
       anchorEl: null
     })
@@ -563,13 +567,13 @@ class HomePage extends Component {
     this.resetDialogsStatus()
   }
 
-  handleOpenPopover = (event) =>{
+  handleOpenPopover = (event) => {
     this.setState({
       anchorEl: event.currentTarget
     })
   }
 
-  handleClosePopover = () =>{
+  handleClosePopover = () => {
     this.setState({
       anchorEl: null
     })
@@ -582,24 +586,24 @@ class HomePage extends Component {
     const evening = 18;
 
     let greeting = "";
-    
-    if (currMoment >= afternoon && currMoment <= evening){
+
+    if (currMoment >= afternoon && currMoment <= evening) {
       greeting = "Good afternoon"
     }
-    else if (currMoment >= evening){
+    else if (currMoment >= evening) {
       greeting = "Good evening"
     }
-    else{
+    else {
       greeting = "Good morning"
     }
     return greeting
   }
 
-  handleClickRegister = () =>{ 
+  handleClickRegister = () => {
     this.props.setLogin_dialog(false);
     this.props.setRegister_dialog(true);
   }
-  
+
   handleClickCancel = () => {
     this.resetDialogsStatus();
   }
