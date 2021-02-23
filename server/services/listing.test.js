@@ -58,10 +58,10 @@ describe('listingService', () => {
     });
   });
 
-  describe('getOneListings test', () => {
+  describe('getListing test', () => {
     //GIVEN
     const listingDao = {
-      getOneListing: (id) => [{ "id": 2,
+      getListing: (id) => [{ "id": 2,
       "title": "Expensive one",
       "description": "one million dollars",
       "num_bedroom": ">10",
@@ -71,7 +71,7 @@ describe('listingService', () => {
     
     it('succeeds', () => {
       // WHEN
-      const listings = listingService.getOneListing();
+      const listings = listingService.getListing();
 
       //THEN
       //when the listing is in the database

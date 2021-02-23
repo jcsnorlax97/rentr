@@ -22,14 +22,14 @@ class ListingDao {
     return rows;
   };
 
-  getOneListing = async (id) => {
+  getListing = async (id) => {
     const {
       rows,
     } = await this.dbPool.query('SELECT * FROM rentr_listing WHERE id = $1;', [
       id,
     ]);
-    const listing = rows && rows.length >= 1 ? rows[0] : null;
-    return listing;
+    //const listing = rows && rows.length >= 1 ? rows[0] : null;
+    return rows && rows.length >= 1 ? rows[0] : null;
   }
 }
 
