@@ -8,6 +8,10 @@ class ApiError {
     return new ApiError(400, msg);
   }
 
+  static unAuthenticated(msg) {
+    return new ApiError(401, msg);
+  }
+
   static notFound(msg) {
     return new ApiError(404, msg);
   }
