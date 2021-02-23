@@ -21,7 +21,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import EmailIcon from '@material-ui/icons/Email';
 import {VpnKey, Person} from '@material-ui/icons';
-// import axios from "axios";
+import axios from "axios";
 import moment from "moment";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -31,13 +31,25 @@ import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import {API_ROOT_POST} from "../data/urls";
 
 import "../styles/HomePage.css"
 
 class HomePage extends Component {
   state = {
     anchorEl: null,
-    menuOpen: false
+    menuOpen: false,
+    registerMessage: false,
+    registerSuccess: false,
+    loginSuccess: false
+  }
+
+  componentDidMount(){
+    this.props.setRegistering(false)
+    this.props.setRegister_dialog(false)
+    this.props.setLogin_dialog(false)
   }
 
   componentWillUnmount(){
@@ -114,7 +126,6 @@ class HomePage extends Component {
           width: "500px"
         }}
       >
-
         <DialogTitle className="homeDialog-title"> 
           Login
           <IconButton
@@ -274,11 +285,12 @@ class HomePage extends Component {
           width: "500px"
         }}
       >
-
+        {this.handleRegisterMessage()}
         <DialogTitle className="homeDialog-title"> 
           Register
           <IconButton
             className = "homeDialog-title-closeButton"
+            disabled = {this.props.registering}
             onClick={()=>{
               this.resetDialogsStatus()
             }}
@@ -293,31 +305,47 @@ class HomePage extends Component {
           <Formik
             initialValues = {{registerEmail: "", registerPassword: "", registerPassword_confirmed: ""}}
             onSubmit = { (values, {setSubmitting}) =>{
-              setSubmitting(false)
+              setSubmitting(true)
               this.props.setRegistering(true)
-              // axios({
-              //   method: "post",
-              //   url: this.props.authenticateURL,
-              //   data: {
-              //     "auth": {
-              //       "username": values.registerEmail,
-              //       "password": values.registerPassword
-              //     }
-              //   }
-              // })
-              // .then(response =>{
-              //   if (response.data.status === 200){
-              //     // then it succeeded
-              //     this.props.setRegister_dialog(false);
-              //     this.props.setStatus(true)
-              //   }
-              //   else{
-              //     // other status code stands login has failed
-              //   }
-              // })
-              // .catch(error =>{
-              //   // failed, with exception
-              // })
+              console.log(this.props.registering)
+              const url = String(API_ROOT_POST).concat("user/registration");
+              let content = {
+                email: String(values.registerEmail),
+                password: String(values.registerPassword)
+              }
+              axios.post(url, content)
+              .then(response =>{
+                // If the account is registered successfully
+                if (response.data && response.data.userId){
+                  this.setState({
+                    registerSuccess: true,
+                    registerMessage: true
+                  })
+                  setTimeout(() => {
+                    this.resetDialogsStatus()
+                    this.props.setStatus(true)
+                  }, 5000);
+                }
+                // If the account is registered NOT successfully
+                else{
+                  this.props.setStatus(false)
+                  this.setState({
+                    registerSuccess: false,
+                    registerMessage: true
+                  })
+                }
+                this.props.setRegistering(false)
+              })
+              // If the account is registered NOT successfully
+              .catch(error =>{
+                this.props.setStatus(false)
+                this.setState({
+                  registerMessage: true,
+                  registerSuccess: false
+                })
+                this.props.setRegistering(false)
+                console.log(error)
+              })
             }}
             validationSchema = {yup.object().shape({
               registerEmail: yup
@@ -416,17 +444,27 @@ class HomePage extends Component {
                     className = "homeDialog-Actions"
                   >
                     <Button
-                      className = "homeDialog-normalButton"
+                      className = {
+                        this.props.registering 
+                        ? "homeDialog-inProgressButton" 
+                        : "homeDialog-normalButton"
+                      }
                       type="submit"
+                      disabled = {this.props.registering}
                     >
-                      Register
+                      {this.props.registering ? 'Registering':'Register'}
                     </Button>
 
                     <div style={{flex: '1 0 0'}} />
 
                     <Button
-                      className = "homeDialog-normalButton"
+                      className = {
+                        this.props.registering 
+                        ? "homeDialog-inProgressButton" 
+                        : "homeDialog-normalButton"
+                      }
                       onClick={this.handleClickCancel}
+                      disabled = {this.props.registering}
                     >
                       cancel
                     </Button>
@@ -476,6 +514,7 @@ class HomePage extends Component {
           <ClickAwayListener onClickAway={this.handleClosePopover}>
             <Paper>
               <MenuList>
+                {/* This is for the logout function */}
                 <MenuItem onClick = {this.handleLogout}>
                     <ListItemIcon>
                       <ExitToAppIcon fontSize="small" />
@@ -488,6 +527,32 @@ class HomePage extends Component {
         </Popover>
       </React.Fragment>
     )
+  }
+
+  handleRegisterMessage = () =>{
+    return (
+      <Snackbar open={this.state.registerMessage} autoHideDuration={6000} onClose={this.handleCloseRegisterSnackBar}>
+        {this.state.registerSuccess
+        ? (
+          <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseRegisterSnackBar} severity="success">
+            Your account is registered successfully, you'll be taken back to homePage shortly.
+          </MuiAlert>
+          )
+        :
+          (
+          <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseRegisterSnackBar} severity="error">
+            Account with current email has already been registered
+          </MuiAlert>
+          )
+        }
+      </Snackbar>
+    )
+  }
+
+  handleCloseRegisterSnackBar = () =>{
+    this.setState({
+      registerMessage: false
+    })
   }
 
   handleLogout = () =>{
