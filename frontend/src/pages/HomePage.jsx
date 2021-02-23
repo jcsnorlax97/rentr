@@ -21,6 +21,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import axios from "axios";
+import CreateListingButton from "../components/CreateListing/CreateListingButton";
 
 import "../styles/HomePage.css"
 
@@ -32,14 +33,14 @@ class HomePage extends Component {
         className="homePage"
       >
         <AppBar
-          id = "homePage_Header"
-          position = "sticky"
+          id="homePage_Header"
+          position="sticky"
         >
           <Toolbar>
 
             {/* this is our rentr logo */}
             <img
-              id="logo" 
+              id="logo"
               src={logo}
               alt="Rentr Logo"
             />
@@ -47,9 +48,9 @@ class HomePage extends Component {
             {/* this is used to add the space between the logo and sign in button */}
             <Typography
               type="title"
-              color="inherit" 
+              color="inherit"
               style={{
-                flex: 1 
+                flex: 1
               }}
             />
 
@@ -57,52 +58,52 @@ class HomePage extends Component {
               click on it will show login dialog, instead of register dialog 
             */}
             <Button
-              className = "homePage_Header_Login"
-              id = "homePage_Header_Login"
+              className="homePage_Header_Login"
+              id="homePage_Header_Login"
               variant="contained"
-              onClick = {()=>{
+              onClick={() => {
                 this.props.setLogin_dialog(true)
                 this.props.setRegister_dialog(false)
               }}
             >
               Log In
             </Button>
-            
+
             {/* This is for the login dialog */}
             <Dialog
-              id = "loginDialog"
-              open={this.props.loginDialogOpen} 
-              onClose={()=>{
+              id="loginDialog"
+              open={this.props.loginDialogOpen}
+              onClose={() => {
                 this.resetDialogsStatus()
               }}
-              style = {{
+              style={{
                 margin: "auto",
                 width: 500
               }}
             >
 
-              <DialogTitle className="homeDialog-title"> 
+              <DialogTitle className="homeDialog-title">
                 Login
                 <IconButton
-                  className = "homeDialog-title-closeButton"
-                  onClick={()=>{
+                  className="homeDialog-title-closeButton"
+                  onClick={() => {
                     this.resetDialogsStatus()
                   }}
                 >
-                  <CloseIcon/>
+                  <CloseIcon />
                 </IconButton>
               </DialogTitle>
 
               <DialogContent
-                className = "homeDialog-Content"
+                className="homeDialog-Content"
               >
                 <TextField
                   autoFocus
                   margin="dense"
-                  className = "emailField"
+                  className="emailField"
                   label="sample@email.com"
                   type="email"
-                  onChange = {this.handleLoginEmail}
+                  onChange={this.handleLoginEmail}
                 >
                   {this.props.loginEmail}
                 </TextField>
@@ -110,34 +111,34 @@ class HomePage extends Component {
                 <TextField
                   autoFocus
                   margin="dense"
-                  className = "passwordField"
+                  className="passwordField"
                   label="password"
                   type="password"
-                  onChange = {this.handleLoginPassword}
+                  onChange={this.handleLoginPassword}
                 >
                   {this.props.loginPassword}
                 </TextField>
               </DialogContent>
 
               <DialogActions
-                className = "homeDialog-Actions"
+                className="homeDialog-Actions"
               >
                 <Button
-                  className = "homeDialog-normalButton"
+                  className="homeDialog-normalButton"
                   onClick={this.handleClickLogin}
                 >
                   Login
                 </Button>
-                <div style={{flex: '1 0 0'}} />
+                <div style={{ flex: '1 0 0' }} />
                 <Button
                   onClick={this.handleClickRegister}
-                  className = "homeDialog-newUserButton"
+                  className="homeDialog-newUserButton"
                 >
                   <div>
                     Don't have an account?
-                    <br/>
+                    <br />
                     <div
-                      style = {{
+                      style={{
                         fontSize: 16,
                         fontWeight: 600
                       }}
@@ -156,7 +157,7 @@ class HomePage extends Component {
 
             </Dialog>
             {/* End of login dialog */}
-            
+
 
 
 
@@ -165,39 +166,39 @@ class HomePage extends Component {
 
 
             {/* This is for the Register dialog */}
-            <Dialog 
-              open={this.props.registerDialogOpen} 
-              onClose={()=>{
+            <Dialog
+              open={this.props.registerDialogOpen}
+              onClose={() => {
                 this.resetDialogsStatus()
               }}
-              style = {{
+              style={{
                 margin: "auto",
                 width: 500
               }}
             >
 
-              <DialogTitle className="homeDialog-title"> 
+              <DialogTitle className="homeDialog-title">
                 Register
                 <IconButton
-                  className = "homeDialog-title-closeButton"
-                  onClick={()=>{
+                  className="homeDialog-title-closeButton"
+                  onClick={() => {
                     this.resetDialogsStatus()
                   }}
                 >
-                  <CloseIcon/>
+                  <CloseIcon />
                 </IconButton>
               </DialogTitle>
 
               <DialogContent
-                className = "homeDialog-Content"
+                className="homeDialog-Content"
               >
                 <TextField
                   autoFocus
                   margin="dense"
-                  className = "emailField"
+                  className="emailField"
                   label="sample@email.com"
                   type="email"
-                  onChange = {this.handleRegisterEmail}
+                  onChange={this.handleRegisterEmail}
                 >
                   {this.props.registerEmail}
                 </TextField>
@@ -205,10 +206,10 @@ class HomePage extends Component {
                 <TextField
                   autoFocus
                   margin="dense"
-                  className = "passwordField"
+                  className="passwordField"
                   label="password"
                   type="password"
-                  onChange = {this.handleRegisterPassword}
+                  onChange={this.handleRegisterPassword}
                 >
                   {this.props.registerPassword}
                 </TextField>
@@ -216,29 +217,29 @@ class HomePage extends Component {
                 <TextField
                   autoFocus
                   margin="dense"
-                  className = "confirmed_passwordField"
+                  className="confirmed_passwordField"
                   label="re-enter password"
                   type="password"
-                  onChange = {this.handleSecondRegisterPassword}
+                  onChange={this.handleSecondRegisterPassword}
                 >
                   {this.props.registerPassword_second}
                 </TextField>
               </DialogContent>
 
               <DialogActions
-                className = "homeDialog-Actions"
+                className="homeDialog-Actions"
               >
                 <Button
-                  className = "homeDialog-normalButton"
+                  className="homeDialog-normalButton"
                   onClick={this.handleClickSendRegister}
                 >
                   Register
                 </Button>
 
-                <div style={{flex: '1 0 0'}} />
+                <div style={{ flex: '1 0 0' }} />
 
                 <Button
-                  className = "homeDialog-normalButton"
+                  className="homeDialog-normalButton"
                   onClick={this.handleClickCancel}
                 >
                   cancel
@@ -248,9 +249,11 @@ class HomePage extends Component {
 
             </Dialog>
 
+            <CreateListingButton />
+
           </Toolbar>
         </AppBar>
-        <HomeContent/>
+        <HomeContent />
       </div>
     )
   }
@@ -268,13 +271,13 @@ class HomePage extends Component {
 
   handleClickLogin = () => {
     axios.post()
-    .then(response =>{
+      .then(response => {
 
-    })
+      })
     this.props.setLogin_dialog(false); // this should be moved into then once we have rest service ready
   }
 
-  handleClickRegister = () =>{ 
+  handleClickRegister = () => {
     this.props.setLogin_dialog(false);
     this.props.setRegister_dialog(true);
   }
@@ -295,15 +298,15 @@ class HomePage extends Component {
     this.props.setRegister_password(event.target.value);
   }
 
-  handleSecondRegisterPassword = (event) =>{
+  handleSecondRegisterPassword = (event) => {
     this.props.setRegister_confirmedPassword(event.target.value);
   }
 
-  handleClickSendRegister = () =>{
+  handleClickSendRegister = () => {
     axios.post()
-    .then(response =>{
+      .then(response => {
 
-    })
+      })
     this.resetDialogsStatus();
   }
 
