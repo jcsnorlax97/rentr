@@ -30,8 +30,8 @@ class ListingController {
     try{
       const listingId = req.params.id;
       const listing = await this.listingService.getOneListing(req.params.id);
-      if(listingId > this.getAllListings().length){
-        next(ApiError.notFound(`Listing with id ${listingId} not found`));
+      if(listing == null){
+        next(ApiError.notFound(`Listing with id ${listingId} is not found.`));
         return; 
       }
       res.status(200).json(listing);
