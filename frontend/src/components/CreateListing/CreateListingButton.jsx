@@ -6,6 +6,10 @@ import {
   setDescription,
   setNumberOfBedrooms,
   setNumberOfBathrooms,
+  setPrice,
+  setLaundry,
+  setPetsAllowed,
+  setParking,
   setDialogOpen
 } from "../../actions/CreateListing";
 import { Button } from "@material-ui/core";
@@ -20,6 +24,17 @@ import MenuItem from '@material-ui/core/MenuItem';
 import axios from "axios";
 
 import "../../styles/HomePage.css"
+
+const YesNo = [
+  {
+    value: true,
+    label: 'yes'
+  },
+  {
+    value: false,
+    label: 'no'
+  }
+]
 
 const numberDropdownOptions = [
   {
@@ -72,9 +87,10 @@ class CreateListingButton extends Component {
           onClose={() => {
             this.resetDialogStatus()
           }}
-          style={{
-            margin: "auto",
-            width: 500
+          maxWidth='none'
+          contentStyle={{
+            width: '80%',
+            maxWidth: 'none'
           }}
         >
 
@@ -94,11 +110,11 @@ class CreateListingButton extends Component {
             className="homeDialog-Content"
           >
             <TextField
+              label="Title"
               autoFocus
               required
               fullWidth
               className="emailField"
-              label="Title"
               type="text"
               inputProps={{ maxLength: 100 }}
               onChange={this.handleTitle}
@@ -107,6 +123,7 @@ class CreateListingButton extends Component {
             </TextField>
 
             <TextField
+              label="Description"
               id="standard-multiline-static"
               multiline
               required
@@ -114,7 +131,6 @@ class CreateListingButton extends Component {
               rows={8}
               margin="dense"
               className="emailField"
-              label="Description"
               type="text"
               inputProps={{ maxLength: 5000 }}
               onChange={this.handleDescription}
@@ -122,13 +138,13 @@ class CreateListingButton extends Component {
               {this.props.description}
             </TextField>
             <TextField
+              label="Bedrooms"
               id="outlined-select-full-width"
               required
               variant="outlined"
               margin="dense"
               select
               fullWidth
-              label="Bedrooms"
               value={this.props.numberOfBedrooms}
               inputProps={{ color: 'green' }}
               onChange={this.handleNumberOfBedrooms}
@@ -158,6 +174,78 @@ class CreateListingButton extends Component {
                 </MenuItem>
               ))}
             </TextField>
+
+
+            {/** new stuff */}
+            <TextField
+              label="Price"
+              required
+              fullWidth
+              className="emailField"
+              type="text"
+              inputProps={{ maxLength: 100 }}
+              onChange={this.handlePrice}
+            >
+              {this.props.title}
+            </TextField>
+
+            <TextField
+              label="Laundry Room"
+              required
+              id="outlined-select"
+              variant="outlined"
+              margin="dense"
+              select
+              fullWidth
+              value={this.props.laundry}
+
+              onChange={this.handleLaundry}
+            >
+              {YesNo.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            <TextField
+              label="Pets allowed"
+              required
+              id="outlined-select"
+              variant="outlined"
+              margin="dense"
+              select
+              fullWidth
+              value={this.props.petsAllowed}
+
+              onChange={this.handlePetsAllowed}
+            >
+              {YesNo.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            <TextField
+              label="Parking"
+              required
+              id="outlined-select"
+              variant="outlined"
+              margin="dense"
+              select
+              fullWidth
+              value={this.props.parking}
+
+              onChange={this.handleParking}
+            >
+              {YesNo.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+
 
           </DialogContent>
 
@@ -201,6 +289,22 @@ class CreateListingButton extends Component {
     this.props.setNumberOfBathrooms(event.target.value);
   }
 
+  handlePrice = (event) => {
+    this.props.setPrice(event.target.value);
+  }
+
+  handleLaundry = (event) => {
+    this.props.setLaundry(event.target.value);
+  }
+
+  handlePetsAllowed = (event) => {
+    this.props.setPetsAllowed(event.target.value);
+  }
+
+  handleParking = (event) => {
+    this.props.setParking(event.target.value);
+  }
+
 
   handleClickCreate = () => {
     axios.post()
@@ -219,6 +323,10 @@ class CreateListingButton extends Component {
     this.props.setDescription("");
     this.props.setNumberOfBedrooms("");
     this.props.setNumberOfBathrooms("");
+    this.props.setPrice("");
+    this.props.setLaundry(false);
+    this.props.setPetsAllowed(false);
+    this.props.setParking(false);
   }
 
 }
@@ -230,6 +338,10 @@ const mapStateToProps = state => {
     description: state.createListingContent.title,
     numberOfBedrooms: state.createListingContent.numberOfBedrooms,
     numberOfBathrooms: state.createListingContent.numberOfBathrooms,
+    price: state.createListingContent.price,
+    laundry: state.createListingContent.laundry,
+    petsAllowed: state.createListingContent.petsAllowed,
+    parking: state.createListingContent.parking,
     dialogOpen: state.createListingContent.dialogOpen,
   };
 };
@@ -240,6 +352,10 @@ const matchDispatchToProps = dispatch => {
     setDescription,
     setNumberOfBedrooms,
     setNumberOfBathrooms,
+    setPrice,
+    setLaundry,
+    setPetsAllowed,
+    setParking,
     setDialogOpen
   }, dispatch);
 };

@@ -26,6 +26,31 @@ export const setNumberOfBathrooms = (inputString) => {
     }
 }
 
+export const setPrice = (inputString) => {
+    return {
+        type: "SET_PRICE",
+        payload: inputString
+    }
+}
+export const setLaundry = (inputString) => {
+    return {
+        type: "SET_LAUNDRY",
+        payload: inputString
+    }
+}
+export const setPetsAllowed = (inputString) => {
+    return {
+        type: "SET_PETS_ALLOWED",
+        payload: inputString
+    }
+}
+export const setParking = (inputString) => {
+    return {
+        type: "SET_PARKING",
+        payload: inputString
+    }
+}
+
 export const setDialogOpen = (inputBool) => {
     return {
         type: "SET_DIALOG_OPEN",
