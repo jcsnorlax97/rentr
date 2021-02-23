@@ -324,9 +324,9 @@ class CreateListingButton extends Component {
     this.props.setNumberOfBedrooms("");
     this.props.setNumberOfBathrooms("");
     this.props.setPrice("");
-    this.props.setLaundry(false);
-    this.props.setPetsAllowed(false);
-    this.props.setParking(false);
+    this.props.setLaundry("");
+    this.props.setPetsAllowed("");
+    this.props.setParking("");
   }
 
 }
