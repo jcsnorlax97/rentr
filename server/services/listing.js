@@ -14,6 +14,8 @@ class ListingService {
   };
 
   getAllListings = () => this.listingDao.getAllListings();
+
+  getListing = (id) => this.listingDao.getListing(id);
 }
 
 module.exports = ListingService;

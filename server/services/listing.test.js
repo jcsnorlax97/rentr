@@ -57,4 +57,25 @@ describe('listingService', () => {
       expect(listings[0].title).toEqual("Expensive one");
     });
   });
+
+  describe('getListing test', () => {
+    //GIVEN
+    const listingDao = {
+      getListing: (id) => [{ "id": 2,
+      "title": "Expensive one",
+      "description": "one million dollars",
+      "num_bedroom": ">10",
+      "num_bathroom": "5"}]
+    };
+    const listingService = new ListingService({ listingDao });
+    
+    it('succeeds', () => {
+      // WHEN
+      const listings = listingService.getListing();
+
+      //THEN
+      //when the listing is in the database
+      expect(listings[0].id).toEqual(2);
+    });
+  });
 });
