@@ -8,7 +8,7 @@ const apiErrorHandler = (err, req, res, next) => {
   if (err instanceof ApiError) {
     return res.status(err.code).json(err.message);
   }
-  return res.status(500).json(ApiError.internal('Something went wrong...'));
+  return res.status(500).json(ApiError.internal(`${err}`));
 };
 
 module.exports = apiErrorHandler;
