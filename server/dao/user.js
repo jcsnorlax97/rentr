@@ -9,8 +9,18 @@ class UserDao {
     } = await this.dbPool.query('SELECT * FROM rentr_user WHERE id = $1;', [
       id,
     ]);
-    const user = rows && rows.length >= 1 ? rows[0] : null;
-    return user;
+
+    return rows && rows.length >= 1 ? rows[0] : null;
+  };
+
+  getUserViaEmail = async (email) => {
+    const {
+      rows,
+    } = await this.dbPool.query('SELECT * FROM rentr_user WHERE email = $1;', [
+      email,
+    ]);
+
+    return rows && rows.length >= 1 ? rows[0] : null;
   };
 
   createUser = async (email, password) => {
@@ -21,8 +31,7 @@ class UserDao {
       [email, password]
     );
 
-    const userId = rows[0].id;
-    return userId;
+    return rows[0].id;
   };
 }
 

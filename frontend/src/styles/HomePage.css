@@ -48,7 +48,10 @@
   in: top, right, bottom, left order 
   */
 .MuiDialogContent-root.homeDialog-Content{
-  padding: 0px 30px 30px 20px; 
+  padding: 0px 30px 10px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 /* Defines the email field for both dialogs */
@@ -74,14 +77,24 @@
 
 /* Defines the padding for buttons like "login", "register", "cancel" in the dialog for home page */
 .MuiDialogActions-root.homeDialog-Actions.MuiDialogActions-spacing{
-  padding: 0px 30px 10px 20px
+  width: 386px;
+  padding: 30px 0px 10px 0px
 }
 
 /* Defines the style for normal buttons in dialog for home page such as "login", "register", and "cancel" button */
 .MuiButtonBase-root.MuiButton-root.MuiButton-text.homeDialog-normalButton{
   color: black;
   background-color: #f0c14b;
-  width: 120px;
+  width: 140px;
+  height: 50px;
+  font-size: large;
+  font-weight: bold;
+}
+
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.homeDialog-inProgressButton{
+  color: grey;
+  background-color: #f0c14b;
+  width: 140px;
   height: 50px;
   font-size: large;
   font-weight: bold;
@@ -95,4 +108,49 @@
   height: 50px;
   font-size: small;
   font-weight: normal;
+  position: relative;
+  right: 0px;
+}
+
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.homeDialog-inProgress-newUserButton{
+  color: grey;
+  background-color: #f0c14b;
+  width: 200px;
+  height: 50px;
+  font-size: small;
+  font-weight: normal;
+  position: relative;
+  right: 0px;
+}
+
+.homeDialog-textContent{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+}
+
+.homeDialog-textContent
+>.homeDialog-textFieldIcon
+>.MuiSvgIcon-root{
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  align-items: center;
+  align-content: center;
+  height: 52px;
+  padding-right: 10px;
+}
+
+.homeDialog-title{
+  width: 388px;
+}
+
+.loggedInUserMenusButton{
+  background-color: transparent;
+  color: white;
+}
+
+.loggedInUserMenusExpand{
+  display: flex;
+  flex-direction: column;
 }

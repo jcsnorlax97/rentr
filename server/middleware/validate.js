@@ -6,7 +6,6 @@ const validate = (schema) => (req, res, next) => {
   // req.body is invalid
   if (error) {
     next(ApiError.badRequest(error));
-    return;
   }
   // req.body is valid
   req.body = value;
