@@ -19,62 +19,70 @@ describe('listingService', () => {
   });
 
   describe('getAllListings test with no listing', () => {
-    //GIVEN
+    // GIVEN
     const listingDao = {
-      getAllListings: () => []
+      getAllListings: () => [],
     };
     const listingService = new ListingService({ listingDao });
-    
+
     it('succeeds', () => {
       // WHEN
       const listings = listingService.getAllListings();
 
-      //THEN
-      //when there are no listings in the database
+      // THEN
+      // when there are no listings in the database
       expect(listings.length).toEqual(0);
     });
   });
 
   describe('getAllListings test with one listing', () => {
-    //GIVEN
+    // GIVEN
     const listingDao = {
-      getAllListings: () => [{ "title": "Expensive one",
-      "description": "one million dollars",
-      "num_bedroom": ">10",
-      "num_bathroom": "5"}]
+      getAllListings: () => [
+        {
+          title: 'Expensive one',
+          description: 'one million dollars',
+          num_bedroom: '>10',
+          num_bathroom: '5',
+        },
+      ],
     };
     const listingService = new ListingService({ listingDao });
-    
+
     it('succeeds', () => {
       // WHEN
       const listings = listingService.getAllListings();
 
-      //THEN
-      //when there are some listings in the database
+      // THEN
+      // when there are some listings in the database
       expect(listings.length).toEqual(1);
 
-      //testing title name 
-      expect(listings[0].title).toEqual("Expensive one");
+      // testing title name
+      expect(listings[0].title).toEqual('Expensive one');
     });
   });
 
   describe('getListing test', () => {
-    //GIVEN
+    // GIVEN
     const listingDao = {
-      getListing: (id) => [{ "id": 2,
-      "title": "Expensive one",
-      "description": "one million dollars",
-      "num_bedroom": ">10",
-      "num_bathroom": "5"}]
+      getListing: (id) => [
+        {
+          id: 2,
+          title: 'Expensive one',
+          description: 'one million dollars',
+          num_bedroom: '>10',
+          num_bathroom: '5',
+        },
+      ],
     };
     const listingService = new ListingService({ listingDao });
-    
+
     it('succeeds', () => {
       // WHEN
       const listings = listingService.getListing();
 
-      //THEN
-      //when the listing is in the database
+      // THEN
+      // when the listing is in the database
       expect(listings[0].id).toEqual(2);
     });
   });
