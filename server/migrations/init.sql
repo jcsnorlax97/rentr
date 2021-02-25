@@ -11,24 +11,24 @@ CREATE EXTENSION citext;
 CREATE TABLE IF NOT EXISTS rentr_user (
     id SERIAL PRIMARY KEY,
     email CITEXT UNIQUE NOT NULL,
-    password VARCHAR(500) NOT NULL
+    password VARCHAR CHECK (length(password) <= 100) NOT NULL
 );
 
 INSERT INTO rentr_user(email, password) VALUES 
-('bosco@gmail.com', 'bosco123'),
-('justin@gmail.com', 'justin123'),
-('ronnie@gmail.com', 'ronnie123'),
-('azizul@gmail.com', 'azizul123'),
-('nathan@gmail.com', 'nathan123');
+('bosco@gmail.com', '$2b$10$b8/KshrtCRlab2qos7M1zO8cbAB7G4bB3RsN7bH8b21L9YiKbc51G'),
+('justin@gmail.com', '$2b$10$b8/KshrtCRlab2qos7M1zO8cbAB7G4bB3RsN7bH8b21L9YiKbc51G'),
+('ronnie@gmail.com', '$2b$10$b8/KshrtCRlab2qos7M1zO8cbAB7G4bB3RsN7bH8b21L9YiKbc51G'),
+('azizul@gmail.com', '$2b$10$b8/KshrtCRlab2qos7M1zO8cbAB7G4bB3RsN7bH8b21L9YiKbc51G'),
+('nathan@gmail.com', '$2b$10$b8/KshrtCRlab2qos7M1zO8cbAB7G4bB3RsN7bH8b21L9YiKbc51G');
 
 SELECT * FROM rentr_user;
 
 CREATE TABLE IF NOT EXISTS rentr_listing (
     id BIGSERIAL PRIMARY KEY, 
-    title VARCHAR(100) NOT NULL,
-    description VARCHAR(5000) NOT NULL,
-    num_bedroom VARCHAR(10) NOT NULL,
-    num_bathroom VARCHAR(10) NOT NULL
+    title VARCHAR CHECK (length(title) <= 100) NOT NULL,
+    description VARCHAR CHECK (length(description) <= 5000) NOT NULL,
+    num_bedroom VARCHAR CHECK (length(num_bedroom) <= 10) NOT NULL,
+    num_bathroom VARCHAR CHECK (length(num_bathroom) <= 10) NOT NULL
 );
 
 INSERT INTO rentr_listing(title, description, num_bedroom, num_bathroom) VALUES 

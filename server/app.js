@@ -2,6 +2,7 @@ const express = require('express');
 
 const app = express();
 const morgan = require('morgan');
+const cors = require('cors');
 const apiErrorHandler = require('./error/api-error-handler');
 
 const { setup } = require('./di-setup');
@@ -17,6 +18,9 @@ const routes = require('./api');
 
 // --- morgan logging middleware ---
 app.use(morgan('dev'));
+
+// --- cors ---
+app.use(cors());
 
 // --- new express-version bodyParser (for POST request body) ---
 app.use(express.json());
