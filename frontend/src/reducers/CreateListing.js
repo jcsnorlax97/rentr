@@ -3,12 +3,13 @@ const initialState = {
     description: "",
     numberOfBedrooms: "",
     numberOfBathrooms: "",
-    price: "",
+    price: 0,
     laundry: false,
     petsAllowed: false,
     parking: false,
     dialogOpen: false,
-    images:[]
+    images:[],
+    creatingListing: false
 }
 
 export const createListingReducer = (state = initialState, action) => {
@@ -35,6 +36,8 @@ export const createListingReducer = (state = initialState, action) => {
             return { ...state, images: action.payload };
         case "RESET_IMAGES":
             return {...state, images: []};
+        case "SET_CREATING_LISTING":
+            return {...state, creatingListing: action.payload};
         default:
             return state;
     }

@@ -42,3 +42,10 @@
   width: 655px;
   padding: 30px 0px 30px 0px
 }
+
+.createListing-priceArea{
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

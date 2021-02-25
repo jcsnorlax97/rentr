@@ -70,3 +70,10 @@ export const resetImages = () =>{
         type: "RESET_IMAGES"
     }
 }
+
+export const setCreatingListing = (inputBool) =>{
+    return{
+        type: "SET_CREATING_LISTING",
+        payload: inputBool
+    }
+}

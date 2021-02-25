@@ -36,7 +36,7 @@ class ImageUploader extends Component {
     let result = [];
     if (imageList.length === 0){
       result.push(
-        <Typography variant="h4" component="h2" gutterBottom>
+        <Typography key = {-1} variant="h4" component="h2" style = {{marginLeft: 20, color: "lightgray"}} gutterBottom>
           Drop up to three images here
         </Typography>
       )
