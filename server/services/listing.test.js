@@ -69,7 +69,7 @@ describe('listingService', () => {
       expect(listings.length).toEqual(1);
 
       // testing title name
-      expect(listings[0].title).toEqual('Expensive one');
+      expect(listings[0].title).toEqual('Serious appartment');
     });
   });
 
