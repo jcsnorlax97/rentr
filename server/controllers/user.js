@@ -56,9 +56,7 @@ class UserController {
       const user = await this.userService.getUserViaEmail(req.body.email);
       if (!user) {
         console.log('No such user');
-        res.status(401).json({
-          message: 'Please check your login info.',
-        });
+        next(ApiError.unauthenticated('Please check your login info.'));
       } else if (await bcrypt.compare(req.body.password, user.password)) {
         const token = jwt.sign(
           {
