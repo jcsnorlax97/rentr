@@ -9,3 +9,22 @@
   border-radius: 5px;
   border-color: rgb(102, 102, 102);
 }
+
+.MuiDialogTitle-root.createListing-title
+> .MuiTypography-root.MuiTypography-h6
+> .MuiButtonBase-root.MuiIconButton-root.createListing-title-closeButton{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.createListing-title{
+  width: 700px;
+  margin: auto;
+  box-sizing: border-box;
+}
+
+.MuiDialogActions-root.createlistingDialog-Actions.MuiDialogActions-spacing{
+  width: 655px;
+  padding: 30px 0px 30px 0px
+}

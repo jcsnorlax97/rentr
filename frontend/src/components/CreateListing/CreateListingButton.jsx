@@ -25,6 +25,7 @@ import axios from "axios";
 import ImageUploader from "../ImageUpload/ImageUploader";
 
 import "../../styles/HomePage.css"
+import "../../styles/CreateListing.css"
 
 const YesNo = [
   {
@@ -88,17 +89,13 @@ class CreateListingButton extends Component {
           onClose={() => {
             this.resetDialogStatus()
           }}
-          maxWidth='none'
-          contentStyle={{
-            width: '80%',
-            maxWidth: 'none'
-          }}
+          maxWidth = "lg"
         >
 
-          <DialogTitle className="homeDialog-title">
+          <DialogTitle className="createListing-title">
             Create a Listing
-                <IconButton
-              className="homeDialog-title-closeButton"
+            <IconButton
+              className="createListing-title-closeButton"
               onClick={() => {
                 this.resetDialogStatus()
               }}
@@ -254,7 +251,7 @@ class CreateListingButton extends Component {
           </DialogContent>
 
           <DialogActions
-            className="homeDialog-Actions"
+            className="createlistingDialog-Actions"
           >
             <Button
               className="homeDialog-normalButton"
