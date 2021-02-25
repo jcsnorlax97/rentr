@@ -1,14 +1,35 @@
+/* eslint-disable camelcase */
 class ListingDao {
   constructor({ dbPool }) {
     this.dbPool = dbPool;
   }
 
-  addListing = async (title, description, numBedroom, numBathroom) => {
+  addListing = async (
+    title,
+    price,
+    num_bedroom,
+    num_bathroom,
+    is_laundry_available,
+    is_pet_allowed,
+    is_parking_available,
+    images,
+    description
+  ) => {
     const {
       rows,
     } = await this.dbPool.query(
-      'INSERT INTO rentr_listing (title, description, num_bedroom, num_bathroom) VALUES ($1, $2, $3, $4) RETURNING id;',
-      [title, description, numBedroom, numBathroom]
+      'INSERT INTO rentr_listing (title, price, num_bedroom, num_bathroom, is_laundry_available, is_pet_allowed, is_parking_available, images, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id;',
+      [
+        title,
+        price,
+        num_bedroom,
+        num_bathroom,
+        is_laundry_available,
+        is_pet_allowed,
+        is_parking_available,
+        images,
+        description,
+      ]
     );
 
     const listingId = rows[0].id;
@@ -16,9 +37,7 @@ class ListingDao {
   };
 
   getAllListings = async () => {
-    const {
-      rows,
-    } = await this.dbPool.query('SELECT * FROM rentr_listing;');
+    const { rows } = await this.dbPool.query('SELECT * FROM rentr_listing;');
     return rows;
   };
 
@@ -28,9 +47,9 @@ class ListingDao {
     } = await this.dbPool.query('SELECT * FROM rentr_listing WHERE id = $1;', [
       id,
     ]);
-    //const listing = rows && rows.length >= 1 ? rows[0] : null;
+    // const listing = rows && rows.length >= 1 ? rows[0] : null;
     return rows && rows.length >= 1 ? rows[0] : null;
-  }
+  };
 }
 
 module.exports = ListingDao;
