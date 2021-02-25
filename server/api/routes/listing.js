@@ -9,7 +9,7 @@ const listingController = container.resolve('listingController');
 
 const router = express.Router();
 router.get('/', listingController.getAllListings);
-router.get('/:id', listingController.getListing);
+router.get('/:id', listingController.getListingViaId);
 router.post(
   '/',
   validateLoggedIn,

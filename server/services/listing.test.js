@@ -73,10 +73,10 @@ describe('listingService', () => {
     });
   });
 
-  describe('getListing test', () => {
+  describe('getListingViaId test', () => {
     // GIVEN
     const listingDao = {
-      getListing: (_) => [
+      getListingViaId: (_) => [
         {
           id: 3,
           title: 'Serious appartment',
@@ -96,7 +96,7 @@ describe('listingService', () => {
 
     it('succeeds', () => {
       // WHEN
-      const listings = listingService.getListing();
+      const listings = listingService.getListingViaId();
 
       // THEN (when the listing is in the database)
       expect(listings[0].id).toEqual(3);

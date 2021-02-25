@@ -41,7 +41,7 @@ class ListingDao {
     return rows;
   };
 
-  getListing = async (id) => {
+  getListingViaId = async (id) => {
     const {
       rows,
     } = await this.dbPool.query('SELECT * FROM rentr_listing WHERE id = $1;', [

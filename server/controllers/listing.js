@@ -26,10 +26,10 @@ class ListingController {
     }
   };
 
-  getListing = async (req, res, next) => {
+  getListingViaId = async (req, res, next) => {
     try {
       const listingId = req.params.id;
-      const listing = await this.listingService.getListing(req.params.id);
+      const listing = await this.listingService.getListingViaId(req.params.id);
       if (listing == null) {
         next(ApiError.notFound(`Listing with id ${listingId} is not found.`));
         return;
