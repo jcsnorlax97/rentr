@@ -8,7 +8,7 @@ class ApiError {
     return new ApiError(400, msg);
   }
 
-  static unAuthenticated(msg) {
+  static unauthenticated(msg) {
     return new ApiError(401, msg);
   }
 
