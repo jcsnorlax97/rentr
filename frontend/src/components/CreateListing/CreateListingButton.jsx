@@ -10,7 +10,8 @@ import {
   setLaundry,
   setPetsAllowed,
   setParking,
-  setDialogOpen
+  setDialogOpen,
+  setImages,
 } from "../../actions/CreateListing";
 import { Button } from "@material-ui/core";
 import TextField from '@material-ui/core/TextField';
@@ -107,9 +108,7 @@ class CreateListingButton extends Component {
           <DialogContent
             className="homeDialog-Content"
           >
-            <div className = "ImageUploadContainer">
-              <ImageUploader/>
-            </div>
+            <ImageUploader/>
             <TextField
               label="Title"
               autoFocus
@@ -328,6 +327,7 @@ class CreateListingButton extends Component {
     this.props.setLaundry("");
     this.props.setPetsAllowed("");
     this.props.setParking("");
+    this.props.setImages([]);
   }
 
 }
@@ -357,7 +357,8 @@ const matchDispatchToProps = dispatch => {
     setLaundry,
     setPetsAllowed,
     setParking,
-    setDialogOpen
+    setDialogOpen,
+    setImages,
   }, dispatch);
 };
 

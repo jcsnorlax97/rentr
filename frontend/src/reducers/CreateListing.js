@@ -8,9 +8,7 @@ const initialState = {
     petsAllowed: false,
     parking: false,
     dialogOpen: false,
-    images:[
-        
-    ]
+    images:[]
 }
 
 export const createListingReducer = (state = initialState, action) => {
@@ -36,9 +34,7 @@ export const createListingReducer = (state = initialState, action) => {
         case "SET_IMAGES":
             return { ...state, images: action.payload };
         case "RESET_IMAGES":
-            return {...state, images: [
-                
-            ]};
+            return {...state, images: []};
         default:
             return state;
     }

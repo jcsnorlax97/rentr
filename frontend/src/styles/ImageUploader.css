@@ -1,30 +1,30 @@
-.ImageUploadContainer
->.ImageUploadContainer
->.fileUploader
-> {
-  width: 100%;
-  height: 100%;
-  border-radius: 3px 3px 10px 10px;
-  box-sizing: border-box;
+.uploadedImage-box{
+  width: 150px;
+  height: 175px;
+  margin-left: 10px;
   margin-right: 10px;
 }
 
-.fileContainer{
-  width: 100%;
+.ImageUploadContainer
+>.OperationZone{
+  width: 200px;
   height: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
+  flex-direction:column;
 }
-
 
 .createListingImage-preview{
   width: 150px;
   height: 130px;
   display: flex;
-  border: 2px solid lightgray;
-  border-bottom: none;
+  border-top: 2px solid lightgray;
+  border-left: 2px solid lightgray;
+  border-right: 2px solid lightgray;
   justify-content: center;
   align-self: center;
   border-radius: 3px 3px 0px 0px;
-  box-sizing: border-box;
 }
 
 .createListingImage-tool{
@@ -32,10 +32,11 @@
   height: 45px;
   border: 2px solid lightgray;
   border-top: 1px solid lightgray;
-  border-radius: 0px 0px 10px 10px;
+  border-left: 2px solid lightgray;
+  border-right: 2px solid lightgray;
+  border-radius: 0px, 0px, 5px, 5px;
   display: flex;
   justify-content: center;
-  box-sizing: border-box;
 }
 
 .createListingImage-preview
