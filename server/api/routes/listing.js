@@ -10,6 +10,11 @@ const listingController = container.resolve('listingController');
 const router = express.Router();
 router.get('/', listingController.getAllListings);
 router.get('/:id', listingController.getListing);
-router.post('/', validateLoggedIn, validate(listingDto), listingController.addListing);
+router.post(
+  '/',
+  validateLoggedIn,
+  validate(listingDto),
+  listingController.addListing
+);
 
 module.exports = router;
