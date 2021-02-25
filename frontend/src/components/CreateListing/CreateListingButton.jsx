@@ -22,6 +22,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import MenuItem from '@material-ui/core/MenuItem';
 import axios from "axios";
+import ImageUploader from "../ImageUpload/ImageUploader";
 
 import "../../styles/HomePage.css"
 
@@ -109,6 +110,9 @@ class CreateListingButton extends Component {
           <DialogContent
             className="homeDialog-Content"
           >
+            <div className = "ImageUploadContainer">
+              <ImageUploader/>
+            </div>
             <TextField
               label="Title"
               autoFocus

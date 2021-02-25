@@ -57,3 +57,16 @@ export const setDialogOpen = (inputBool) => {
         payload: inputBool
     }
 }
+
+export const setImages = (inputArray) =>{
+    return{
+        type: "SET_IMAGES",
+        payload: inputArray
+    }
+}
+
+export const resetImages = () =>{
+    return {
+        type: "RESET_IMAGES"
+    }
+}
