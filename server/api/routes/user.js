@@ -7,7 +7,7 @@ const userDto = require('../../dto/user');
 const userController = container.resolve('userController');
 
 const router = express.Router();
-router.get('/:id', userController.getUser);
+router.get('/:id', userController.getUserViaId);
 router.post('/registration', validate(userDto), userController.createUser);
 router.post('/login', validate(userDto), userController.authenticateUser);
 

@@ -3,7 +3,7 @@ class UserService {
     this.userDao = userDao;
   }
 
-  getUser = (id) => this.userDao.getUser(id);
+  getUserViaId = (id) => this.userDao.getUserViaId(id);
 
   getUserViaEmail = (email) => this.userDao.getUserViaEmail(email);
 

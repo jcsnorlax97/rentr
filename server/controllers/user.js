@@ -9,10 +9,10 @@ class UserController {
     this.userService = userService;
   }
 
-  getUser = async (req, res, next) => {
+  getUserViaId = async (req, res, next) => {
     try {
       const userId = req.params.id;
-      const user = await this.userService.getUser(req.params.id);
+      const user = await this.userService.getUserViaId(req.params.id);
       if (user == null) {
         next(ApiError.notFound(`User with id ${userId} not found`));
       }
