@@ -9,10 +9,10 @@ class UserController {
     this.userService = userService;
   }
 
-  getUser = async (req, res, next) => {
+  getUserViaId = async (req, res, next) => {
     try {
       const userId = req.params.id;
-      const user = await this.userService.getUser(req.params.id);
+      const user = await this.userService.getUserViaId(req.params.id);
       if (user == null) {
         next(ApiError.notFound(`User with id ${userId} not found`));
       }
@@ -56,9 +56,7 @@ class UserController {
       const user = await this.userService.getUserViaEmail(req.body.email);
       if (!user) {
         console.log('No such user');
-        res.status(401).json({
-          message: 'Please check your login info.',
-        });
+        next(ApiError.unauthenticated('Please check your login info.'));
       } else if (await bcrypt.compare(req.body.password, user.password)) {
         const token = jwt.sign(
           {

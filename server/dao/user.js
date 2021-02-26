@@ -3,7 +3,7 @@ class UserDao {
     this.dbPool = dbPool;
   }
 
-  getUser = async (id) => {
+  getUserViaId = async (id) => {
     const {
       rows,
     } = await this.dbPool.query('SELECT * FROM rentr_user WHERE id = $1;', [

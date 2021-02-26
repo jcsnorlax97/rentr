@@ -9,7 +9,7 @@ const validateLoggedIn = (req, res, next) => {
     next();
   } catch (err) {
     // Invalid auth token, meaning not logged in
-    next(ApiError.unAuthenticated('You need to be logged in to do this.'));
+    next(ApiError.unauthenticated('You need to be logged in to do this.'));
   }
 };
 

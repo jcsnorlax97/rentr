@@ -3,14 +3,20 @@ const ListingService = require('./listing');
 describe('listingService', () => {
   describe('addListing', () => {
     const listingDao = {
-      addListing: () => 101,
+      addListing: (_) => 101,
     };
     const listingService = new ListingService({ listingDao });
     const reqBody = {
-      title: 'Testing Apartment title',
-      description: 'Testing Apartment description',
-      numBedroom: '>10',
-      numBathroom: '>10',
+      title: 'Serious appartment',
+      price: '320',
+      num_bedroom: '3',
+      num_bathroom: '2',
+      is_laundry_available: true,
+      is_pet_allowed: true,
+      is_parking_available: false,
+      images: ['this_is_the_image_url.com'],
+      description:
+        'An appartment closed to the university and the bus stop. Contact me!',
     };
     it('succeeds', () => {
       const newListingId = listingService.addListing(reqBody);
@@ -19,63 +25,81 @@ describe('listingService', () => {
   });
 
   describe('getAllListings test with no listing', () => {
-    //GIVEN
+    // GIVEN
     const listingDao = {
-      getAllListings: () => []
+      getAllListings: () => [],
     };
     const listingService = new ListingService({ listingDao });
-    
+
     it('succeeds', () => {
       // WHEN
       const listings = listingService.getAllListings();
 
-      //THEN
-      //when there are no listings in the database
+      // THEN (when there are no listings in the database)
       expect(listings.length).toEqual(0);
     });
   });
 
   describe('getAllListings test with one listing', () => {
-    //GIVEN
+    // GIVEN
     const listingDao = {
-      getAllListings: () => [{ "title": "Expensive one",
-      "description": "one million dollars",
-      "num_bedroom": ">10",
-      "num_bathroom": "5"}]
+      getAllListings: () => [
+        {
+          id: 3,
+          title: 'Serious appartment',
+          price: '320',
+          num_bedroom: '3',
+          num_bathroom: '2',
+          is_laundry_available: true,
+          is_pet_allowed: true,
+          is_parking_available: false,
+          images: ['this_is_the_image_url.com'],
+          description:
+            'An appartment closed to the university and the bus stop. Contact me!',
+        },
+      ],
     };
     const listingService = new ListingService({ listingDao });
-    
+
     it('succeeds', () => {
       // WHEN
       const listings = listingService.getAllListings();
 
-      //THEN
-      //when there are some listings in the database
+      // THEN (when there are some listings in the database)
       expect(listings.length).toEqual(1);
 
-      //testing title name 
-      expect(listings[0].title).toEqual("Expensive one");
+      // testing title name
+      expect(listings[0].title).toEqual('Serious appartment');
     });
   });
 
-  describe('getListing test', () => {
-    //GIVEN
+  describe('getListingViaId test', () => {
+    // GIVEN
     const listingDao = {
-      getListing: (id) => [{ "id": 2,
-      "title": "Expensive one",
-      "description": "one million dollars",
-      "num_bedroom": ">10",
-      "num_bathroom": "5"}]
+      getListingViaId: (_) => [
+        {
+          id: 3,
+          title: 'Serious appartment',
+          price: '320',
+          num_bedroom: '3',
+          num_bathroom: '2',
+          is_laundry_available: true,
+          is_pet_allowed: true,
+          is_parking_available: false,
+          images: ['this_is_the_image_url.com'],
+          description:
+            'An appartment closed to the university and the bus stop. Contact me!',
+        },
+      ],
     };
     const listingService = new ListingService({ listingDao });
-    
+
     it('succeeds', () => {
       // WHEN
-      const listings = listingService.getListing();
+      const listings = listingService.getListingViaId();
 
-      //THEN
-      //when the listing is in the database
-      expect(listings[0].id).toEqual(2);
+      // THEN (when the listing is in the database)
+      expect(listings[0].id).toEqual(3);
     });
   });
 });
