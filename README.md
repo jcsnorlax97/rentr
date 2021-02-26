@@ -44,4 +44,4 @@ Link - [here](https://github.com/jcsnorlax97/rentr/blob/master/Documentation/COR
 
 - Sprint 3 - [here](https://github.com/jcsnorlax97/rentr/milestone/4)
 
-- Sprint 3 - [here](https://github.com/jcsnorlax97/rentr/milestone/5)
+- Sprint 4 - [here](https://github.com/jcsnorlax97/rentr/milestone/5)
