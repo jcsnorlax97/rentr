@@ -15,11 +15,11 @@ CREATE TABLE IF NOT EXISTS rentr_user (
 );
 
 INSERT INTO rentr_user(email, password) VALUES 
-('bosco@gmail.com', '$2b$10$b8/KshrtCRlab2qos7M1zO8cbAB7G4bB3RsN7bH8b21L9YiKbc51G'),
-('justin@gmail.com', '$2b$10$b8/KshrtCRlab2qos7M1zO8cbAB7G4bB3RsN7bH8b21L9YiKbc51G'),
-('ronnie@gmail.com', '$2b$10$b8/KshrtCRlab2qos7M1zO8cbAB7G4bB3RsN7bH8b21L9YiKbc51G'),
-('azizul@gmail.com', '$2b$10$b8/KshrtCRlab2qos7M1zO8cbAB7G4bB3RsN7bH8b21L9YiKbc51G'),
-('nathan@gmail.com', '$2b$10$b8/KshrtCRlab2qos7M1zO8cbAB7G4bB3RsN7bH8b21L9YiKbc51G');
+('bosco@gmail.com', '$2b$10$VcG9Jd24EM.wOH6EIBXY5uKvuV7wOr7wyqIilOOil/uJCUvQTIxKG'),
+('justin@gmail.com', '$2b$10$VcG9Jd24EM.wOH6EIBXY5uKvuV7wOr7wyqIilOOil/uJCUvQTIxKG'),
+('ronnie@gmail.com', '$2b$10$VcG9Jd24EM.wOH6EIBXY5uKvuV7wOr7wyqIilOOil/uJCUvQTIxKG'),
+('azizul@gmail.com', '$2b$10$VcG9Jd24EM.wOH6EIBXY5uKvuV7wOr7wyqIilOOil/uJCUvQTIxKG'),
+('nathan@gmail.com', '$2b$10$VcG9Jd24EM.wOH6EIBXY5uKvuV7wOr7wyqIilOOil/uJCUvQTIxKG');
 
 SELECT * FROM rentr_user;
 
