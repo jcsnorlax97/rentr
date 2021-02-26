@@ -9,11 +9,11 @@
 
 - What we discussed: 
   - each of us brainstormed some project topics
-  - Shared project topics we came up with with other team members
+  - Shared project topics we came up with other team members
 
-- TODO for next meeting:
+- TODO for the next meeting:
   - evaluate topics we brainstormed based on feasibility, functionality
-  - choose some favourate topics and give reasons
+  - choose some favorite topics and give reasons
 
 
 ### Week 1: meeting 2
@@ -27,7 +27,7 @@
   - to assign user stories.
 
 - TODO:
-  - Each team member need to write user stories for feature(s) assigned to him.
+  - Each team member needs to write user stories for feature(s) assigned to him.
  
 
 ### Week 1: meeting 3
@@ -53,7 +53,7 @@
 - What we discussed: 
   - Project Summary (Acceptance Criteria)
   - User Stories, along with the estimates
-  - chose to use git flow 
+  - chose to use git-flow 
 
 
 ### Week 2: meeting 2
@@ -65,7 +65,7 @@
   - Project summary
   - finalized estimates for user stories
   - prepare questions to check with TA
-  - Booked an appointment with TA (Ximing Dong) on Jan 29th (friday)
+  - Booked an appointment with TA (Ximing Dong) on Jan 29th (Friday)
 
 
 ### Week 2: meeting 3
@@ -89,11 +89,11 @@
 - Participants: all team members
 
 - What we discussed: 
-  - Sending email to new member.
+  - Sending an email to the new member.
   - User Stories (Acceptance Tests).
 
 - TODO:
-  - Have to fisnish reviewing rest of the acceptance tests.
+  - Have to finish reviewing the rest of the acceptance tests.
   - Have to add one more core feature. 
 
 
@@ -120,11 +120,127 @@
   - Had gone over the sprint 1 grading scheme to ensure we’re not missing anything.
   - Had discussed the following questions: 
       1. Would exceeding two pages for the project proposal be fine? (Yes, it'd be fine, based on the reply from the Professor.)
-      2. What kind of document formats should be submit, e.g. PDF or Github link?
-  - Had discussed and assign tasks for the presentation: each of us will responsible for creating a slide associated to a feature for the presentation.
+      2. What kind of document formats should be submitted, e.g. PDF or Github link?
+  - Had discussed and assign tasks for the presentation: each of us will responsible for creating a slide associated with a feature for the presentation.
   - Had briefly discussed branch protection rules
  
 - TODO:
   - Confirm submission format with the professor tomorrow during class.
-  - Ensure all Sprint 1 materials in Github are up-to-date, such that (i) we can close all issues & (ii) deploy from `develop` branch to `master` branch.
+  - Ensure all Sprint 1 materials in Github are up-to-date, such that (i) we can close all issues & (ii) deploy from the `develop` branch to the `master` branch.
   - Start to prepare a presentation slide for the assigned feature.
+
+
+### Week 3: meeting 4
+
+##### Feb 4th, 2021 (Thursday)
+- Participants: all team members
+
+- What we discussed: 
+  - adding description & core features into README.md.
+  - to do final clean up on README.md.
+  - to deploy code changes from develop into master.
+
+
+### Week 3: meeting 5
+
+##### Feb 5th, 2021 (Friday)
+- Participants: all team members
+
+- What we discussed: 
+  - Prepared slides for the presentation.
+
+- TODO:
+  - dev tasks for account management’s user stories
+  - front-end design draft
+  NEXT MEETING: (sun) feb 7th - 17.00
+
+
+### Week 3: meeting 6
+
+##### Feb 7th, 2021 (Sunday)
+- Participants: all team members
+
+- What we discussed: 
+  - Presentation practice and minor updates.
+
+- TODO:
+  - Complete dev tasks breakdown.
+  - Make rough website design visualization.
+
+
+### Week 4: meeting 1
+
+##### Feb 9th, 2021 (Tuesday)
+- Participants: all team members
+
+- What we discussed: 
+  - Presentation finalization.
+  - Dev task.
+  - Layout design.
+
+- TODO:
+  - React/DB Learning
+  - Pick Dev Task to work on
+
+
+### Week 5: meeting 1
+
+##### Feb 15th, 2021 (Monday)
+- Participants: all team members
+
+- What we discussed: 
+  - Progress on the first user story.
+  - Dev task for next user story.
+
+- TODO:
+  - Bug fixing (B#61, B#60), Ensure Account Creation works (U#35, T#51)
+  - Account Login 
+  - GET listings endpoint 
+  - DB Migration/Deployment to Heroku for frontend.
+  - Add estimate & actual time spent for all backend dev tasks.
+  - (General) Update (i) meeting minutes in Wiki & source codes in develop, 
+                     (ii) Team member roles (Front-end dev & Back-end devs). 
+
+### Week 5: meeting 2
+
+##### Feb 17th, 2021 (Wednesday)
+- Participants: all team members
+
+- What we discussed: 
+  - Discussed progress on dev tasks
+  - Assigned new dev tasks
+
+- TODO:
+  - Post method for login
+  - Unit tests
+  - Review existing pull requests
+  - Work on showing ad listings and pagination
+
+### Week 5: meeting 3
+
+##### Feb 19th, 2021 (Friday)
+- Participants: all team members
+
+- What we discussed: 
+  - Status check
+  - Future project tasks
+
+- TODO:
+  - Class and sequence diagrams
+  - Testing plan
+  - Completion of dev tasks
+
+### Week 6: meeting 1
+
+##### Feb 22nd, 2021 (Monday)
+- Participants: all team members
+
+- What we discussed: 
+  - Brief status check
+  - Most backend work done
+  - Some frontend work remaining
+
+- TODO:
+  - Continue/complete existing work
+  - Integration
+  - Testing
