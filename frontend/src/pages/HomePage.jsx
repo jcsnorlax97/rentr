@@ -57,11 +57,6 @@ class HomePage extends Component {
     this.props.setLogin_dialog(false)
   }
 
-  componentWillUnmount() {
-    // this.props.setStatus(false);
-    // this.props.setToken("")
-  }
-
   render() {
     return (
       <div
@@ -691,6 +686,14 @@ class HomePage extends Component {
   resetDialogsStatus = () => {
     this.props.setLogin_dialog(false);
     this.props.setRegister_dialog(false);
+    this.setState({
+      menuOpen: false,
+      registerMessage: false,
+      registerSuccess: false,
+      loginSuccess: false,
+      loginMessage: false,
+      loginError: false
+    })
   }
 
 }

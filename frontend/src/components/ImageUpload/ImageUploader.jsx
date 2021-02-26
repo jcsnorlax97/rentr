@@ -10,6 +10,8 @@ import ImageIcon from '@material-ui/icons/Image';
 import { Button } from "@material-ui/core";
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Typography from '@material-ui/core/Typography';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import '../../styles/ImageUploader.css'
 import "../../styles/CreateListing.css"
@@ -124,8 +126,24 @@ class ImageUploader extends Component {
           onImageRemoveAll,
           onImageUpdate,
           onImageRemove,
-          dragProps
+          dragProps,
+          errors 
         }) => (
+          <React.Fragment>
+          {
+            errors 
+          ?
+          <Snackbar
+            open={errors.maxFileSize}
+            autoHideDuration={1000}
+          >
+            <MuiAlert elevation={6} variant="filled" severity="warning">
+              Images you uploaded is too big, please choose images less than 500 KB
+            </MuiAlert>
+          </Snackbar>
+          : 
+            null
+          }
           <div className = "ImageUploadContainer">
             <div className = "OperationZone">
               <Button
@@ -169,6 +187,7 @@ class ImageUploader extends Component {
               {this.displayImages(imageList, onImageRemove, onImageUpdate)}
             </div>
           </div>
+          </React.Fragment>
         )}
       </ImageUploading>
     )
