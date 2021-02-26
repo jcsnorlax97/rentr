@@ -112,6 +112,17 @@
   right: 0px;
 }
 
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.homeDialog-inProgressNewUserButton{
+  color: grey;
+  background-color: #f0c14b;
+  width: 200px;
+  height: 50px;
+  font-size: small;
+  font-weight: normal;
+  position: relative;
+  right: 0px;
+}
+
 .MuiButtonBase-root.MuiButton-root.MuiButton-text.homeDialog-inProgress-newUserButton{
   color: grey;
   background-color: #f0c14b;

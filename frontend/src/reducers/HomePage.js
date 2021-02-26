@@ -5,6 +5,7 @@ const initialState = {
   loginDialogOpen: false,
   registerDialogOpen: false,
   status: false,
+  token: ""
 }
 
 export const homeReducer = (state = initialState, action) => {
@@ -21,6 +22,8 @@ export const homeReducer = (state = initialState, action) => {
       return {...state, registerDialogOpen: action.payload};
     case "SET_STATUS":
       return {...state, status: action.payload};
+    case "SET_TOKEN":
+      return {...state, token: action.payload};
     default: 
 			return state;
   }

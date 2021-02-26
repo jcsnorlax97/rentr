@@ -57,13 +57,13 @@ class Listing extends Component {
 
   checkPrice = (priceString) =>{
     let newPrice = ""
-    if (String(priceString).trim().length >= 5){
-      newPrice = parseInt(priceString) / 1000
-      newPrice = String(newPrice).concat("K")
-    }
-    else if (String(priceString).trim().length >= 7){
+    if (String(priceString).trim().length >= 7){
       newPrice = parseInt(priceString) / 1000000
       newPrice = String(newPrice).concat("M")
+    }
+    else if (String(priceString).trim().length >= 5){
+      newPrice = parseInt(priceString) / 1000
+      newPrice = String(newPrice).concat("K")
     }
     else{
       newPrice = priceString
