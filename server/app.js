@@ -23,7 +23,8 @@ app.use(morgan('dev'));
 app.use(cors());
 
 // --- new express-version bodyParser (for POST request body) ---
-app.use(express.json());
+app.use(express.json({ limit: '5mb', extended: true }));
+app.use(express.urlencoded({ limit: '5mb', extended: true }));
 
 // --- routes ---
 app.use('/', routes);
