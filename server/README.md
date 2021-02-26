@@ -7,4 +7,4 @@
 | POST | /api/v1/user/registration | Register user with email & password.                                                    |
 | POST | /api/v1/user/login        | Sign user in with their email & password.                                               |
 | GET  | /api/v1/user/:id          | Given the user id, return that user JSON object.                                        |
-| POST | /api/v1/listing           | Add a new apartment listing with title, description, bedroom amonnts & bathroom amounts |
+| POST | /api/v1/listing           | Add a new apartment listing with title, description, bedroom amounts & bathroom amounts |
