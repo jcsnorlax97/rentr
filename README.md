@@ -32,14 +32,16 @@ Rentr allows tenants to search for listings with specified criteria. This allows
 
 Link - [here](https://github.com/jcsnorlax97/rentr/blob/master/Documentation/CORE_FEATURES.md)
 
-1. User account management
-2. Adding apartment listings
-3. Modifying the rental properties
-4. Searching for rental properties they desire
-5. Q&A Section
+1. User account management (Sprint 2)
+2. Adding apartment listings (Sprint 2)
+3. Modifying the rental properties (Sprint 3)
+4. Searching for rental properties they desire (Sprint 3)
+5. Q&A Section (Sprint 3~4)
 
 ## Milestones
 
 - Sprint 2 - [here](https://github.com/jcsnorlax97/rentr/milestone/3)
 
 - Sprint 3 - [here](https://github.com/jcsnorlax97/rentr/milestone/4)
+
+- Sprint 3 - [here](https://github.com/jcsnorlax97/rentr/milestone/5)
