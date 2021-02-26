@@ -109,8 +109,6 @@ class HomePage extends Component {
             }
           </Toolbar>
 
-          <CreateListingButton />
-
         </AppBar>
         <HomeContent />
       </div>
@@ -487,6 +485,7 @@ class HomePage extends Component {
     const open = Boolean(this.state.anchorEl);
     return (
       <React.Fragment>
+        <CreateListingButton />
         <Button
           onClick={(event) => this.handleOpenPopover(event)}
           style={{

@@ -1,0 +1,56 @@
+.uploadedImage-box{
+  width: 150px;
+  height: 175px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.ImageUploadContainer
+>.OperationZone{
+  width: 200px;
+  height: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
+  flex-direction:column;
+}
+
+.createListingImage-preview{
+  width: 150px;
+  height: 130px;
+  display: flex;
+  border-top: 2px solid lightgray;
+  border-left: 2px solid lightgray;
+  border-right: 2px solid lightgray;
+  justify-content: center;
+  align-self: center;
+  border-radius: 3px 3px 0px 0px;
+}
+
+.createListingImage-tool{
+  width: 150px;
+  height: 45px;
+  border: 2px solid lightgray;
+  border-top: 1px solid lightgray;
+  border-left: 2px solid lightgray;
+  border-right: 2px solid lightgray;
+  border-radius: 0px, 0px, 5px, 5px;
+  display: flex;
+  justify-content: center;
+}
+
+.createListingImage-preview
+> .createListingImage-uploadButton{
+  width: 100%;
+  height: 100%;
+}
+
+.createListingImage-preview
+>.image{
+  justify-self: center;
+  align-self: center;
+  width: 100%;
+  height: unset;
+  max-width: 150px;
+  max-height: 130px;
+}
