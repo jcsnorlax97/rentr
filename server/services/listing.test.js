@@ -101,5 +101,24 @@ describe('listingService', () => {
       // THEN (when the listing is in the database)
       expect(listings[0].id).toEqual(3);
     });
+
+    describe('getListingViaId failed due to listing not found (404)', () => {
+      // GIVEN
+      const listing = null;
+      const listingDao = {
+        getListingViaId: (_) => listing,
+      };
+      const listingService = new ListingService({ listingDao });
+      // invalid id which is not present
+      const id = 100;
+  
+      it('404', () => {
+        // WHEN
+        const result = listingService.getListingViaId(id);
+  
+        // THEN
+        expect(result).toEqual(null);
+      });
+    });
   });
 });
