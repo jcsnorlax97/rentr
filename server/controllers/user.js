@@ -73,6 +73,9 @@ class UserController {
           token,
         });
       }
+      next(
+        ApiError.unauthenticated(`The login email or password is not valid.`)
+      );
     } catch (err) {
       next(ApiError.internal(`${err}`));
     }
