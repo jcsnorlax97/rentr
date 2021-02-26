@@ -109,7 +109,8 @@ describe('listingService', () => {
         getListingViaId: (_) => listing,
       };
       const listingService = new ListingService({ listingDao });
-      const id = 111;
+      // invalid id which is not present
+      const id = 100;
   
       it('404', () => {
         // WHEN
