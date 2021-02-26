@@ -45,3 +45,11 @@ Link - [here](https://github.com/jcsnorlax97/rentr/blob/master/Documentation/COR
 - Sprint 3 - [here](https://github.com/jcsnorlax97/rentr/milestone/4)
 
 - Sprint 4 - [here](https://github.com/jcsnorlax97/rentr/milestone/5)
+
+## Others
+
+- Rentr Wiki - [here](https://github.com/jcsnorlax97/rentr/wiki)
+
+  - This consists of design digrams, meeting minutes, testing plan.
+
+- Rentr Backend API URI - [here](https://github.com/jcsnorlax97/rentr/tree/master/server)
