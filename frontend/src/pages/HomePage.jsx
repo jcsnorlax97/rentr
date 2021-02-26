@@ -9,6 +9,7 @@ import {
   setUserEmail,
   setLogin_dialog,
   setRegister_dialog,
+  setToken
 } from "../actions/HomePage";
 import logo from "../resources/logo.png";
 import { AppBar, Toolbar, Button, Typography, Paper, ListItemText } from "@material-ui/core";
@@ -33,7 +34,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import { API_ROOT_POST } from "../data/urls";
+import { API_ROOT_POST, LOGIN_ADDRESS } from "../data/urls";
 import CreateListingButton from "../components/CreateListing/CreateListingButton";
 
 import "../styles/HomePage.css"
@@ -44,17 +45,16 @@ class HomePage extends Component {
     menuOpen: false,
     registerMessage: false,
     registerSuccess: false,
-    loginSuccess: false
+    loginSuccess: false,
+    loginMessage: false,
+    loginError: false
   }
 
   componentDidMount() {
     this.props.setRegistering(false)
+    this.props.setLogging(false)
     this.props.setRegister_dialog(false)
     this.props.setLogin_dialog(false)
-  }
-
-  componentWillUnmount() {
-    this.props.setStatus(false);
   }
 
   render() {
@@ -83,7 +83,6 @@ class HomePage extends Component {
                 flex: 1
               }}
             />
-
             {!this.props.status
               ?
               (
@@ -118,6 +117,7 @@ class HomePage extends Component {
   handleShowLogInDialog = () => {
     return (
       <Dialog
+        disableBackdropClick
         id="loginDialog"
         open={this.props.loginDialogOpen}
         onClose={() => {
@@ -128,15 +128,17 @@ class HomePage extends Component {
           width: "500px"
         }}
       >
+        {this.handleLoginMessage()}
         <DialogTitle className="homeDialog-title">
           Login
           <IconButton
             className="homeDialog-title-closeButton"
+            disabled = {this.props.logging}
             onClick={() => {
               this.resetDialogsStatus()
             }}
           >
-            <CloseIcon />
+            <CloseIcon/>
           </IconButton>
         </DialogTitle>
 
@@ -146,34 +148,51 @@ class HomePage extends Component {
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(false)
               this.props.setLogging(true)
-              if (values.loginEmail === "test@email.com" && values.loginPassword === "123") {
-                this.props.setStatus(true)
-              }
-              else {
-                // axios({
-                //   method: "post",
-                //   url: this.props.authenticateURL,
-                //   data: {
-                //     "auth": {
-                //       "username": values.loginEmail,
-                //       "password": values.loginPassword
-                //     }
-                //   }
-                // })
-                // .then(response =>{
-                //   if (response.data.status === 200){
-                //     // then it succeeded
-                //     this.props.setLogin_dialog(false);
-                //     this.props.setStatus(true)
-                //   }
-                //   else{
-                //     // other status code stands login has failed
-                //   }
-                // })
-                // .catch(error =>{
-                //   // failed, with exception
-                // })
-              }
+              axios({
+                method: "post",
+                url: LOGIN_ADDRESS,
+                data: {
+                  "email": values.loginEmail.trim(),
+                  "password": values.loginPassword.trim()
+                }
+              })
+              .then(response =>{
+                if (response.data 
+                  && response.data.message
+                  && response.data.message === "Login successful."){
+                  // then we're logged in successfully
+                  this.props.setToken(response.data.token)
+                  this.setState({
+                    loginMessage: true,
+                    loginSuccess: true,
+                    loginError: false
+                  })
+                  setTimeout(() => {
+                    this.resetDialogsStatus()
+                    this.props.setStatus(true)
+                    this.props.setLogging(false)
+                  }, 5000);
+                }
+                else{
+                  this.props.setStatus(false)
+                  this.setState({
+                    loginMessage: true,
+                    loginSuccess: false,
+                    loginError: false
+                  })
+                  this.props.setLogging(false)
+                }
+              })
+              .catch(error =>{
+                console.log(error)
+                this.props.setStatus(false)
+                this.setState({
+                  loginMessage: true,
+                  loginSuccess: false,
+                  loginError: true
+                })
+                this.props.setLogging(false)
+              })
             }}
             validationSchema={yup.object().shape({
               loginEmail: yup
@@ -208,6 +227,7 @@ class HomePage extends Component {
                       label="sample@email.com"
                       type="email"
                       value={values.loginEmail}
+                      disabled = {this.props.logging}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={touched.loginEmail && Boolean(errors.loginEmail)}
@@ -229,6 +249,7 @@ class HomePage extends Component {
                       label="password"
                       type="password"
                       value={values.loginPassword}
+                      disabled = {this.props.logging}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={touched.loginPassword && Boolean(errors.loginPassword)}
@@ -239,16 +260,25 @@ class HomePage extends Component {
 
                   <DialogActions className="homeDialog-Actions">
                     <Button
-                      className="homeDialog-normalButton"
-                      // onClick={this.handleClickLogin}
+                      className={
+                        this.props.logging
+                          ? "homeDialog-inProgressButton"
+                          : "homeDialog-normalButton"
+                      }
                       type="submit"
+                      disabled = {this.props.logging}
                     >
-                      Login
+                      {this.props.logging ? "Logging In" : "Login"}
                     </Button>
                     <div style={{ flex: '1 0 0' }} />
                     <Button
                       onClick={this.handleClickRegister}
-                      className="homeDialog-newUserButton"
+                      className={
+                        this.props.logging
+                          ? "homeDialog-inProgressNewUserButton"
+                          : "homeDialog-newUserButton"
+                      }
+                      disabled = {this.props.logging}
                     >
                       <div>
                         Don't have an account?
@@ -279,6 +309,7 @@ class HomePage extends Component {
     return (
       <Dialog
         open={this.props.registerDialogOpen}
+        disableBackdropClick
         onClose={() => {
           this.resetDialogsStatus()
         }}
@@ -325,18 +356,18 @@ class HomePage extends Component {
                     })
                     setTimeout(() => {
                       this.resetDialogsStatus()
-                      this.props.setStatus(true)
+                      this.props.setRegistering(false)
                     }, 5000);
                   }
                   // If the account is registered NOT successfully
                   else {
-                    this.props.setStatus(false)
                     this.setState({
                       registerSuccess: false,
                       registerMessage: true
                     })
+                    this.props.setRegistering(false)
                   }
-                  this.props.setRegistering(false)
+                  this.props.setStatus(false)
                 })
                 // If the account is registered NOT successfully
                 .catch(error => {
@@ -532,6 +563,48 @@ class HomePage extends Component {
     )
   }
 
+  handleLoginMessage = () => {
+    let alertMessage ;
+    if (this.state.loginSuccess){
+      alertMessage = (
+        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseLoginSnackBar} severity="success">
+          Welcome home, you will be taken back to home page shortly.
+        </MuiAlert>
+      )
+    }
+    else if (!this.state.loginSuccess && !this.state.loginError){
+      alertMessage = (
+        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseLoginSnackBar} severity="error">
+          Incorrect email and password combination is entered
+        </MuiAlert>
+      )
+    }
+    else if (!this.state.loginSuccess && this.state.loginError){
+      alertMessage = (
+        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseLoginSnackBar} severity="warning">
+          This email have not been registered yet
+        </MuiAlert>
+      )
+    }
+    return (
+      <Snackbar
+        open={this.state.loginMessage} 
+        autoHideDuration={6000} 
+        onClose={this.handleCloseLoginSnackBar}
+      >
+        {alertMessage}
+      </Snackbar>
+    )
+  }
+
+  handleCloseLoginSnackBar = (event, reason) => {
+    if (reason === "clickaway")
+      return
+    this.setState({
+      loginMessage: false
+    })
+  }
+
   handleRegisterMessage = () => {
     return (
       <Snackbar open={this.state.registerMessage} autoHideDuration={6000} onClose={this.handleCloseRegisterSnackBar}>
@@ -552,7 +625,9 @@ class HomePage extends Component {
     )
   }
 
-  handleCloseRegisterSnackBar = () => {
+  handleCloseRegisterSnackBar = (event, reason) => {
+    if (reason === "clickaway")
+      return
     this.setState({
       registerMessage: false
     })
@@ -563,6 +638,7 @@ class HomePage extends Component {
       anchorEl: null
     })
     this.props.setStatus(false)
+    this.props.setToken("")
     this.resetDialogsStatus()
   }
 
@@ -610,6 +686,14 @@ class HomePage extends Component {
   resetDialogsStatus = () => {
     this.props.setLogin_dialog(false);
     this.props.setRegister_dialog(false);
+    this.setState({
+      menuOpen: false,
+      registerMessage: false,
+      registerSuccess: false,
+      loginSuccess: false,
+      loginMessage: false,
+      loginError: false
+    })
   }
 
 }
@@ -623,6 +707,7 @@ const mapStateToProps = state => {
     loginDialogOpen: state.homeContent.loginDialogOpen,
     registerDialogOpen: state.homeContent.registerDialogOpen,
     status: state.homeContent.status,
+    token: state.homeContent.token
   };
 };
 
@@ -634,6 +719,7 @@ const matchDispatchToProps = dispatch => {
     setUserEmail,
     setLogin_dialog,
     setRegister_dialog,
+    setToken
   }, dispatch);
 };
 

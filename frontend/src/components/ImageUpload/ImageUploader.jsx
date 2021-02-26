@@ -10,6 +10,8 @@ import ImageIcon from '@material-ui/icons/Image';
 import { Button } from "@material-ui/core";
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Typography from '@material-ui/core/Typography';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import '../../styles/ImageUploader.css'
 import "../../styles/CreateListing.css"
@@ -36,7 +38,13 @@ class ImageUploader extends Component {
     let result = [];
     if (imageList.length === 0){
       result.push(
-        <Typography key = {-1} variant="h4" component="h2" style = {{marginLeft: 20, color: "lightgray"}} gutterBottom>
+        <Typography 
+          key = {-1} 
+          variant="h4" 
+          component="h2" 
+          style = {{marginLeft: 20, color: "lightgray"}} 
+          gutterBottom
+        >
           Drop up to three images here
         </Typography>
       )
@@ -72,6 +80,7 @@ class ImageUploader extends Component {
               variant="contained" 
               color="primary" 
               component="span"
+              disabled = {this.props.disabled}
               onClick={() => onImageRemove(i)}
               style = {{
                 width: "50%",
@@ -84,6 +93,7 @@ class ImageUploader extends Component {
               variant="contained" 
               color="primary" 
               component="span"
+              disabled = {this.props.disabled}
               onClick={() => onImageUpdate(i)}
               style = {{
                 width: "50%",
@@ -108,6 +118,7 @@ class ImageUploader extends Component {
         maxNumber={3}
         dataURLKey="data_url"
         acceptType={['jpg','png','gif']}
+        maxFileSize = {524288} //max of 1 MB supported
       >
         {({
           imageList,
@@ -115,8 +126,24 @@ class ImageUploader extends Component {
           onImageRemoveAll,
           onImageUpdate,
           onImageRemove,
-          dragProps
+          dragProps,
+          errors 
         }) => (
+          <React.Fragment>
+          {
+            errors 
+          ?
+          <Snackbar
+            open={errors.maxFileSize}
+            autoHideDuration={1000}
+          >
+            <MuiAlert elevation={6} variant="filled" severity="warning">
+              Images you uploaded is too big, please choose images less than 500 KB
+            </MuiAlert>
+          </Snackbar>
+          : 
+            null
+          }
           <div className = "ImageUploadContainer">
             <div className = "OperationZone">
               <Button
@@ -128,6 +155,7 @@ class ImageUploader extends Component {
                   marginTop: 25,
                   marginBottom: 25
                 }}
+                disabled = {this.props.disabled}
                 onClick={onImageUpload}
               >
                 <PhotoCamera
@@ -146,6 +174,7 @@ class ImageUploader extends Component {
                   marginTop: 25,
                   marginBottom: 25
                 }}
+                disabled = {this.props.disabled}
                 onClick={onImageRemoveAll}
               >
                 Remove all
@@ -158,6 +187,7 @@ class ImageUploader extends Component {
               {this.displayImages(imageList, onImageRemove, onImageUpdate)}
             </div>
           </div>
+          </React.Fragment>
         )}
       </ImageUploading>
     )

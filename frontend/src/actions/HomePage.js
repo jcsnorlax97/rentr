@@ -40,3 +40,10 @@ export const setRegister_dialog = (inputBool) =>{
     payload: inputBool
   }
 }
+
+export const setToken = (inputString) =>{
+  return {
+    type: "SET_TOKEN",
+    payload: inputString
+  }
+}

@@ -6,7 +6,6 @@ import {
   setPageNum,
   setNumPerPage
 } from "../../actions/ListingDetail";
-import apartment1 from "../../resources/apartment1.jpg";
 import axios from "axios";
 import Paper from '@material-ui/core/Paper';
 import BathtubIcon from '@material-ui/icons/Bathtub';
@@ -18,26 +17,42 @@ import Divider from '@material-ui/core/Divider';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Typography } from "@material-ui/core";
 import Pagination from '@material-ui/lab/Pagination';
+import ApartmentIcon from '@material-ui/icons/Apartment';
+import LocalParkingIcon from '@material-ui/icons/LocalParking';
+import {API_ROOT_GET} from "../../data/urls";
 
 import "../../styles/Listing.css";
 
 class Listing extends Component {
 
   componentDidMount (){
-    // axios.get("http://localhost:3005/apartment1")
-    // .then(response =>{
-    //   this.setState({
-    //     imageSource: response.data[0].source
-    //   })
-    // })
+    this.fetchListing();
+  }
 
-    // this.setState({
-    //   imageSource: this.getEmergencyFoundImg(apartment1)
-    // })
-    axios.get("http://localhost:3005/listingArray")
+  fetchListing = () =>{
+    const url = String(API_ROOT_GET).concat("listing")
+    axios.get(url)
     .then(response =>{
       this.props.setListingArray(response.data)
     })
+  }
+
+  checkImageValid = (imgString) =>{
+    let standard = new RegExp("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$")
+    let newString;
+    if (String(imgString).includes("data:image/jpeg;base64,")){
+      newString = String(imgString).replace("data:image/jpeg;base64,", "")
+    }
+    else if (String(imgString).includes("data:image/gif;base64,")){
+      newString = String(imgString).replace("data:image/gif;base64,", "")
+    }
+    else if (String(imgString).includes("data:image/png;base64,")){
+      newString = String(imgString).replace("data:image/png;base64,", "")
+    }
+    else{
+      return false
+    }
+    return standard.test(newString)
   }
 
   componentWillUnmount = () =>{
@@ -45,21 +60,21 @@ class Listing extends Component {
     this.props.setPageNum(1);
   }
 
-  getEmergencyFoundImg = (urlImg) => {
-    var img = new Image();
-    img.src = urlImg;
-    img.crossOrigin = 'Anonymous';
-  
-    var canvas = document.createElement('canvas'),
-      ctx = canvas.getContext('2d');
-  
-    canvas.height = img.naturalHeight;
-    canvas.width = img.naturalWidth;
-    ctx.drawImage(img, 0, 0);
-  
-    var b64 = canvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '');
-    return b64;
-  };
+  checkPrice = (priceString) =>{
+    let newPrice = ""
+    if (String(priceString).trim().length >= 7){
+      newPrice = parseInt(priceString) / 1000000
+      newPrice = String(newPrice).concat("M")
+    }
+    else if (String(priceString).trim().length >= 5){
+      newPrice = parseInt(priceString) / 1000
+      newPrice = String(newPrice).concat("K")
+    }
+    else{
+      newPrice = priceString
+    }
+    return newPrice
+  }
 
   render() {
     return (
@@ -90,15 +105,27 @@ class Listing extends Component {
                 >
                   {/* This is for the image area */}
                   <span className = "listingImageArea">
-                    <img
-                      style = {{
-                        width: "100%",
-                        height: "100%"
-                      }}
-                      // src={`data:image/png;base64,${this.state.imageSource}`}
-                      src={apartment1}
-                      alt="apartment"
-                    />
+                    {this.checkImageValid(listingDetail.images[0])
+                      ?
+                        <img
+                          style = {{
+                            width: "100%",
+                            height: "100%"
+                          }}
+                          src={listingDetail.images[0]}
+                          alt="apartment"
+                        />
+                      :
+                        <ApartmentIcon
+                          style = {{
+                            width: "100%",
+                            height: "100%",
+                            color: "lightgray"
+                          }}
+                          alt="apartment"
+                        />
+                    }
+                      
                   </span>
 
                   <div className = "listingTextAndIcon">
@@ -121,7 +148,7 @@ class Listing extends Component {
                       <span className = "listingIconGroup">
                         {/* number of washrooms*/}
                         <span className = "listingIconNumber">
-                          {listingDetail.washroom}
+                          {listingDetail.num_bathroom}
                           <Tooltip title = "Washroom">
                             <BathtubIcon className = "listingIcon" fontSize = "large"/>
                           </Tooltip>
@@ -129,7 +156,7 @@ class Listing extends Component {
 
                         {/* Number of bedrooms */}
                         <span className = "listingIconNumber">
-                          {listingDetail.bedroom}
+                          {listingDetail.num_bedroom}
                           <Tooltip title = "Bedroom">
                             <HotelIcon className = "listingIcon" fontSize = "large"/>
                           </Tooltip>
@@ -137,16 +164,31 @@ class Listing extends Component {
                         
                         {/* Number of laundry rooms */}
                         <span className = "listingIconNumber">
-                          {listingDetail.laundryroom}
-                          <Tooltip title = "Laundry Room">
-                            <LocalLaundryServiceIcon className = "listingIcon" fontSize = "large"/>
-                          </Tooltip>
+                          {
+                            listingDetail.is_laundry_available
+                            ?
+                            <Tooltip title = "Laundry Room is available">
+                              <LocalLaundryServiceIcon 
+                                style = {{color: "green"}}
+                                className = "listingIcon" 
+                                fontSize = "large"
+                              />
+                            </Tooltip>
+                            :
+                            <Tooltip title = "Laundry Room not available">
+                              <LocalLaundryServiceIcon
+                                style = {{color: "grey"}}
+                                className = "listingIcon" 
+                                fontSize = "large"
+                              />
+                            </Tooltip>
+                          }
                         </span>
                         
                         {/* Indicate whether pets allowed or not */}
                         <span>
                           {
-                            listingDetail.pet 
+                            listingDetail.is_pet_allowed 
                             ? 
                             <Tooltip title = "Pet allowed">
                               <PetsIcon
@@ -163,6 +205,27 @@ class Listing extends Component {
                             </Tooltip>
                           }
                         </span>
+                        
+                        {/* Indicate whether parking included or not */}
+                        <span>
+                          {
+                            listingDetail.is_parking_available 
+                            ? 
+                            <Tooltip title = "Parking is included">
+                              <LocalParkingIcon
+                                style = {{color: "green"}}
+                                className = "listingIconNumber"
+                              />
+                            </Tooltip>
+                            :
+                            <Tooltip title = "Parking NOT included">
+                              <LocalParkingIcon
+                                style = {{color: "grey"}}
+                                className = "listingIconNumber"
+                              />
+                            </Tooltip>
+                          }
+                        </span>
 
                       </span>
                       
@@ -171,7 +234,7 @@ class Listing extends Component {
                       <div
                         className = "listingPrice"
                       >
-                        ${listingDetail.price}
+                        ${this.checkPrice(listingDetail.price)}
                       </div>
 
                     </span>

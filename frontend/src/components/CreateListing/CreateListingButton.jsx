@@ -14,6 +14,9 @@ import {
   setImages,
   setCreatingListing
 } from "../../actions/CreateListing";
+import {
+  setListingArray
+} from "../../actions/ListingDetail";
 import { Button } from "@material-ui/core";
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -26,8 +29,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import ImageUploader from "../ImageUpload/ImageUploader";
+import {API_ROOT_POST, API_ROOT_GET} from "../../data/urls";
 
 import "../../styles/HomePage.css"
 import "../../styles/CreateListing.css"
@@ -63,10 +69,6 @@ const numberDropdownOptions = [
   {
     value: '5',
     label: '5'
-  },
-  {
-    value: '>5',
-    label: '>5'
   }
 ]
 
@@ -76,6 +78,14 @@ class CreateListingButton extends Component {
   state = {
     postListingSuccess: false,
     postListingMessage: false,
+  }
+
+  fetchListing = () =>{
+    const url = String(API_ROOT_GET).concat("listing")
+    axios.get(url)
+    .then(response =>{
+      this.props.setListingArray(response.data)
+    })
   }
 
   render() {
@@ -101,10 +111,11 @@ class CreateListingButton extends Component {
           }}
           maxWidth = "lg"
         >
-
+          {this.handleRegisterMessage()}
           <DialogTitle className="createListing-title">
             Create a Listing
             <IconButton
+              disabled={this.props.creatingListing}
               className="createListing-title-closeButton"
               onClick={() => {
                 this.resetDialogStatus()
@@ -117,7 +128,7 @@ class CreateListingButton extends Component {
           <DialogContent
             className="homeDialog-Content"
           >
-            <ImageUploader/>
+            <ImageUploader disabled = {this.props.creatingListing}/>
             <Formik
               initialValues={{
                 title: "", 
@@ -133,47 +144,62 @@ class CreateListingButton extends Component {
                 setSubmitting(false)
                 this.props.setCreatingListing(true)
 
-                // let content = {
-                //   title: String(values.title),
-                //   description: String(values.description),
-                //   num_bedroom: String(values.num_bedroom),
-                //   num_bathroom: String(values.num_bathroom),
-                //   price: String(values.price),
-                //   is_laundry_available: Boolean(values.is_laundry_available),
-                //   is_pet_allowed: Boolean(values.is_pet_allowed),
-                //   is_parking_available: Boolean(values.is_parking_available),
-                // }
-                // axios.post(url, content)
-                // .then(response => {
-                //   // If the account is registered successfully
-                //   if (response.data && response.data.userId) {
-                //     this.setState({
-                //       postListingMessage: true,
-                //       postListingSuccess: true,
-                //     })
-                //     setTimeout(() => {
-                //       this.resetDialogStatus()
-                //       this.props.setDialogOpen(false)
-                //     }, 5000);
-                //   }
-                //   // If the account is registered NOT successfully
-                //   else {
-                //     this.setState({
-                //       postListingMessage: true,
-                //       postListingSuccess: false,
-                //     })
-                //   }
-                //   this.props.setCreatingListing(false)
-                // })
-                // // If the account is registered NOT successfully
-                // .catch(error => {
-                //   this.setState({
-                //     postListingMessage: true,
-                //     postListingSuccess: false,
-                //   })
-                //   this.props.setCreatingListing(false)
-                //   console.log(error)
-                // })
+                let imageCollection = [];
+                if (this.props.images && this.props.images.length !== 0){
+                  for (let i = 0; i < this.props.images.length; i++){
+                    imageCollection.push(this.props.images[i].data_url)
+                  }
+                }
+                let url = API_ROOT_POST.concat("listing")
+                let body = {
+                  images: imageCollection,
+                  title: String(values.title),
+                  description: String(values.description),
+                  num_bedroom: String(values.num_bedroom),
+                  num_bathroom: String(values.num_bathroom),
+                  price: String(values.price),
+                  is_laundry_available: Boolean(values.is_laundry_available),
+                  is_pet_allowed: Boolean(values.is_pet_allowed),
+                  is_parking_available: Boolean(values.is_parking_available),
+                }
+                const config = {
+                  headers: { Authorization: `Bearer ${this.props.token}` }
+                };
+                axios.post(url, body, config)
+                .then(response => {
+                  // If the account is registered successfully
+                  if (response.data 
+                    && response.data.message === "Listing has been added successfully!"
+                    && response.data.listingId) {
+                    this.setState({
+                      postListingMessage: true,
+                      postListingSuccess: true,
+                    })
+                    this.fetchListing()
+                    setTimeout(() => {
+                      this.resetDialogStatus()
+                      this.props.setDialogOpen(false)
+                      this.props.setCreatingListing(false)
+                    }, 5000);
+                  }
+                  // If the account is registered NOT successfully
+                  else {
+                    this.setState({
+                      postListingMessage: true,
+                      postListingSuccess: false,
+                    })
+                    this.props.setCreatingListing(false)
+                  }
+                })
+                // If the account is registered NOT successfully
+                .catch(error => {
+                  this.setState({
+                    postListingMessage: true,
+                    postListingSuccess: false,
+                  })
+                  this.props.setCreatingListing(false)
+                  console.log(error)
+                })
               }}
               validationSchema={yup.object().shape({
                 title: yup
@@ -215,6 +241,7 @@ class CreateListingButton extends Component {
                   <form onSubmit={handleSubmit}>
                     <div className="homeDialog-textContent">
                       <TextField
+                        disabled={this.props.creatingListing}
                         label="Title"
                         id="title"
                         name="title"
@@ -233,6 +260,7 @@ class CreateListingButton extends Component {
 
                     <div className="homeDialog-textContent">
                       <TextField
+                        disabled={this.props.creatingListing}
                         label="Description"
                         id="description"
                         name="description"
@@ -253,6 +281,7 @@ class CreateListingButton extends Component {
                     </div>
 
                     <TextField
+                      disabled={this.props.creatingListing}
                       label="Bedrooms"
                       id="num_bedroom"
                       name="num_bedroom"
@@ -260,7 +289,7 @@ class CreateListingButton extends Component {
                       variant="outlined"
                       margin="dense"
                       select
-                      style = {{width: 150}}
+                      style = {{width: 150, marginRight: 30}}
                       inputProps={{ color: 'green' }}
                       value = {values.num_bedroom}
                       onBlur={handleBlur}
@@ -276,6 +305,7 @@ class CreateListingButton extends Component {
                     </TextField>
 
                     <TextField
+                      disabled={this.props.creatingListing}
                       required
                       id="num_bathroom"
                       name="num_bathroom"
@@ -298,10 +328,10 @@ class CreateListingButton extends Component {
                     </TextField>
 
 
-                    {/** new stuff */}
                     <div className = "createListing-priceArea">
                       <AttachMoneyIcon fontSize = "large" style = {{paddingTop: "10px"}}/>
                       <TextField
+                        disabled={this.props.creatingListing}
                         label="Price"
                         required
                         id="price"
@@ -319,6 +349,7 @@ class CreateListingButton extends Component {
                     </div>
 
                     <TextField
+                      disabled={this.props.creatingListing}
                       label="Laundry Room"
                       required
                       id="is_laundry_available"
@@ -341,6 +372,7 @@ class CreateListingButton extends Component {
                     </TextField>
 
                     <TextField
+                      disabled={this.props.creatingListing}
                       label="Pets allowed"
                       required
                       id="is_pet_allowed"
@@ -363,6 +395,7 @@ class CreateListingButton extends Component {
                     </TextField>
 
                     <TextField
+                      disabled={this.props.creatingListing}
                       label="Parking"
                       required
                       id="is_parking_available"
@@ -388,8 +421,12 @@ class CreateListingButton extends Component {
                       className="createlistingDialog-Actions"
                     >
                       <Button
-                        className="homeDialog-normalButton"
-                        // onClick={this.handlePostForm}
+                        className={
+                          this.props.creatingListing
+                            ? "homeDialog-inProgressButton"
+                            : "homeDialog-normalButton"
+                        }
+                        disabled = {this.props.creatingListing}
                         type="submit"
                       >
                         Create
@@ -404,6 +441,34 @@ class CreateListingButton extends Component {
         {/* End of login dialog */}
       </div >
     )
+  }
+
+  handleRegisterMessage = () => {
+    return (
+      <Snackbar open={this.state.postListingMessage} autoHideDuration={6000} onClose={this.handleCloseCreateListingSnack}>
+        {this.state.postListingSuccess
+          ? (
+            <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseCreateListingSnack} severity="success">
+              Your posting is submitted successfully, you'll be taken back to home page shortly
+            </MuiAlert>
+          )
+          :
+          (
+            <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseCreateListingSnack} severity="error">
+              Listing creation failed, you might need to re-login
+            </MuiAlert>
+          )
+        }
+      </Snackbar>
+    )
+  }
+
+  handleCloseCreateListingSnack = (event, reason) => {
+    if (reason === "clickaway")
+      return
+    this.setState({
+      postListingMessage: false
+    })
   }
 
   handleCloseDialog = () => {
@@ -444,19 +509,6 @@ class CreateListingButton extends Component {
     this.props.setParking(event.target.value);
   }
 
-
-  // handlePostForm = () => {
-  //   this.resetDialogStatus();
-  //   // console.log(this.props.title)
-  //   // console.log(this.props.description)
-  //   // console.log(this.props.numberOfBedrooms)
-  //   // console.log(this.props.numberOfBathrooms)
-  //   // console.log(this.props.price)
-  //   // console.log(this.props.laundry)
-  //   // console.log(this.props.petsAllowed)
-  //   // console.log(this.props.parking)
-  // }
-
   handleClickCancel = () => {
     this.resetDialogStatus();
   }
@@ -488,6 +540,8 @@ const mapStateToProps = state => {
     parking: state.createListingContent.parking,
     dialogOpen: state.createListingContent.dialogOpen,
     creatingListing: state.createListingContent.creatingListing,
+    images: state.createListingContent.images,
+    token: state.homeContent.token
   };
 };
 
@@ -503,7 +557,8 @@ const matchDispatchToProps = dispatch => {
     setParking,
     setDialogOpen,
     setImages,
-    setCreatingListing
+    setCreatingListing,
+    setListingArray
   }, dispatch);
 };
 
