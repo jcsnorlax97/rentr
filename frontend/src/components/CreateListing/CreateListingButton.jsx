@@ -63,10 +63,6 @@ const numberDropdownOptions = [
   {
     value: '5',
     label: '5'
-  },
-  {
-    value: '>5',
-    label: '>5'
   }
 ]
 
@@ -260,7 +256,7 @@ class CreateListingButton extends Component {
                       variant="outlined"
                       margin="dense"
                       select
-                      style = {{width: 150}}
+                      style = {{width: 150, marginRight: 30}}
                       inputProps={{ color: 'green' }}
                       value = {values.num_bedroom}
                       onBlur={handleBlur}

@@ -64,12 +64,13 @@
   margin-left: 10px;
   margin-right: 10px;
   font-size: larger;
+  width: 60px;
   font-weight: 700;
 }
 
 .listingPrice{
   height: 100%;
-  width: auto;
+  width: 100px;
   font-size: 28px;
   font-weight: 700;
   color: green;
@@ -85,10 +86,11 @@
 }
 
 .listingIconGroup{
-  width: 260px;
+  width: 300px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  float:right;
 }
 
 .listingDescription{
