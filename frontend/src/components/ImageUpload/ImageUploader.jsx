@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import {
-  setImages,
-  resetImages
+  setImages
 } from "../../actions/CreateListing"
 import ImageUploading from 'react-images-uploading';
 import ImageIcon from '@material-ui/icons/Image';
@@ -203,8 +202,7 @@ const mapStateToProps = state => {
 
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
-    setImages,
-    resetImages
+    setImages
   }, dispatch);
 };
 

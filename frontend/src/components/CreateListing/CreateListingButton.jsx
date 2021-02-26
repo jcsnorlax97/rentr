@@ -2,14 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
-  setTitle,
-  setDescription,
-  setNumberOfBedrooms,
-  setNumberOfBathrooms,
-  setPrice,
-  setLaundry,
-  setPetsAllowed,
-  setParking,
   setDialogOpen,
   setImages,
   setCreatingListing
@@ -86,6 +78,14 @@ class CreateListingButton extends Component {
     .then(response =>{
       this.props.setListingArray(response.data)
     })
+  }
+
+  componentDidMount (){
+    this.resetDialogStatus()
+  }
+
+  componentWillUnmount (){
+    this.resetDialogStatus()
   }
 
   render() {
@@ -477,51 +477,12 @@ class CreateListingButton extends Component {
     })
   }
 
-  handleTitle = (event) => {
-    this.props.setTitle(event.target.value);
-  }
-
-  handleDescription = (event) => {
-    this.props.setDescription(event.target.value);
-  }
-
-  handleNumberOfBedrooms = (event) => {
-    this.props.setNumberOfBedrooms(event.target.value);
-  }
-
-  handleNumberOfBathrooms = (event) => {
-    this.props.setNumberOfBathrooms(event.target.value);
-  }
-
-  handlePrice = (event) => {
-    this.props.setPrice(event.target.value);
-  }
-
-  handleLaundry = (event) => {
-    this.props.setLaundry(event.target.value);
-  }
-
-  handlePetsAllowed = (event) => {
-    this.props.setPetsAllowed(event.target.value);
-  }
-
-  handleParking = (event) => {
-    this.props.setParking(event.target.value);
-  }
-
   handleClickCancel = () => {
     this.resetDialogStatus();
   }
 
   resetDialogStatus = () => {
     this.props.setDialogOpen(false);
-    this.props.setDescription("");
-    this.props.setNumberOfBedrooms("");
-    this.props.setNumberOfBathrooms("");
-    this.props.setPrice("");
-    this.props.setLaundry("");
-    this.props.setPetsAllowed("");
-    this.props.setParking("");
     this.props.setImages([]);
   }
 
@@ -530,14 +491,6 @@ class CreateListingButton extends Component {
 //REDUX
 const mapStateToProps = state => {
   return {
-    title: state.createListingContent.title,
-    description: state.createListingContent.description,
-    numberOfBedrooms: state.createListingContent.numberOfBedrooms,
-    numberOfBathrooms: state.createListingContent.numberOfBathrooms,
-    price: state.createListingContent.price,
-    laundry: state.createListingContent.laundry,
-    petsAllowed: state.createListingContent.petsAllowed,
-    parking: state.createListingContent.parking,
     dialogOpen: state.createListingContent.dialogOpen,
     creatingListing: state.createListingContent.creatingListing,
     images: state.createListingContent.images,
@@ -547,14 +500,6 @@ const mapStateToProps = state => {
 
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
-    setTitle,
-    setDescription,
-    setNumberOfBedrooms,
-    setNumberOfBathrooms,
-    setPrice,
-    setLaundry,
-    setPetsAllowed,
-    setParking,
     setDialogOpen,
     setImages,
     setCreatingListing,
