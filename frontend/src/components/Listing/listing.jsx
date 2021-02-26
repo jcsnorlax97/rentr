@@ -37,17 +37,22 @@ class Listing extends Component {
     })
   }
 
-   imageExists = (url, callback) =>{
-    var img = new Image();
-    img.onload = function() { callback(true); };
-    img.onerror = function() { callback(false); };
-    img.src = url;
-  }
-
   checkImageValid = (imgString) =>{
-    this.imageExists(imgString, function(exists) {
-      return exists
-    })
+    let standard = new RegExp("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$")
+    let newString;
+    if (String(imgString).includes("data:image/jpeg;base64,")){
+      newString = String(imgString).replace("data:image/jpeg;base64,", "")
+    }
+    else if (String(imgString).includes("data:image/gif;base64,")){
+      newString = String(imgString).replace("data:image/gif;base64,", "")
+    }
+    else if (String(imgString).includes("data:image/png;base64,")){
+      newString = String(imgString).replace("data:image/png;base64,", "")
+    }
+    else{
+      return false
+    }
+    return standard.test(newString)
   }
 
   componentWillUnmount = () =>{
@@ -159,10 +164,25 @@ class Listing extends Component {
                         
                         {/* Number of laundry rooms */}
                         <span className = "listingIconNumber">
-                          {listingDetail.is_laundry_available}
-                          <Tooltip title = "Laundry Room">
-                            <LocalLaundryServiceIcon className = "listingIcon" fontSize = "large"/>
-                          </Tooltip>
+                          {
+                            listingDetail.is_laundry_available
+                            ?
+                            <Tooltip title = "Laundry Room is available">
+                              <LocalLaundryServiceIcon 
+                                style = {{color: "green"}}
+                                className = "listingIcon" 
+                                fontSize = "large"
+                              />
+                            </Tooltip>
+                            :
+                            <Tooltip title = "Laundry Room not available">
+                              <LocalLaundryServiceIcon
+                                style = {{color: "grey"}}
+                                className = "listingIcon" 
+                                fontSize = "large"
+                              />
+                            </Tooltip>
+                          }
                         </span>
                         
                         {/* Indicate whether pets allowed or not */}

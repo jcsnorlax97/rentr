@@ -58,7 +58,8 @@ class HomePage extends Component {
   }
 
   componentWillUnmount() {
-    this.props.setStatus(false);
+    // this.props.setStatus(false);
+    // this.props.setToken("")
   }
 
   render() {
@@ -642,6 +643,7 @@ class HomePage extends Component {
       anchorEl: null
     })
     this.props.setStatus(false)
+    this.props.setToken("")
     this.resetDialogsStatus()
   }
 

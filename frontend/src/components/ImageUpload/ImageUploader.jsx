@@ -36,7 +36,13 @@ class ImageUploader extends Component {
     let result = [];
     if (imageList.length === 0){
       result.push(
-        <Typography key = {-1} variant="h4" component="h2" style = {{marginLeft: 20, color: "lightgray"}} gutterBottom>
+        <Typography 
+          key = {-1} 
+          variant="h4" 
+          component="h2" 
+          style = {{marginLeft: 20, color: "lightgray"}} 
+          gutterBottom
+        >
           Drop up to three images here
         </Typography>
       )
@@ -72,6 +78,7 @@ class ImageUploader extends Component {
               variant="contained" 
               color="primary" 
               component="span"
+              disabled = {this.props.disabled}
               onClick={() => onImageRemove(i)}
               style = {{
                 width: "50%",
@@ -84,6 +91,7 @@ class ImageUploader extends Component {
               variant="contained" 
               color="primary" 
               component="span"
+              disabled = {this.props.disabled}
               onClick={() => onImageUpdate(i)}
               style = {{
                 width: "50%",
@@ -108,6 +116,7 @@ class ImageUploader extends Component {
         maxNumber={3}
         dataURLKey="data_url"
         acceptType={['jpg','png','gif']}
+        maxFileSize = {524288} //max of 1 MB supported
       >
         {({
           imageList,
@@ -128,6 +137,7 @@ class ImageUploader extends Component {
                   marginTop: 25,
                   marginBottom: 25
                 }}
+                disabled = {this.props.disabled}
                 onClick={onImageUpload}
               >
                 <PhotoCamera
@@ -146,6 +156,7 @@ class ImageUploader extends Component {
                   marginTop: 25,
                   marginBottom: 25
                 }}
+                disabled = {this.props.disabled}
                 onClick={onImageRemoveAll}
               >
                 Remove all
