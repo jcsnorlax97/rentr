@@ -244,3 +244,18 @@
   - Continue/complete existing work
   - Integration
   - Testing
+
+
+### Week 6: meeting 2
+
+##### Feb 26th, 2021 (Friday)
+- Participants: all team members and TA: Ximing Dong
+
+- What we covered: 
+  - Sprint 2 evaluation with TA: Ximing Dong
+  - Introduced the user stories we implemented for sprint 2 to TA
+  - The exhibition was done in frontend and using backend service deployed on the server
+  - Exhibited our class graphs and test plan
+
+- TODO:
+  - Start planning for Sprint 3
