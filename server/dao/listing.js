@@ -50,6 +50,38 @@ class ListingDao {
 
     return rows && rows.length >= 1 ? rows[0] : null;
   };
+
+  updateListing = async (
+    title,
+    price,
+    num_bedroom,
+    num_bathroom,
+    is_laundry_available,
+    is_pet_allowed,
+    is_parking_available,
+    images,
+    description
+  ) => {
+    const {
+      rows,
+    } = await this.dbPool.query(
+      'UPDATE rentr_listing SET title = $1, price = $2, num_bedroom = $3, num_bathroom = $4, is_laundry_available = $5, is_pet_allowed = $6, is_parking_available = $7, images = $8, description = $9 WHERE id = $10;',
+      [
+        title,
+        price,
+        num_bedroom,
+        num_bathroom,
+        is_laundry_available,
+        is_pet_allowed,
+        is_parking_available,
+        images,
+        description
+      ]
+    );
+
+    const listingId = rows[0].id;
+    return listingId;
+  };
 }
 
 module.exports = ListingDao;

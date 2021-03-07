@@ -39,6 +39,18 @@ class ListingController {
       next(ApiError.internal(`${err}`));
     }
   };
+
+  updateListing = async (req, res, next) => {
+    try {
+      const listingId = await this.listingService.updateListing(req.body);
+      res.status(201).json({
+        message: `Listing has been updated successfully!`,
+        listingId: `${listingId}`,
+      });
+    } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
 }
 
 module.exports = ListingController;
