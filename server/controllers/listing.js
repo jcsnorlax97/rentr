@@ -19,7 +19,7 @@ class ListingController {
 
   getAllListings = async (req, res, next) => {
     try {
-      const listings = await this.listingService.getAllListings(req.params);
+      const listings = await this.listingService.getAllListings(req.query);
       res.status(200).json(listings);
     } catch (err) {
       next(ApiError.internal(`${err}`));
