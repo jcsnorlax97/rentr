@@ -42,10 +42,21 @@ class ListingDao {
         SELECT * FROM rentr_listing 
         WHERE 
           COALESCE($1 < rentr_listing.price, TRUE) AND 
-          COALESCE($2 >= rentr_listing.price, TRUE)
+          COALESCE($2 >= rentr_listing.price, TRUE) AND
+          COALESCE($3 < rentr_listing.num_bedroom, TRUE) AND
+          COALESCE($4 >= rentr_listing.num_bedroom, TRUE) AND
+          COALESCE($5 < rentr_listing.num_bathroom, TRUE) AND
+          COALESCE($6 >= rentr_listing.num_bathroom, TRUE)
         ;
       `,
-      [query.min_price, query.max_price]
+      [
+        query.min_price,
+        query.max_price,
+        query.min_num_bedroom,
+        query.max_num_bedroom,
+        query.min_num_bathroom,
+        query.max_num_bathroom,
+      ]
     );
     return rows;
   };
