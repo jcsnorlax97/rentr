@@ -29,7 +29,7 @@ class ListingService {
     return listingId;
   };
 
-  getAllListings = () => this.listingDao.getAllListings();
+  getAllListings = (query) => this.listingDao.getAllListings(query);
 
   getListingViaId = (id) => this.listingDao.getListingViaId(id);
 }

@@ -36,8 +36,17 @@ class ListingDao {
     return listingId;
   };
 
-  getAllListings = async () => {
-    const { rows } = await this.dbPool.query('SELECT * FROM rentr_listing;');
+  getAllListings = async (query) => {
+    const { rows } = await this.dbPool.query(
+      `
+        SELECT * FROM rentr_listing 
+        WHERE 
+          COALESCE($1 < rentr_listing.price, TRUE) AND 
+          COALESCE($2 >= rentr_listing.price, TRUE)
+        ;
+      `,
+      [query.min_price, query.max_price]
+    );
     return rows;
   };
 
