@@ -53,8 +53,54 @@ class ListingDao {
 
   updateListing = async (id, body) => {
     const { rows } = await this.dbPool.query(
-      'UPDATE rentr_listing SET title = $1, price = $2, num_bedroom = $3, num_bathroom = $4, is_laundry_available = $5, is_pet_allowed = $6, is_parking_available = $7, images = $8, description = $9 WHERE id = $10;',
-      // `UPDATE rentr_listing SET title = $1 WHERE id = $2;`,
+      `UPDATE rentr_listing
+      SET 
+        title = (SELECT
+                CASE WHEN title = $1 IS NOT NULL THEN $1 
+                ELSE rentr_listing.title END
+                FROM rentr_listing
+                WHERE id = $10),
+        price = (SELECT
+                CASE WHEN price = $2 IS NOT NULL THEN $2 
+                ELSE rentr_listing.price END
+                FROM rentr_listing
+                WHERE id = $10),
+        num_bedroom = (SELECT
+                CASE WHEN num_bedroom = $3 IS NOT NULL THEN $3 
+                ELSE rentr_listing.num_bedroom END
+                FROM rentr_listing
+                WHERE id = $10),
+        num_bathroom = (SELECT
+                CASE WHEN num_bathroom = $4 IS NOT NULL THEN $4 
+                ELSE rentr_listing.num_bathroom END
+                FROM rentr_listing
+                WHERE id = $10),
+        is_laundry_available = (SELECT
+                CASE WHEN is_laundry_available = $5 IS NOT NULL THEN $5 
+                ELSE rentr_listing.is_laundry_available END
+                FROM rentr_listing
+                WHERE id = $10),
+        is_pet_allowed = (SELECT
+                CASE WHEN is_pet_allowed = $6 IS NOT NULL THEN $6
+                ELSE rentr_listing.is_pet_allowed END
+                FROM rentr_listing
+                WHERE id = $10),
+        is_parking_available = (SELECT
+                CASE WHEN is_parking_available = $7 IS NOT NULL THEN $7 
+                ELSE rentr_listing.is_parking_available END
+                FROM rentr_listing
+                WHERE id = $10),
+        images = (SELECT
+                CASE WHEN images = $8 IS NOT NULL THEN $8
+                ELSE rentr_listing.images END
+                FROM rentr_listing
+                WHERE id = $10),
+        description = (SELECT
+                CASE WHEN description = $9 IS NOT NULL THEN $9
+                ELSE rentr_listing.description END
+                FROM rentr_listing
+                WHERE id = $10)
+      WHERE id = $10;`,
       [
         body.title,
         body.price,
@@ -69,6 +115,7 @@ class ListingDao {
       ]
     );
     console.log(rows);
+    return rows;
   };
 }
 
