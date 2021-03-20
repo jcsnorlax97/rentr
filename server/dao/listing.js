@@ -114,7 +114,6 @@ class ListingDao {
         id,
       ]
     );
-    console.log(rows);
     return rows;
   };
 }

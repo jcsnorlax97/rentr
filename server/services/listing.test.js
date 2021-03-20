@@ -111,14 +111,38 @@ describe('listingService', () => {
       const listingService = new ListingService({ listingDao });
       // invalid id which is not present
       const id = 100;
-  
+
       it('404', () => {
         // WHEN
         const result = listingService.getListingViaId(id);
-  
+
         // THEN
         expect(result).toEqual(null);
       });
+    });
+  });
+
+  describe('updateListing test', () => {
+    // GIVEN
+    const listingDao = {
+      updateListing: (_) => 101,
+    };
+    const listingService = new ListingService({ listingDao });
+    const reqBody = {
+      title: 'Serious appartment',
+      price: '350',
+      num_bedroom: '4',
+      num_bathroom: '2',
+      is_laundry_available: true,
+      is_pet_allowed: true,
+      is_parking_available: false,
+      images: ['this_is_the_image_url.com'],
+      description:
+        'An appartment closed to the university and the bus stop. Contact me!',
+    };
+    it('succeeds', () => {
+      const updatedListingId = listingService.updateListing(reqBody);
+      expect(updatedListingId).toEqual(101);
     });
   });
 });
