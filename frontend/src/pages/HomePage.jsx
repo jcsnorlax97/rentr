@@ -4,11 +4,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
   setStatus,
-  setLogging,
-  setRegistering,
-  setUserEmail,
-  setLogin_dialog,
-  setRegister_dialog,
   setToken
 } from "../actions/HomePage";
 import logo from "../resources/logo.png";
@@ -38,23 +33,11 @@ import { API_ROOT_POST, LOGIN_ADDRESS } from "../data/urls";
 import CreateListingButton from "../components/CreateListing/CreateListingButton";
 
 import "../styles/HomePage.css"
+import LoginDialogButton from "../components/LoginDialogButton";
 
 class HomePage extends Component {
   state = {
     anchorEl: null,
-    menuOpen: false,
-    registerMessage: false,
-    registerSuccess: false,
-    loginSuccess: false,
-    loginMessage: false,
-    loginError: false
-  }
-
-  componentDidMount() {
-    this.props.setRegistering(false)
-    this.props.setLogging(false)
-    this.props.setRegister_dialog(false)
-    this.props.setLogin_dialog(false)
   }
 
   render() {
@@ -76,33 +59,10 @@ class HomePage extends Component {
             />
 
             {/* this is used to add the space between the logo and sign in button */}
-            <Typography
-              type="title"
-              color="inherit"
-              style={{
-                flex: 1
-              }}
-            />
+            <Typography type="title" color="inherit" style={{flex: 1 }}/>
             {!this.props.status
               ?
-              (
-                <React.Fragment>
-                  <Button
-                    className="homePage_Header_Login"
-                    id="homePage_Header_Login"
-                    variant="contained"
-                    onClick={() => {
-                      this.props.setLogin_dialog(true)
-                      this.props.setRegister_dialog(false)
-                    }}
-                  >
-                    Log In
-                  </Button>
-
-                  {this.handleShowLogInDialog()}
-                  {this.handleShowRegisterDialog()}
-                </React.Fragment>
-              )
+              <LoginDialogButton />
               :
               this.handleShowLoggedIn()
             }
@@ -166,75 +126,6 @@ class HomePage extends Component {
     )
   }
 
-  handleLoginMessage = () => {
-    let alertMessage ;
-    if (this.state.loginSuccess){
-      alertMessage = (
-        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseLoginSnackBar} severity="success">
-          Welcome home, you will be taken back to home page shortly.
-        </MuiAlert>
-      )
-    }
-    else if (!this.state.loginSuccess && !this.state.loginError){
-      alertMessage = (
-        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseLoginSnackBar} severity="error">
-          Incorrect email and password combination is entered
-        </MuiAlert>
-      )
-    }
-    else if (!this.state.loginSuccess && this.state.loginError){
-      alertMessage = (
-        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseLoginSnackBar} severity="warning">
-          This email have not been registered yet
-        </MuiAlert>
-      )
-    }
-    return (
-      <Snackbar
-        open={this.state.loginMessage} 
-        autoHideDuration={6000} 
-        onClose={this.handleCloseLoginSnackBar}
-      >
-        {alertMessage}
-      </Snackbar>
-    )
-  }
-
-  handleCloseLoginSnackBar = (event, reason) => {
-    if (reason === "clickaway")
-      return
-    this.setState({
-      loginMessage: false
-    })
-  }
-
-  handleRegisterMessage = () => {
-    return (
-      <Snackbar open={this.state.registerMessage} autoHideDuration={6000} onClose={this.handleCloseRegisterSnackBar}>
-        {this.state.registerSuccess
-          ? (
-            <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseRegisterSnackBar} severity="success">
-              Your account is registered successfully, you'll be taken back to homePage shortly.
-            </MuiAlert>
-          )
-          :
-          (
-            <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseRegisterSnackBar} severity="error">
-              Account with current email has already been registered
-            </MuiAlert>
-          )
-        }
-      </Snackbar>
-    )
-  }
-
-  handleCloseRegisterSnackBar = (event, reason) => {
-    if (reason === "clickaway")
-      return
-    this.setState({
-      registerMessage: false
-    })
-  }
 
   handleLogout = () => {
     this.setState({
@@ -242,7 +133,6 @@ class HomePage extends Component {
     })
     this.props.setStatus(false)
     this.props.setToken("")
-    this.resetDialogsStatus()
   }
 
   handleOpenPopover = (event) => {
@@ -268,38 +158,11 @@ class HomePage extends Component {
       : "Good morning";
   }
 
-  handleClickRegister = () => {
-    this.props.setLogin_dialog(false);
-    this.props.setRegister_dialog(true);
-  }
-
-  handleClickCancel = () => {
-    this.resetDialogsStatus();
-  }
-
-  resetDialogsStatus = () => {
-    this.props.setLogin_dialog(false);
-    this.props.setRegister_dialog(false);
-    this.setState({
-      menuOpen: false,
-      registerMessage: false,
-      registerSuccess: false,
-      loginSuccess: false,
-      loginMessage: false,
-      loginError: false
-    })
-  }
-
 }
 
 //REDUX
 const mapStateToProps = state => {
   return {
-    userEmail: state.homeContent.userEmail,
-    logging: state.homeContent.logging,
-    registering: state.homeContent.registering,
-    loginDialogOpen: state.homeContent.loginDialogOpen,
-    registerDialogOpen: state.homeContent.registerDialogOpen,
     status: state.homeContent.status,
     token: state.homeContent.token
   };
@@ -308,11 +171,6 @@ const mapStateToProps = state => {
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setStatus,
-    setLogging,
-    setRegistering,
-    setUserEmail,
-    setLogin_dialog,
-    setRegister_dialog,
     setToken
   }, dispatch);
 };

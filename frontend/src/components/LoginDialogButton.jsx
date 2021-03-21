@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
+  setStatus,
+  setToken,
   setLogging,
   setRegistering,
   setUserEmail,
@@ -30,23 +32,14 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import { API_ROOT_POST, LOGIN_ADDRESS } from "../../data/urls";
+import { API_ROOT_POST, LOGIN_ADDRESS } from "../data/urls";
 
 
-import "../../styles/HomePage.css"
+import "../styles/HomePage.css";
 
 /** At some point, should move Login styles into its own thing */
 
 // import "../../styles/Login.css"
-
-
-/**
- * This prop requires two callback props:
- * 1. A setLoggedIn(loggedIn) callback which will be called upon successful login. True will set to logged in, false will set to logged out. 
- * 2. A setToken(token) callback where this will pass the token as a token parameter.
- * 
- */
-
 
 class LoginDialog extends Component {
 
@@ -149,12 +142,12 @@ class LoginDialog extends Component {
                     })
                     setTimeout(() => {
                       this.resetDialogsStatus()
-                      this.props.setLoggedIn()
+                      this.props.setStatus(true)
                       this.props.setLogging(false)
                     }, 5000);
                   }
                   else {
-                    this.props.setLoggedIn(false)
+                    this.props.setStatus(false)
                     this.setState({
                       loginMessage: true,
                       loginSuccess: false,
@@ -165,7 +158,7 @@ class LoginDialog extends Component {
                 })
                 .catch(error => {
                   console.log(error)
-                  this.props.setLoggedIn(false)
+                  this.props.setStatus(false)
                   this.setState({
                     loginMessage: true,
                     loginSuccess: false,
@@ -347,11 +340,11 @@ class LoginDialog extends Component {
                     })
                     this.props.setRegistering(false)
                   }
-                  this.props.setLoggedIn(false)
+                  this.props.setStatus(false)
                 })
                 // If the account is registered NOT successfully
                 .catch(error => {
-                  this.props.setLoggedIn(false)
+                  this.props.setStatus(false)
                   this.setState({
                     registerMessage: true,
                     registerSuccess: false
@@ -511,7 +504,7 @@ class LoginDialog extends Component {
     else if (!this.state.loginSuccess && this.state.loginError) {
       alertMessage = (
         <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseLoginSnackBar} severity="warning">
-          This email have not been registered yet
+          This email has not been registered yet
         </MuiAlert>
       )
     }
@@ -589,18 +582,20 @@ class LoginDialog extends Component {
 //REDUX
 const mapStateToProps = state => {
   return {
+    status: state.homeContent.status,
+    token: state.homeContent.token,
     userEmail: state.homeContent.userEmail,
     logging: state.homeContent.logging,
     registering: state.homeContent.registering,
     loginDialogOpen: state.homeContent.loginDialogOpen,
     registerDialogOpen: state.homeContent.registerDialogOpen,
-    status: state.homeContent.status,
-    token: state.homeContent.token
   };
 };
 
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
+    setStatus,
+    setToken,
     setLogging,
     setRegistering,
     setUserEmail,
