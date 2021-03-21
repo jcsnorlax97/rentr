@@ -47,7 +47,11 @@ class HomePage extends Component {
             />
 
             {/* this is used to add the space between the logo and sign in button */}
-            <Typography type="title" color="inherit" style={{flex: 1 }}/>
+            <Typography
+              type="title"
+              color="inherit"
+              style={{ flex: 1 }
+              } />
             {!this.props.status
               ?
               <LoginDialogButton />

@@ -5,13 +5,6 @@ export const setStatus = (inputBool) =>{
   }
 }
 
-export const setToken = (inputString) =>{
-  return {
-    type: "SET_TOKEN",
-    payload: inputString
-  }
-}
-
 export const setLogging = (inputString) => {
   return {
     type: "SET_LOGGING",
@@ -45,5 +38,12 @@ export const setRegister_dialog = (inputBool) =>{
   return {
     type: "SET_REGISTER_DIALOG",
     payload: inputBool
+  }
+}
+
+export const setToken = (inputString) =>{
+  return {
+    type: "SET_TOKEN",
+    payload: inputString
   }
 }
