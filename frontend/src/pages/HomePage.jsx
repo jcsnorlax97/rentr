@@ -8,32 +8,20 @@ import {
 } from "../actions/HomePage";
 import logo from "../resources/logo.png";
 import { AppBar, Toolbar, Button, Typography, Paper, ListItemText } from "@material-ui/core";
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import EmailIcon from '@material-ui/icons/Email';
-import { VpnKey, Person } from '@material-ui/icons';
-import axios from "axios";
+import { Person } from '@material-ui/icons';
 import moment from "moment";
-import { Formik } from "formik";
-import * as yup from "yup";
 import Popover from '@material-ui/core/Popover';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import { API_ROOT_POST, LOGIN_ADDRESS } from "../data/urls";
+
 import CreateListingButton from "../components/CreateListing/CreateListingButton";
+import LoginDialogButton from "../components/LoginDialogButton";
 
 import "../styles/HomePage.css"
-import LoginDialogButton from "../components/LoginDialogButton";
+
 
 class HomePage extends Component {
   state = {
