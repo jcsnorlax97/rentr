@@ -106,11 +106,6 @@ class HomePage extends Component {
               :
               this.handleShowLoggedIn()
             }
-            <Button
-              onClick = {()=>{console.log(this.props.cookies.get("status"))}}
-            >
-              Click
-            </Button>
           </Toolbar>
 
         </AppBar>
