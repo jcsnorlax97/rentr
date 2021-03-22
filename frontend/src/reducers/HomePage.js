@@ -1,3 +1,5 @@
+import Cookies from "universal-cookie"
+
 const initialState = {
   userEmail: "",
   logging: false,
@@ -5,7 +7,8 @@ const initialState = {
   loginDialogOpen: false,
   registerDialogOpen: false,
   status: false,
-  token: ""
+  cookies: new Cookies(),
+  // token: ""
 }
 
 export const homeReducer = (state = initialState, action) => {
@@ -21,9 +24,16 @@ export const homeReducer = (state = initialState, action) => {
     case "SET_REGISTER_DIALOG":
       return {...state, registerDialogOpen: action.payload};
     case "SET_STATUS":
-      return {...state, status: action.payload};
-    case "SET_TOKEN":
-      return {...state, token: action.payload};
+      const newCookies = new Cookies();
+      if (action.payload.status === true){
+        newCookies.set("status", action.payload.token, { expires: 0, path:'/' })
+      }
+      else if (action.payload.status === false){
+        newCookies.remove("status")
+      }
+      return {...state, status: action.payload.status, cookies: newCookies};
+    // case "SET_TOKEN":
+    //   return {...state, token: action.payload};
     default: 
 			return state;
   }

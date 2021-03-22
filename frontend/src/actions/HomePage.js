@@ -1,7 +1,7 @@
-export const setStatus = (inputBool) =>{
+export const setStatus = (inputObj) =>{
   return {
     type: "SET_STATUS",
-    payload: inputBool
+    payload: inputObj
   }
 }
 

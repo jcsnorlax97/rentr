@@ -8,8 +8,7 @@ import {
   setRegistering,
   setUserEmail,
   setLogin_dialog,
-  setRegister_dialog,
-  setToken
+  setRegister_dialog
 } from "../actions/HomePage";
 import logo from "../resources/logo.png";
 import { AppBar, Toolbar, Button, Typography, Paper, ListItemText } from "@material-ui/core";
@@ -22,6 +21,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import EmailIcon from '@material-ui/icons/Email';
 import { VpnKey, Person } from '@material-ui/icons';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import axios from "axios";
 import moment from "moment";
 import { Formik } from "formik";
@@ -83,7 +83,7 @@ class HomePage extends Component {
                 flex: 1
               }}
             />
-            {!this.props.status
+            {!this.props.cookies.get("status")
               ?
               (
                 <React.Fragment>
@@ -106,6 +106,11 @@ class HomePage extends Component {
               :
               this.handleShowLoggedIn()
             }
+            <Button
+              onClick = {()=>{console.log(this.props.cookies.get("status"))}}
+            >
+              Click
+            </Button>
           </Toolbar>
 
         </AppBar>
@@ -161,7 +166,6 @@ class HomePage extends Component {
                   && response.data.message
                   && response.data.message === "Login successful."){
                   // then we're logged in successfully
-                  this.props.setToken(response.data.token)
                   this.setState({
                     loginMessage: true,
                     loginSuccess: true,
@@ -169,12 +173,17 @@ class HomePage extends Component {
                   })
                   setTimeout(() => {
                     this.resetDialogsStatus()
-                    this.props.setStatus(true)
+                    this.props.setStatus({
+                      status: true,
+                      token: response.data.token
+                    })
                     this.props.setLogging(false)
                   }, 5000);
                 }
                 else{
-                  this.props.setStatus(false)
+                  this.props.setStatus({
+                    status: false
+                  })
                   this.setState({
                     loginMessage: true,
                     loginSuccess: false,
@@ -185,7 +194,9 @@ class HomePage extends Component {
               })
               .catch(error =>{
                 console.log(error)
-                this.props.setStatus(false)
+                this.props.setStatus({
+                  status: false
+                })
                 this.setState({
                   loginMessage: true,
                   loginSuccess: false,
@@ -367,11 +378,15 @@ class HomePage extends Component {
                     })
                     this.props.setRegistering(false)
                   }
-                  this.props.setStatus(false)
+                  this.props.setStatus({
+                    status: false
+                  })
                 })
                 // If the account is registered NOT successfully
                 .catch(error => {
-                  this.props.setStatus(false)
+                  this.props.setStatus({
+                    status: false
+                  })
                   this.setState({
                     registerMessage: true,
                     registerSuccess: false
@@ -549,6 +564,13 @@ class HomePage extends Component {
             <Paper>
               <MenuList>
                 {/* This is for the logout function */}
+                <MenuItem onClick={this.handleProfile}>
+                  <ListItemIcon>
+                    <AccountCircleIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Profile</ListItemText>
+                </MenuItem>
+
                 <MenuItem onClick={this.handleLogout}>
                   <ListItemIcon>
                     <ExitToAppIcon fontSize="small" />
@@ -561,6 +583,10 @@ class HomePage extends Component {
         </Popover>
       </React.Fragment>
     )
+  }
+
+  handleProfile = () =>{
+
   }
 
   handleLoginMessage = () => {
@@ -637,8 +663,9 @@ class HomePage extends Component {
     this.setState({
       anchorEl: null
     })
-    this.props.setStatus(false)
-    this.props.setToken("")
+    this.props.setStatus({
+      status: false
+    })
     this.resetDialogsStatus()
   }
 
@@ -707,7 +734,7 @@ const mapStateToProps = state => {
     loginDialogOpen: state.homeContent.loginDialogOpen,
     registerDialogOpen: state.homeContent.registerDialogOpen,
     status: state.homeContent.status,
-    token: state.homeContent.token
+    cookies: state.homeContent.cookies,
   };
 };
 
@@ -718,8 +745,7 @@ const matchDispatchToProps = dispatch => {
     setRegistering,
     setUserEmail,
     setLogin_dialog,
-    setRegister_dialog,
-    setToken
+    setRegister_dialog
   }, dispatch);
 };
 
