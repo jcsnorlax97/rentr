@@ -11,3 +11,12 @@
   margin: auto;
   box-sizing: border-box;
 }
+
+.removeListingButton{
+  display: flex;
+  align-items: center;
+}
+
+.removeListingButton:hover{
+  background-color: lightgrey;
+}

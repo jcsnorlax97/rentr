@@ -21,7 +21,6 @@ export const RefreshLoader = (props) => {
         </div>
       ) : (
         <div>
-          <CircularProgress style = {{marginLeft: 10, marginTop: 5}} size={26}/>
           <span
             style = {{
               fontWeight: 600,
