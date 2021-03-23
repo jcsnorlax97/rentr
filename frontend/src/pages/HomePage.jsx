@@ -50,8 +50,9 @@ class HomePage extends Component {
             <Typography
               type="title"
               color="inherit"
-              style={{ flex: 1 }
-              } />
+              style={{
+                flex: 1
+              }} />
             {!this.props.status
               ?
               <LoginDialogButton />
