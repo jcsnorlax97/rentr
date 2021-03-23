@@ -2,18 +2,24 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
-  setDialogStatus,
-  setListingArray
+  setPersonalDialogStatus,
+  setPersonalListingArray
 } from "../../actions/Profile";
-import { Button } from "@material-ui/core";
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  MenuItem,
+  Snackbar,
+  ListItemText,
+  ListItemIcon,
+} from "@material-ui/core"
+import MuiAlert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
-import MenuItem from '@material-ui/core/MenuItem';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import axios from "axios";
 import {API_ROOT_POST, API_ROOT_GET} from "../../data/urls";
 
@@ -23,11 +29,61 @@ import "../../styles/Profile.css"
 
 
 class Profile extends Component {
+
+  componentDidMount (){
+    this.resetDialogStatus()
+  }
+
+  componentWillUnmount(){
+    this.resetDialogStatus()
+  }
+
   render(){
     return(
-      <Dialog>
-      </Dialog>
+      <div className = "profileIcon-dialog">
+        <MenuItem onClick = {()=>{
+          this.props.setPersonalDialogStatus(true)
+        }}>
+          <ListItemIcon>
+            <AccountCircleIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Profile</ListItemText>
+        </MenuItem>
+
+        <Dialog
+          open = {this.props.dialogStatus}
+          onClose = {this.resetDialogStatus}
+          maxWidth = "lg"
+        >
+          <DialogTitle className="profile-title">
+            My Listings
+            <IconButton
+              className="profile-title-closeButton"
+              onClick={this.resetDialogStatus}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent>
+            <Button>
+              Click
+            </Button>
+          </DialogContent>
+        </Dialog>
+      </div>
     )
+  }
+
+  fetchListings = () =>{
+    axios.get()
+    .then(response=>{
+      
+    })
+  }
+
+  resetDialogStatus = () =>{
+    this.props.setPersonalDialogStatus(false)
+    this.props.setPersonalListingArray([])
   }
 }
 
@@ -42,8 +98,8 @@ const mapStateToProps = state => {
 
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
-    setDialogStatus,
-    setListingArray
+    setPersonalDialogStatus,
+    setPersonalListingArray
   }, dispatch);
 };
 

@@ -10,32 +10,42 @@ import {
   setLogin_dialog,
   setRegister_dialog
 } from "../actions/HomePage";
+import {
+  setPersonalDialogStatus
+} from "../actions/Profile";
 import logo from "../resources/logo.png";
-import { AppBar, Toolbar, Button, Typography, Paper, ListItemText } from "@material-ui/core";
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
+import { 
+  AppBar, 
+  Toolbar, 
+  Button, 
+  Typography, 
+  Paper, 
+  ListItemText,
+  ListItemIcon,
+  MenuList,
+  MenuItem,
+  ClickAwayListener,
+  Popover,
+  IconButton,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Dialog,
+  TextField,
+  Snackbar
+} from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
 import EmailIcon from '@material-ui/icons/Email';
 import { VpnKey, Person } from '@material-ui/icons';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import axios from "axios";
 import moment from "moment";
 import { Formik } from "formik";
 import * as yup from "yup";
-import Popover from '@material-ui/core/Popover';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { API_ROOT_POST, LOGIN_ADDRESS } from "../data/urls";
 import CreateListingButton from "../components/CreateListing/CreateListingButton";
+import Profile from "../components/Profile/Profile";
 
 import "../styles/HomePage.css"
 
@@ -559,12 +569,7 @@ class HomePage extends Component {
             <Paper>
               <MenuList>
                 {/* This is for the logout function */}
-                <MenuItem onClick={this.handleProfile}>
-                  <ListItemIcon>
-                    <AccountCircleIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText>Profile</ListItemText>
-                </MenuItem>
+                <Profile/> 
 
                 <MenuItem onClick={this.handleLogout}>
                   <ListItemIcon>
@@ -578,10 +583,6 @@ class HomePage extends Component {
         </Popover>
       </React.Fragment>
     )
-  }
-
-  handleProfile = () =>{
-
   }
 
   handleLoginMessage = () => {
@@ -740,7 +741,8 @@ const matchDispatchToProps = dispatch => {
     setRegistering,
     setUserEmail,
     setLogin_dialog,
-    setRegister_dialog
+    setRegister_dialog,
+    setPersonalDialogStatus
   }, dispatch);
 };
 

@@ -1,11 +1,11 @@
-export const setDialogStatus = (inputBool) => {
+export const setPersonalDialogStatus = (inputBool) => {
   return {
-    type: "SET_DIALOG_OPEN",
+    type: "SET_DIALOG_STATUS",
     payload: inputBool
   }
 }
 
-export const setListingArray = (inputArr) => {
+export const setPersonalListingArray = (inputArr) => {
   return {
     type: "SET_PROFILE_LISTING_ARRAY",
     payload: inputArr
