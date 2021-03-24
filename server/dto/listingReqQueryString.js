@@ -11,6 +11,7 @@ const schema = joi.object({
   is_laundry_available: joi.boolean().default(null),
   is_pet_allowed: joi.boolean().default(null),
   is_parking_available: joi.boolean().default(null),
+  keywords: joi.string().regex(/^[a-zA-Z0-9]*$/).allow("").default("")
 });
 
 module.exports = schema;
