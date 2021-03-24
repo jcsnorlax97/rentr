@@ -8,6 +8,9 @@ CREATE DATABASE rentr;
 
 CREATE EXTENSION citext;
 
+DROP TABLE rentr_listing;
+DROP TABLE rentr_user;
+
 CREATE TABLE IF NOT EXISTS rentr_user (
     id SERIAL PRIMARY KEY,
     email CITEXT UNIQUE NOT NULL,
