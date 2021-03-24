@@ -37,7 +37,10 @@ class ListingDao {
           COALESCE($3 <= rentr_listing.num_bedroom, TRUE) AND
           COALESCE($4 >= rentr_listing.num_bedroom, TRUE) AND
           COALESCE($5 <= rentr_listing.num_bathroom, TRUE) AND
-          COALESCE($6 >= rentr_listing.num_bathroom, TRUE)
+          COALESCE($6 >= rentr_listing.num_bathroom, TRUE) AND
+          COALESCE($7 = rentr_listing.is_laundry_available, TRUE) AND
+          COALESCE($8 = rentr_listing.is_pet_allowed, TRUE) AND
+          COALESCE($9 = rentr_listing.is_parking_available, TRUE)
         ;
       `,
       [
@@ -47,6 +50,9 @@ class ListingDao {
         query.max_num_bedroom,
         query.min_num_bathroom,
         query.max_num_bathroom,
+        query.is_laundry_available,
+        query.is_pet_allowed,
+        query.is_parking_available,
       ]
     );
     return rows;
