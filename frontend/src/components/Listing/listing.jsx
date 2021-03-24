@@ -7,19 +7,23 @@ import {
   setNumPerPage
 } from "../../actions/ListingDetail";
 import axios from "axios";
-import Paper from '@material-ui/core/Paper';
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import HotelIcon from '@material-ui/icons/Hotel';
 import LocalLaundryServiceIcon from '@material-ui/icons/LocalLaundryService';
 import PetsIcon from '@material-ui/icons/Pets';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import Divider from '@material-ui/core/Divider';
-import Tooltip from '@material-ui/core/Tooltip';
-import { Typography } from "@material-ui/core";
+import { 
+  Typography,
+  Divider,
+  Tooltip,
+  Paper
+} from "@material-ui/core";
 import Pagination from '@material-ui/lab/Pagination';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import LocalParkingIcon from '@material-ui/icons/LocalParking';
 import {API_ROOT_GET} from "../../data/urls";
+import { trackPromise } from "react-promise-tracker";
+import {RefreshLoader} from "../RefreshLoader";
 
 import "../../styles/Listing.css";
 
@@ -29,12 +33,18 @@ class Listing extends Component {
     this.fetchListing();
   }
 
+  componentWillUnmount(){
+    this.props.setListingArray([])
+  }
+
   fetchListing = () =>{
     const url = String(API_ROOT_GET).concat("listing")
-    axios.get(url)
-    .then(response =>{
-      this.props.setListingArray(response.data)
-    })
+    trackPromise(
+      axios.get(url)
+      .then(response =>{
+        this.props.setListingArray(response.data)
+      })
+    , "fetchListingArea")
   }
 
   checkImageValid = (imgString) =>{
@@ -125,16 +135,18 @@ class Listing extends Component {
                           alt="apartment"
                         />
                     }
-                      
                   </span>
 
                   <div className = "listingTextAndIcon">
-                    <span className = "listingHeader">
-                    
+                    <div className = "listingHeader">
+
                       {/* This is for the listing title area */}
-                      <span className = "listingTitle">
+                      <div className="listingTitle" style={{
+                        width: '40%',
+                        wordWrap: 'break-word'
+                      }}>
                         {listingDetail.title}
-                      </span>
+                      </div>
 
                       <Typography
                         type="title"
@@ -143,14 +155,14 @@ class Listing extends Component {
                           flex: 1 
                         }}
                       />
-                
+                      
                       {/* This is for the listing icon area */}
                       <span className = "listingIconGroup">
                         {/* number of washrooms*/}
                         <span className = "listingIconNumber">
                           {listingDetail.num_bathroom}
                           <Tooltip title = "Washroom">
-                            <BathtubIcon className = "listingIcon" fontSize = "large"/>
+                            <BathtubIcon className = "listingIcon" fontSize = "medium"/>
                           </Tooltip>
                         </span>
 
@@ -158,7 +170,7 @@ class Listing extends Component {
                         <span className = "listingIconNumber">
                           {listingDetail.num_bedroom}
                           <Tooltip title = "Bedroom">
-                            <HotelIcon className = "listingIcon" fontSize = "large"/>
+                            <HotelIcon className = "listingIcon" fontSize = "medium"/>
                           </Tooltip>
                         </span>
                         
@@ -171,7 +183,7 @@ class Listing extends Component {
                               <LocalLaundryServiceIcon 
                                 style = {{color: "green"}}
                                 className = "listingIcon" 
-                                fontSize = "large"
+                                fontSize = "medium"
                               />
                             </Tooltip>
                             :
@@ -179,7 +191,7 @@ class Listing extends Component {
                               <LocalLaundryServiceIcon
                                 style = {{color: "grey"}}
                                 className = "listingIcon" 
-                                fontSize = "large"
+                                fontSize = "medium"
                               />
                             </Tooltip>
                           }
@@ -192,14 +204,16 @@ class Listing extends Component {
                             ? 
                             <Tooltip title = "Pet allowed">
                               <PetsIcon
-                                style = {{color: "green"}}
+                                style={{ color: "green" }}
+                                fontSize = "small"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
                             :
                             <Tooltip title = "Pet NOT allowed">
                               <PetsIcon
-                                style = {{color: "grey"}}
+                                style={{ color: "grey" }}
+                                fontSize = "small"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -213,14 +227,16 @@ class Listing extends Component {
                             ? 
                             <Tooltip title = "Parking is included">
                               <LocalParkingIcon
-                                style = {{color: "green"}}
+                                style={{ color: "green" }}
+                                fontSize = "small"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
                             :
                             <Tooltip title = "Parking NOT included">
                               <LocalParkingIcon
-                                style = {{color: "grey"}}
+                                style={{ color: "grey" }}
+                                fontSize = "small"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -237,7 +253,7 @@ class Listing extends Component {
                         ${this.checkPrice(listingDetail.price)}
                       </div>
 
-                    </span>
+                    </div>
 
                     <Divider/>
 
@@ -260,9 +276,8 @@ class Listing extends Component {
                 marginBottom: 16
               }}
             >
-              <h2>
-                No listing information at the moment
-              </h2>
+              {/* {No listing information at the moment} */}
+              <RefreshLoader area = "fetchListingArea"/>
             </Paper>
           }
           {/* <img
