@@ -72,7 +72,7 @@ class LoginDialog extends Component {
             }}
           >
             Log In
-                  </Button>
+              </Button>
 
           {this.handleShowLogInDialog()}
           {this.handleShowRegisterDialog()}
@@ -131,7 +131,6 @@ class LoginDialog extends Component {
                     && response.data.message
                     && response.data.message === "Login successful.") {
                     // then we're logged in successfully
-                    this.props.setToken(response.data.token)
                     this.setState({
                       loginMessage: true,
                       loginSuccess: true,
@@ -139,12 +138,18 @@ class LoginDialog extends Component {
                     })
                     setTimeout(() => {
                       this.resetDialogsStatus()
-                      this.props.setStatus(true)
+                      this.props.setStatus({
+                        status: true,
+                        token: response.data.token
+                      })
                       this.props.setLogging(false)
                     }, 5000);
                   }
                   else {
-                    this.props.setStatus(false)
+                    this.props.setStatus({
+                      status: false,
+                      token: null
+                    })
                     this.setState({
                       loginMessage: true,
                       loginSuccess: false,
@@ -155,7 +160,10 @@ class LoginDialog extends Component {
                 })
                 .catch(error => {
                   console.log(error)
-                  this.props.setStatus(false)
+                  this.props.setStatus({
+                    status: false,
+                    token: null
+                  })
                   this.setState({
                     loginMessage: true,
                     loginSuccess: false,
@@ -337,11 +345,17 @@ class LoginDialog extends Component {
                     })
                     this.props.setRegistering(false)
                   }
-                  this.props.setStatus(false)
+                  this.props.setStatus({
+                      status: false,
+                      token: null
+                    })
                 })
                 // If the account is registered NOT successfully
                 .catch(error => {
-                  this.props.setStatus(false)
+                  this.props.setStatus({
+                      status: false,
+                      token: null
+                    })
                   this.setState({
                     registerMessage: true,
                     registerSuccess: false
@@ -580,7 +594,6 @@ class LoginDialog extends Component {
 const mapStateToProps = state => {
   return {
     status: state.homeContent.status,
-    token: state.homeContent.token,
     userEmail: state.homeContent.userEmail,
     logging: state.homeContent.logging,
     registering: state.homeContent.registering,

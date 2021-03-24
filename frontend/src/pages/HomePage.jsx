@@ -81,29 +81,7 @@ class HomePage extends Component {
           </Toolbar>
 
         </AppBar>
-        {/* <div
-          style = {{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%"
-          }}
-          className = "contentArea"> */}
           <HomeContent />
-          {/* {this.props.showListingDetail
-          ? 
-            <div
-              className = "ListingDetail-Home"
-              onClick = {()=>{
-                this.props.setListingDetail({
-                  open: false,
-                  listingDetail: null
-                })
-              }}
-            >
-              Stuff here!
-            </div>
-          : null
-          } */}
         {/* </div> */}
         
       </div>
@@ -173,6 +151,11 @@ class HomePage extends Component {
       status: false
     })
     this.resetDialogsStatus()
+  }
+
+  resetDialogsStatus = () => {
+    this.props.setLogin_dialog(false);
+    this.props.setRegister_dialog(false);
   }
 
   handleOpenPopover = (event) => {
