@@ -11,6 +11,9 @@ import {
   setRegister_dialog
 } from "../actions/HomePage";
 import {
+  setListingDetail
+} from "../actions/ListingDetail";
+import {
   setPersonalDialogStatus
 } from "../actions/Profile";
 import logo from "../resources/logo.png";
@@ -25,8 +28,7 @@ import {
   ClickAwayListener,
   MenuList,
   MenuItem,
-  ListItemIcon,
-  Box
+  ListItemIcon
 } from "@material-ui/core";
 import { Person } from '@material-ui/icons';
 import moment from "moment";
@@ -79,14 +81,30 @@ class HomePage extends Component {
           </Toolbar>
 
         </AppBar>
-        <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
-          <Box border={1} m={1} style={{width:'50%'}}>
-            <HomeContent />
-          </Box>
-          <Box border={1} m={1} style={{width: '50%'}}>
-            Stuff here!
-          </Box>
-        </Box>
+        {/* <div
+          style = {{
+            display: "flex",
+            flexDirection: "row",
+            width: "100%"
+          }}
+          className = "contentArea"> */}
+          <HomeContent />
+          {/* {this.props.showListingDetail
+          ? 
+            <div
+              className = "ListingDetail-Home"
+              onClick = {()=>{
+                this.props.setListingDetail({
+                  open: false,
+                  listingDetail: null
+                })
+              }}
+            >
+              Stuff here!
+            </div>
+          : null
+          } */}
+        {/* </div> */}
         
       </div>
     )
@@ -187,6 +205,8 @@ const mapStateToProps = state => {
   return {
     status: state.homeContent.status,
     cookies: state.homeContent.cookies,
+    showListingDetail: state.listingDetail.showListingDetail,
+    listingDetail: state.listingDetail.listingDetail,
   };
 };
 
@@ -198,7 +218,8 @@ const matchDispatchToProps = dispatch => {
     setUserEmail,
     setLogin_dialog,
     setRegister_dialog,
-    setPersonalDialogStatus
+    setPersonalDialogStatus,
+    setListingDetail
   }, dispatch);
 };
 

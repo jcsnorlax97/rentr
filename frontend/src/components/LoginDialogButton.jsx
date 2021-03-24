@@ -10,20 +10,24 @@ import {
   setLogin_dialog,
   setRegister_dialog
 } from "../actions/HomePage";
-import { Button } from "@material-ui/core";
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import EmailIcon from '@material-ui/icons/Email';
-import { VpnKey, Person } from '@material-ui/icons';
 import axios from "axios";
 import { Formik } from "formik";
 import * as yup from "yup";
-import Snackbar from '@material-ui/core/Snackbar';
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Snackbar,
+} from "@material-ui/core";
+
+import CloseIcon from '@material-ui/icons/Close';
+import EmailIcon from '@material-ui/icons/Email';
+import { VpnKey } from '@material-ui/icons';
+
 import MuiAlert from '@material-ui/lab/Alert';
 import { API_ROOT_POST, LOGIN_ADDRESS } from "../data/urls";
 

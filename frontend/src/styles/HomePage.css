@@ -165,3 +165,9 @@
   display: flex;
   flex-direction: column;
 }
+
+.ListingDetail-Home{
+  width: 40%;
+  margin: 20px;
+  border: 1px solid black;
+}
