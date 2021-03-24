@@ -13,6 +13,7 @@ test('should replace req.query with the JOI validation results if the validation
       min_price: '100',
       max_price: 9999,
       is_laundry_available: true,
+      keywords: "expensive"
     },
   });
   const res = mockResponse();
@@ -33,6 +34,7 @@ test('should replace req.query with the JOI validation results if the validation
       max_num_bedroom: null,
       is_pet_allowed: null,
       is_parking_available: null,
+      keywords: "expensive"
     })
   );
   expect(next).toHaveBeenCalled();

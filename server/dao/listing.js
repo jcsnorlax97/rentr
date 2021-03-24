@@ -40,7 +40,11 @@ class ListingDao {
           COALESCE($6 >= rentr_listing.num_bathroom, TRUE) AND
           COALESCE($7 = rentr_listing.is_laundry_available, TRUE) AND
           COALESCE($8 = rentr_listing.is_pet_allowed, TRUE) AND
-          COALESCE($9 = rentr_listing.is_parking_available, TRUE)
+          COALESCE($9 = rentr_listing.is_parking_available, TRUE) AND
+          CASE WHEN ($10 <> '') IS NOT TRUE
+            THEN TRUE
+            ELSE to_tsvector(rentr_listing.title) @@ to_tsquery($10) 
+          END
         ;
       `,
       [
@@ -53,6 +57,7 @@ class ListingDao {
         query.is_laundry_available,
         query.is_pet_allowed,
         query.is_parking_available,
+        query.keywords,
       ]
     );
     return rows;
