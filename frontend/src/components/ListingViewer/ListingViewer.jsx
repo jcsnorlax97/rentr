@@ -11,14 +11,12 @@ import BathtubIcon from '@material-ui/icons/Bathtub';
 import HotelIcon from '@material-ui/icons/Hotel';
 import LocalLaundryServiceIcon from '@material-ui/icons/LocalLaundryService';
 import PetsIcon from '@material-ui/icons/Pets';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { 
   Typography,
   Divider,
   Tooltip,
   Paper
 } from "@material-ui/core";
-import Pagination from '@material-ui/lab/Pagination';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import LocalParkingIcon from '@material-ui/icons/LocalParking';
 import {API_ROOT_GET} from "../../data/urls";
@@ -28,11 +26,6 @@ import {RefreshLoader} from "../RefreshLoader";
 import "../../styles/ListingView.css";
 import "../../styles/Listing.css";
 
-
-/** This file was made pretty fast... probably lots of redundant stuff
- * 
- * Basically written as lazy as possible
-*/
 
 class ListingViewer extends Component {
 
@@ -97,9 +90,6 @@ class ListingViewer extends Component {
     return (
       <div className = "listingContent">
         <div>
-          {/* {this.props.listingArray.map(listingDetail, index) => (
-
-          )} */}
           {this.props.listingArray && this.props.listingArray.length !== 0 
           ? 
             this.props.listingArray.slice(1,2).map((listingDetail, index)=>{ // slice and map unnecessary
