@@ -114,14 +114,27 @@ class ListingViewer extends Component {
                     marginBottom: 16
                   }}
                 >
-                  {/* This is for the image area */}
-                  <div style={{width: '30%', backgroundColor: '#0F0F0F', marginLeft:'5px', marginTop:'5px'}}>
+                  {/* This is for the image area 
+                  
+                    The image section is going to eventually need to handle multiple images. 
+                    Maybe a for loop similar this could be a good replacement:
+                    {imagesDummyInputs.map((source, index) => {
+                          return (
+                          <img
+                              style = {{width: "30%",height: "30%", display: 'inline', marginLeft:'5px'}}
+                              src={source}
+                              alt="apartment"
+                          />
+                          );
+                      })}
+                  */}
+                  <div style={{width: '100%', marginLeft:'5px', marginTop:'5px'}}>
                     {this.checkImageValid(listingDetail.images[0])
                       ?
                         <img
                           style = {{
-                            width: "100%",
-                            height: "100%"
+                            width: "30%",
+                            height: "30%"
                           }}
                           src={listingDetail.images[0]}
                           alt="apartment"
@@ -129,8 +142,8 @@ class ListingViewer extends Component {
                       :
                         <ApartmentIcon
                           style = {{
-                            width: "100%",
-                            height: "100%",
+                            width: "30%",
+                            height: "30%",
                             color: "lightgray"
                           }}
                           alt="apartment"
