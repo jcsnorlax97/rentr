@@ -4,22 +4,37 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
   setStatus,
-  setToken
+  setLogging,
+  setRegistering,
+  setUserEmail,
+  setLogin_dialog,
+  setRegister_dialog
 } from "../actions/HomePage";
+import {
+  setPersonalDialogStatus
+} from "../actions/Profile";
 import logo from "../resources/logo.png";
-import { AppBar, Toolbar, Button, Typography, Paper, ListItemText } from "@material-ui/core";
+import { 
+  AppBar, 
+  Toolbar, 
+  Button, 
+  Typography, 
+  Paper, 
+  ListItemText,
+  Popover,
+  ClickAwayListener,
+  MenuList,
+  MenuItem,
+  ListItemIcon,
+  Box
+} from "@material-ui/core";
 import { Person } from '@material-ui/icons';
 import moment from "moment";
-import Popover from '@material-ui/core/Popover';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Box from '@material-ui/core/Box';
 
 import CreateListingButton from "../components/CreateListing/CreateListingButton";
 import LoginDialogButton from "../components/LoginDialogButton";
+import Profile from "../components/Profile/Profile"
 
 import "../styles/HomePage.css"
 
@@ -53,8 +68,9 @@ class HomePage extends Component {
               color="inherit"
               style={{
                 flex: 1
-              }} />
-            {!this.props.status
+              }}
+            />
+            {!this.props.cookies.get("status")
               ?
               <LoginDialogButton />
               :
@@ -114,6 +130,8 @@ class HomePage extends Component {
             <Paper>
               <MenuList>
                 {/* This is for the logout function */}
+                <Profile/> 
+
                 <MenuItem onClick={this.handleLogout}>
                   <ListItemIcon>
                     <ExitToAppIcon fontSize="small" />
@@ -133,8 +151,10 @@ class HomePage extends Component {
     this.setState({
       anchorEl: null
     })
-    this.props.setStatus(false)
-    this.props.setToken("")
+    this.props.setStatus({
+      status: false
+    })
+    this.resetDialogsStatus()
   }
 
   handleOpenPopover = (event) => {
@@ -166,14 +186,19 @@ class HomePage extends Component {
 const mapStateToProps = state => {
   return {
     status: state.homeContent.status,
-    token: state.homeContent.token
+    cookies: state.homeContent.cookies,
   };
 };
 
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setStatus,
-    setToken
+    setLogging,
+    setRegistering,
+    setUserEmail,
+    setLogin_dialog,
+    setRegister_dialog,
+    setPersonalDialogStatus
   }, dispatch);
 };
 

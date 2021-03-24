@@ -7,19 +7,23 @@ import {
   setNumPerPage
 } from "../../actions/ListingDetail";
 import axios from "axios";
-import Paper from '@material-ui/core/Paper';
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import HotelIcon from '@material-ui/icons/Hotel';
 import LocalLaundryServiceIcon from '@material-ui/icons/LocalLaundryService';
 import PetsIcon from '@material-ui/icons/Pets';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import Divider from '@material-ui/core/Divider';
-import Tooltip from '@material-ui/core/Tooltip';
-import { Typography } from "@material-ui/core";
+import { 
+  Typography,
+  Divider,
+  Tooltip,
+  Paper
+} from "@material-ui/core";
 import Pagination from '@material-ui/lab/Pagination';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import LocalParkingIcon from '@material-ui/icons/LocalParking';
-import { API_ROOT_GET } from "../../data/urls";
+import {API_ROOT_GET} from "../../data/urls";
+import { trackPromise } from "react-promise-tracker";
+import {RefreshLoader} from "../RefreshLoader";
 
 import "../../styles/Listing.css";
 
@@ -29,12 +33,18 @@ class Listing extends Component {
     this.fetchListing();
   }
 
+  componentWillUnmount(){
+    this.props.setListingArray([])
+  }
+
   fetchListing = () =>{
     const url = String(API_ROOT_GET).concat("listing")
-    axios.get(url)
-    .then(response =>{
-      this.props.setListingArray(response.data)
-    })
+    trackPromise(
+      axios.get(url)
+      .then(response =>{
+        this.props.setListingArray(response.data)
+      })
+    , "fetchListingArea")
   }
 
   checkImageValid = (imgString) =>{
@@ -266,9 +276,8 @@ class Listing extends Component {
                 marginBottom: 16
               }}
             >
-              <h2>
-                No listing information at the moment
-              </h2>
+              {/* {No listing information at the moment} */}
+              <RefreshLoader area = "fetchListingArea"/>
             </Paper>
           }
           {/* <img
