@@ -34,7 +34,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import CreateListingButton from "../components/CreateListing/CreateListingButton";
 import LoginDialogButton from "../components/LoginDialogButton";
-import Profile from "../components/Profile/Profile"
+import Profile from "../components/Profile/Profile";
+import ListingViewer from "../components/ListingViewer/ListingViewer";
 
 import "../styles/HomePage.css"
 
@@ -80,11 +81,11 @@ class HomePage extends Component {
 
         </AppBar>
         <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
-          <Box border={1} m={1} style={{width:'50%'}}>
+          <Box borderRight={1} m={1} style={{width:'40%'}}>
             <HomeContent />
           </Box>
-          <Box border={1} m={1} style={{width: '50%'}}>
-            Stuff here!
+          <Box m={1} style={{width: '60%'}}>
+            <ListingViewer />
           </Box>
         </Box>
         
