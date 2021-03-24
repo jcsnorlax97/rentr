@@ -163,7 +163,7 @@ class CreateListingButton extends Component {
                   is_parking_available: Boolean(values.is_parking_available),
                 }
                 const config = {
-                  headers: { Authorization: `Bearer ${this.props.token}` }
+                  headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
                 };
                 axios.post(url, body, config)
                 .then(response => {
@@ -494,7 +494,8 @@ const mapStateToProps = state => {
     dialogOpen: state.createListingContent.dialogOpen,
     creatingListing: state.createListingContent.creatingListing,
     images: state.createListingContent.images,
-    token: state.homeContent.token
+    // token: state.homeContent.token,
+    cookies: state.homeContent.cookies,
   };
 };
 
