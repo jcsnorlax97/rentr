@@ -1,6 +1,7 @@
 const joi = require('@hapi/joi');
 
 const schema = joi.object({
+  userid: joi.number().required().positive(),
   title: joi.string().required().max(100),
   price: joi.string().required().allow(''),
   num_bedroom: joi.string().required().max(10),
