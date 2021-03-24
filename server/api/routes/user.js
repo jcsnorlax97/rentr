@@ -11,6 +11,13 @@ router.get('/:id', userController.getUserViaId);
 router.post('/registration', validate(userDto), userController.createUser);
 router.post('/login', validate(userDto), userController.authenticateUser);
 router.get('/:id/listing', userController.getUserListingViaUserID);
-router.get('/:id/listing/:lid', userController.getUserListingViaUserAndListingID);
+router.get(
+  '/:id/listing/:lid',
+  userController.getUserListingViaUserAndListingID
+);
+router.put(
+  '/:id/listing/:lid',
+  userController.updateListingViaUserIDAndListingID
+);
 
 module.exports = router;

@@ -42,13 +42,18 @@ class ListingDao {
     return rows && rows.length >= 1 ? rows[0] : null;
   };
 
-  updateListing = async (id, body) => {
+  updateListing = async (id, lid, body) => {
     const { rows } = await this.dbPool.query(
       `UPDATE rentr_listing
       SET 
         title = (SELECT
                 CASE WHEN title = $1 IS NOT NULL THEN $1 
                 ELSE rentr_listing.title END
+                FROM rentr_listing
+                WHERE id = $10),
+        userid = (SELECT
+                CASE WHEN userid = $11 IS NOT NULL THEN $11 
+                ELSE rentr_listing.userid END
                 FROM rentr_listing
                 WHERE id = $10),
         price = (SELECT
@@ -103,6 +108,7 @@ class ListingDao {
         body.images,
         body.description,
         id,
+        lid,
       ]
     );
     return rows;

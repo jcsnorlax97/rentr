@@ -39,19 +39,6 @@ class ListingController {
       next(ApiError.internal(`${err}`));
     }
   };
-
-  updateListing = async (req, res, next) => {
-    try {
-      console.log(req);
-      await this.listingService.updateListing(req.params.id, req.body);
-
-      res.status(200).json({
-        message: `Listing has been updated successfully!`,
-      });
-    } catch (err) {
-      next(ApiError.internal(`${err}`));
-    }
-  };
 }
 
 module.exports = ListingController;
