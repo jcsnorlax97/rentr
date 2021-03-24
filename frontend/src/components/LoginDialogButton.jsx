@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
   setStatus,
-  setToken,
   setLogging,
   setRegistering,
   setUserEmail,
@@ -605,7 +604,6 @@ const mapStateToProps = state => {
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setStatus,
-    setToken,
     setLogging,
     setRegistering,
     setUserEmail,

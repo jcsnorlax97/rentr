@@ -8,6 +8,9 @@ const initialState = {
   registerDialogOpen: false,
   status: false,
   cookies: new Cookies(),
+  searchFieldError: false,
+  searchFieldValue: "",
+  searchCategory: ""
 }
 
 export const homeReducer = (state = initialState, action) => {
@@ -32,6 +35,12 @@ export const homeReducer = (state = initialState, action) => {
       return {...state, status: action.payload.status};
     // case "SET_TOKEN":
     //   return {...state, token: action.payload};
+    case "SET_SEARCH_ERROR":
+      return {...state, searchFieldError: action.payload};
+    case "SET_SEARCH_VALUE":
+      return {...state, searchFieldValue: action.payload};
+    case "SET_SEARCH_CATEGORY":
+      return {...state, searchCategory: action.payload};
     default: 
 			return state;
   }

@@ -1,0 +1,9 @@
+.MuiButtonBase-root.MuiIconButton-root.advancedSearch-Button.MuiIconButton-edgeEnd{
+  color: white;
+}
+
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.keywordSearchButton{
+  color: black;
+  background-color: #f0c14b;
+  font-weight: 600;
+}

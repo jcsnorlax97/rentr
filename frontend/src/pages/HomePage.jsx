@@ -8,7 +8,10 @@ import {
   setRegistering,
   setUserEmail,
   setLogin_dialog,
-  setRegister_dialog
+  setRegister_dialog,
+  setSearchError,
+  setSearchValue,
+  setSearchCategory
 } from "../actions/HomePage";
 import {
   setListingDetail
@@ -28,7 +31,9 @@ import {
   ClickAwayListener,
   MenuList,
   MenuItem,
-  ListItemIcon
+  ListItemIcon,
+  TextField,
+  Select
 } from "@material-ui/core";
 import { Person } from '@material-ui/icons';
 import moment from "moment";
@@ -36,7 +41,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import CreateListingButton from "../components/CreateListing/CreateListingButton";
 import LoginDialogButton from "../components/LoginDialogButton";
-import Profile from "../components/Profile/Profile"
+import Profile from "../components/Profile/Profile";
+import AdvancedSearch from "../components/AdvancedSearch";
 
 import "../styles/HomePage.css"
 
@@ -63,7 +69,32 @@ class HomePage extends Component {
               src={logo}
               alt="Rentr Logo"
             />
-
+            
+            <TextField
+              variant="outlined"
+              margin="dense"
+              id="headerSearchField"
+              className="headerSearchField"
+              type="email"
+              value={this.props.searchFieldValue}
+              style = {{
+                backgroundColor: "white",
+                color: "black",
+                border: "none",
+                borderRadius: 3,
+                width: 300,
+                marginTop: 4,
+                marginBottom: 4, 
+                marginRight: 20
+              }}
+              error = {this.props.searchFieldError}
+              placeholder = "Search with keywords"
+              onChange={e => {
+                this.props.setSearchValue(e.target.value)
+              }}
+            />
+            <AdvancedSearch/>
+            
             {/* this is used to add the space between the logo and sign in button */}
             <Typography
               type="title"
@@ -188,6 +219,9 @@ const mapStateToProps = state => {
   return {
     status: state.homeContent.status,
     cookies: state.homeContent.cookies,
+    searchFieldError: state.homeContent.searchFieldError,
+    searchFieldValue: state.homeContent.searchFieldValue,
+    searchCategory: state.homeContent.searchCategory,
     showListingDetail: state.listingDetail.showListingDetail,
     listingDetail: state.listingDetail.listingDetail,
   };
@@ -202,7 +236,10 @@ const matchDispatchToProps = dispatch => {
     setLogin_dialog,
     setRegister_dialog,
     setPersonalDialogStatus,
-    setListingDetail
+    setListingDetail,
+    setSearchError,
+    setSearchValue,
+    setSearchCategory
   }, dispatch);
 };
 
