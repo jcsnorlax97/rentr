@@ -7,7 +7,7 @@ describe('listingService', () => {
     };
     const listingService = new ListingService({ listingDao });
     const reqBody = {
-      title: 'Serious appartment',
+      title: 'Serious apartment',
       price: '320',
       num_bedroom: '3',
       num_bathroom: '2',
@@ -16,7 +16,7 @@ describe('listingService', () => {
       is_parking_available: false,
       images: ['this_is_the_image_url.com'],
       description:
-        'An appartment closed to the university and the bus stop. Contact me!',
+        'An apartment close to the university and the bus stop. Contact me!',
     };
     it('succeeds', () => {
       const newListingId = listingService.addListing(reqBody);
@@ -46,7 +46,7 @@ describe('listingService', () => {
       getAllListings: () => [
         {
           id: 3,
-          title: 'Serious appartment',
+          title: 'Serious apartment',
           price: '320',
           num_bedroom: '3',
           num_bathroom: '2',
@@ -55,7 +55,7 @@ describe('listingService', () => {
           is_parking_available: false,
           images: ['this_is_the_image_url.com'],
           description:
-            'An appartment closed to the university and the bus stop. Contact me!',
+            'An apartment close to the university and the bus stop. Contact me!',
         },
       ],
     };
@@ -69,7 +69,7 @@ describe('listingService', () => {
       expect(listings.length).toEqual(1);
 
       // testing title name
-      expect(listings[0].title).toEqual('Serious appartment');
+      expect(listings[0].title).toEqual('Serious apartment');
     });
   });
 
@@ -79,7 +79,7 @@ describe('listingService', () => {
       getListingViaId: (_) => [
         {
           id: 3,
-          title: 'Serious appartment',
+          title: 'Serious apartment',
           price: '320',
           num_bedroom: '3',
           num_bathroom: '2',
@@ -88,7 +88,7 @@ describe('listingService', () => {
           is_parking_available: false,
           images: ['this_is_the_image_url.com'],
           description:
-            'An appartment closed to the university and the bus stop. Contact me!',
+            'An apartment close to the university and the bus stop. Contact me!',
         },
       ],
     };
@@ -129,7 +129,7 @@ describe('listingService', () => {
     };
     const listingService = new ListingService({ listingDao });
     const reqBody = {
-      title: 'Serious appartment',
+      title: 'Serious apartment',
       price: '350',
       num_bedroom: '4',
       num_bathroom: '2',
@@ -138,7 +138,7 @@ describe('listingService', () => {
       is_parking_available: false,
       images: ['this_is_the_image_url.com'],
       description:
-        'An appartment closed to the university and the bus stop. Contact me!',
+        'An apartment close to the university and the bus stop. Contact me!',
     };
     it('succeeds', () => {
       const updatedListingId = listingService.updateListing(reqBody);

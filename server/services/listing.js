@@ -13,8 +13,8 @@ class ListingService {
 
   getListingViaId = (id) => this.listingDao.getListingViaId(id);
 
-  updateListing = (id, lid, body) =>
-    this.listingDao.updateListing(id, lid, body);
+  updateListing = (uid, id, body) =>
+    this.listingDao.updateListing(uid, id, body);
 
   getListingViaUserID = (userid) => this.listingDao.getListingViaUserId(userid);
 

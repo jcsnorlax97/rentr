@@ -16,7 +16,7 @@ router.get(
   userController.getUserListingViaUserAndListingID
 );
 router.put(
-  '/:id/listing/:lid',
+  '/:uid/listing/:id',
   userController.updateListingViaUserIDAndListingID
 );
 
