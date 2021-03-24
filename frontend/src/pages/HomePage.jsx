@@ -16,6 +16,7 @@ import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Box from '@material-ui/core/Box';
 
 import CreateListingButton from "../components/CreateListing/CreateListingButton";
 import LoginDialogButton from "../components/LoginDialogButton";
@@ -62,7 +63,15 @@ class HomePage extends Component {
           </Toolbar>
 
         </AppBar>
-        <HomeContent />
+        <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
+          <Box border={1} m={1} style={{width:'50%'}}>
+            <HomeContent />
+          </Box>
+          <Box border={1} m={1} style={{width: '50%'}}>
+            Stuff here!
+          </Box>
+        </Box>
+        
       </div>
     )
   }
