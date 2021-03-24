@@ -3,9 +3,9 @@ const joi = require('@hapi/joi');
 const schema = joi.object({
   userid: joi.number().required().positive(),
   title: joi.string().required().max(100),
-  price: joi.string().required().allow(''),
-  num_bedroom: joi.string().required().max(10),
-  num_bathroom: joi.string().required().max(10),
+  price: joi.number().required().positive(),
+  num_bedroom: joi.number().required().max(10),
+  num_bathroom: joi.number().required().max(10),
   is_laundry_available: joi.bool().required(),
   is_pet_allowed: joi.bool().required(),
   is_parking_available: joi.bool().required(),
