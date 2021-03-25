@@ -139,7 +139,8 @@ class LoginDialog extends Component {
                       this.resetDialogsStatus()
                       this.props.setStatus({
                         status: true,
-                        token: response.data.token
+                        token: response.data.token,
+                        userid: response.data.userid
                       })
                       this.props.setLogging(false)
                     }, 5000);
@@ -147,7 +148,8 @@ class LoginDialog extends Component {
                   else {
                     this.props.setStatus({
                       status: false,
-                      token: null
+                      token: null,
+                      userid: null
                     })
                     this.setState({
                       loginMessage: true,
@@ -161,7 +163,8 @@ class LoginDialog extends Component {
                   console.log(error)
                   this.props.setStatus({
                     status: false,
-                    token: null
+                    token: null,
+                    userid: null
                   })
                   this.setState({
                     loginMessage: true,
@@ -326,7 +329,7 @@ class LoginDialog extends Component {
               axios.post(url, content)
                 .then(response => {
                   // If the account is registered successfully
-                  if (response.data && response.data.userId) {
+                  if (response.data && response.data.userid) {
                     this.setState({
                       registerSuccess: true,
                       registerMessage: true
@@ -346,14 +349,16 @@ class LoginDialog extends Component {
                   }
                   this.props.setStatus({
                       status: false,
-                      token: null
+                      token: null,
+                      userid: null
                     })
                 })
                 // If the account is registered NOT successfully
                 .catch(error => {
                   this.props.setStatus({
                       status: false,
-                      token: null
+                      token: null,
+                      userid: null
                     })
                   this.setState({
                     registerMessage: true,

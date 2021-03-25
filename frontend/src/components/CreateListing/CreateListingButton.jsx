@@ -157,6 +157,7 @@ class CreateListingButton extends Component {
                 let url = API_ROOT_POST.concat("listing")
                 let body = {
                   images: imageCollection,
+                  userid: this.props.cookies.get("userid"),
                   title: String(values.title),
                   description: String(values.description),
                   num_bedroom: String(values.num_bedroom),

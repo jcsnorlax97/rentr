@@ -32,8 +32,7 @@ import {
   MenuList,
   MenuItem,
   ListItemIcon,
-  TextField,
-  Select
+  TextField
 } from "@material-ui/core";
 import { Person } from '@material-ui/icons';
 import moment from "moment";
@@ -85,11 +84,15 @@ class HomePage extends Component {
                 width: 300,
                 marginTop: 4,
                 marginBottom: 4, 
-                marginRight: 20
+                marginRight: 20,
+                marginLeft: 30
               }}
               error = {this.props.searchFieldError}
               placeholder = "Search with keywords"
               onChange={e => {
+                if(this.props.searchFieldError){
+                  this.props.setSearchError(false)
+                }
                 this.props.setSearchValue(e.target.value)
               }}
             />
@@ -179,7 +182,9 @@ class HomePage extends Component {
       anchorEl: null
     })
     this.props.setStatus({
-      status: false
+      status: false,
+      userid: null,
+      token: null
     })
     this.resetDialogsStatus()
   }
