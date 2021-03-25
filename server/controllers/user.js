@@ -76,8 +76,8 @@ class UserController {
         );
         return res.status(200).json({
           message: 'Login successful.',
-          token: token,
-          userId: user.id
+          token,
+          userId: user.id,
         });
       }
       next(
@@ -90,7 +90,9 @@ class UserController {
 
   getUserListingViaUserID = async (req, res, next) => {
     try {
-      const listings = await this.listingService.getListingViaUserID(req.params.id);
+      const listings = await this.listingService.getListingViaUserID(
+        req.params.id
+      );
       if (listings == null) {
         next(ApiError.notFound(`No associated listings.`));
       }
@@ -102,11 +104,30 @@ class UserController {
 
   getUserListingViaUserAndListingID = async (req, res, next) => {
     try {
-      const listings = await this.listingService.getListingViaUserAndListingID(req.params.id, req.params.lid);
+      const listings = await this.listingService.getListingViaUserAndListingID(
+        req.params.id,
+        req.params.lid
+      );
       if (listings == null) {
         next(ApiError.notFound(`No associated listings.`));
       }
       res.status(200).json(listings);
+    } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
+
+  updateListingViaUserIDAndListingID = async (req, res, next) => {
+    try {
+      await this.listingService.updateListing(
+        req.params.id,
+        req.params.lid,
+        req.body
+      );
+
+      res.status(200).json({
+        message: `Listing has been updated successfully!`,
+      });
     } catch (err) {
       next(ApiError.internal(`${err}`));
     }
