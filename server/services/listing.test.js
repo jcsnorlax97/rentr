@@ -145,4 +145,29 @@ describe('listingService', () => {
       expect(updatedListingId).toEqual(101);
     });
   });
+
+  describe('deleteListing test', () => {
+    // GIVEN
+    const listingDao = {
+      deleteListing: (_) => 101,
+    };
+    const listingService = new ListingService({ listingDao });
+    const reqBody = {
+      title: 'Serious apartment',
+      userid: 1,
+      price: '350',
+      num_bedroom: '4',
+      num_bathroom: '2',
+      is_laundry_available: true,
+      is_pet_allowed: true,
+      is_parking_available: false,
+      images: ['this_is_the_image_url.com'],
+      description:
+        'An apartment close to the university and the bus stop. Contact me!',
+    };
+    it('succeeds', () => {
+      const deleteListingId = listingService.deleteListing(reqBody);
+      expect(deleteListingId).toEqual(101);
+    });
+  });
 });
