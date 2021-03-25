@@ -18,3 +18,10 @@ export const setNumPerPage = (inputInt) => {
     payload: inputInt
   }
 }
+
+export const setListingDetail = (inputObj) =>{
+  return{
+    type: "EXHIBIT_LISTING_DETAIL",
+    payload: inputObj
+  }
+}

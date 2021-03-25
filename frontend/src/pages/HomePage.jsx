@@ -8,8 +8,14 @@ import {
   setRegistering,
   setUserEmail,
   setLogin_dialog,
-  setRegister_dialog
+  setRegister_dialog,
+  setSearchError,
+  setSearchValue,
+  setSearchCategory
 } from "../actions/HomePage";
+import {
+  setListingDetail
+} from "../actions/ListingDetail";
 import {
   setPersonalDialogStatus
 } from "../actions/Profile";
@@ -26,7 +32,7 @@ import {
   MenuList,
   MenuItem,
   ListItemIcon,
-  Box
+  TextField
 } from "@material-ui/core";
 import { Person } from '@material-ui/icons';
 import moment from "moment";
@@ -34,7 +40,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import CreateListingButton from "../components/CreateListing/CreateListingButton";
 import LoginDialogButton from "../components/LoginDialogButton";
-import Profile from "../components/Profile/Profile"
+import Profile from "../components/Profile/Profile";
+import AdvancedSearch from "../components/AdvancedSearch";
 
 import "../styles/HomePage.css"
 
@@ -61,7 +68,36 @@ class HomePage extends Component {
               src={logo}
               alt="Rentr Logo"
             />
-
+            
+            <TextField
+              variant="outlined"
+              margin="dense"
+              id="headerSearchField"
+              className="headerSearchField"
+              type="email"
+              value={this.props.searchFieldValue}
+              style = {{
+                backgroundColor: "white",
+                color: "black",
+                border: "none",
+                borderRadius: 3,
+                width: 300,
+                marginTop: 4,
+                marginBottom: 4, 
+                marginRight: 20,
+                marginLeft: 30
+              }}
+              error = {this.props.searchFieldError}
+              placeholder = "Search with keywords"
+              onChange={e => {
+                if(this.props.searchFieldError){
+                  this.props.setSearchError(false)
+                }
+                this.props.setSearchValue(e.target.value)
+              }}
+            />
+            <AdvancedSearch/>
+            
             {/* this is used to add the space between the logo and sign in button */}
             <Typography
               type="title"
@@ -79,14 +115,8 @@ class HomePage extends Component {
           </Toolbar>
 
         </AppBar>
-        <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
-          <Box border={1} m={1} style={{width:'50%'}}>
-            <HomeContent />
-          </Box>
-          <Box border={1} m={1} style={{width: '50%'}}>
-            Stuff here!
-          </Box>
-        </Box>
+          <HomeContent />
+        {/* </div> */}
         
       </div>
     )
@@ -152,9 +182,16 @@ class HomePage extends Component {
       anchorEl: null
     })
     this.props.setStatus({
-      status: false
+      status: false,
+      userid: null,
+      token: null
     })
     this.resetDialogsStatus()
+  }
+
+  resetDialogsStatus = () => {
+    this.props.setLogin_dialog(false);
+    this.props.setRegister_dialog(false);
   }
 
   handleOpenPopover = (event) => {
@@ -187,6 +224,11 @@ const mapStateToProps = state => {
   return {
     status: state.homeContent.status,
     cookies: state.homeContent.cookies,
+    searchFieldError: state.homeContent.searchFieldError,
+    searchFieldValue: state.homeContent.searchFieldValue,
+    searchCategory: state.homeContent.searchCategory,
+    showListingDetail: state.listingDetail.showListingDetail,
+    listingDetail: state.listingDetail.listingDetail,
   };
 };
 
@@ -198,7 +240,11 @@ const matchDispatchToProps = dispatch => {
     setUserEmail,
     setLogin_dialog,
     setRegister_dialog,
-    setPersonalDialogStatus
+    setPersonalDialogStatus,
+    setListingDetail,
+    setSearchError,
+    setSearchValue,
+    setSearchCategory
   }, dispatch);
 };
 

@@ -4,7 +4,8 @@ import { bindActionCreators } from "redux";
 import {
   setListingArray,
   setPageNum,
-  setNumPerPage
+  setNumPerPage,
+  setListingDetail
 } from "../../actions/ListingDetail";
 import axios from "axios";
 import BathtubIcon from '@material-ui/icons/Bathtub';
@@ -89,7 +90,7 @@ class Listing extends Component {
   render() {
     return (
       <div className = "listingContent">
-        <div className="leftPanel">
+        <div className={this.props.showListingDetail ? "leftPanel-withDetails": "leftPanel-noDetails"}>
           {/* {this.props.listingArray.map(listingDetail, index) => (
 
           )} */}
@@ -112,6 +113,12 @@ class Listing extends Component {
                     marginBottom: 16
                   }}
                   className = "individualListingContent"
+                  onClick = {()=>{
+                    this.props.setListingDetail({
+                      open:true, 
+                      listingDetail:this.props.listingArray[currIndex]
+                    })
+                  }}
                 >
                   {/* This is for the image area */}
                   <span className = "listingImageArea">
@@ -162,7 +169,7 @@ class Listing extends Component {
                         <span className = "listingIconNumber">
                           {listingDetail.num_bathroom}
                           <Tooltip title = "Washroom">
-                            <BathtubIcon className = "listingIcon" fontSize = "medium"/>
+                            <BathtubIcon className = "listingIcon" fontSize = "large"/>
                           </Tooltip>
                         </span>
 
@@ -170,7 +177,7 @@ class Listing extends Component {
                         <span className = "listingIconNumber">
                           {listingDetail.num_bedroom}
                           <Tooltip title = "Bedroom">
-                            <HotelIcon className = "listingIcon" fontSize = "medium"/>
+                            <HotelIcon className = "listingIcon" fontSize = "large"/>
                           </Tooltip>
                         </span>
                         
@@ -183,7 +190,7 @@ class Listing extends Component {
                               <LocalLaundryServiceIcon 
                                 style = {{color: "green"}}
                                 className = "listingIcon" 
-                                fontSize = "medium"
+                                fontSize = "large"
                               />
                             </Tooltip>
                             :
@@ -191,7 +198,7 @@ class Listing extends Component {
                               <LocalLaundryServiceIcon
                                 style = {{color: "grey"}}
                                 className = "listingIcon" 
-                                fontSize = "medium"
+                                fontSize = "large"
                               />
                             </Tooltip>
                           }
@@ -205,7 +212,7 @@ class Listing extends Component {
                             <Tooltip title = "Pet allowed">
                               <PetsIcon
                                 style={{ color: "green" }}
-                                fontSize = "small"
+                                fontSize = "large"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -213,7 +220,7 @@ class Listing extends Component {
                             <Tooltip title = "Pet NOT allowed">
                               <PetsIcon
                                 style={{ color: "grey" }}
-                                fontSize = "small"
+                                fontSize = "large"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -228,7 +235,7 @@ class Listing extends Component {
                             <Tooltip title = "Parking is included">
                               <LocalParkingIcon
                                 style={{ color: "green" }}
-                                fontSize = "small"
+                                fontSize = "large"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -236,7 +243,7 @@ class Listing extends Component {
                             <Tooltip title = "Parking NOT included">
                               <LocalParkingIcon
                                 style={{ color: "grey" }}
-                                fontSize = "small"
+                                fontSize = "large"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -309,18 +316,31 @@ class Listing extends Component {
             </div>
           </div>
         </div>
-
-        <div className = "rightPanel">
-          <Tooltip title = "back to top">
-            <ExpandLessIcon
-              fontSize = "large"
-              className = "scrollTopIcon"
-              onClick = {()=>{
-                window.scrollTo({top: 0, behavior: "smooth"})
-              }}
-            />
-          </Tooltip>
-        </div>
+        
+        {this.props.showListingDetail
+        ? 
+          <div
+            className = "ListingDetail-Home"
+            onClick = {()=>{
+              this.props.setListingDetail({
+                open: false,
+                listingDetail: null
+              })
+            }}
+          >
+            Stuff here!
+          </div>
+        : <div className = "rightPanel"/>
+        }
+        <Tooltip title = "back to top">
+          <ExpandLessIcon
+            fontSize = "large"
+            className = "scrollTopIcon"
+            onClick = {()=>{
+              window.scrollTo({top: 0, behavior: "smooth"})
+            }}
+          />
+        </Tooltip>
       </div>
     )
   } // end of render
@@ -339,7 +359,9 @@ const mapStateToProps = state => {
   return {
     listingArray: state.listingDetail.listingArray,
     pageNum: state.listingDetail.pageNum,
-    numPerPage: state.listingDetail.numPerPage
+    numPerPage: state.listingDetail.numPerPage,
+    showListingDetail: state.listingDetail.showListingDetail,
+    listingDetail: state.listingDetail.listingDetail,
   };
 };
 
@@ -347,7 +369,8 @@ const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setListingArray,
     setPageNum,
-    setNumPerPage
+    setNumPerPage,
+    setListingDetail
   }, dispatch);
 };
 export default connect(mapStateToProps, matchDispatchToProps)(Listing);
