@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS rentr_comment (
     userid BIGINT NOT NULL,
     listingid BIGINT NOT NULL,
     chainid BIGINT NOT NULL,
-    content VARCHAR CHECK (length(content) <= 1000) NOT NULL,
+    comment VARCHAR CHECK (length(comment) <= 1000) NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY (userid) REFERENCES rentr_user(id),
     CONSTRAINT fk_listing FOREIGN KEY (listingid) REFERENCES rentr_listing(id),
     CONSTRAINT fk_chain FOREIGN KEY (chainid) REFERENCES rentr_chain(id)
@@ -74,7 +74,7 @@ INSERT INTO rentr_chain(userid, listingid) VALUES
 (2, 1),
 (4, 2);
 
-INSERT INTO rentr_comment(userid, listingid, chainid, content) VALUES
+INSERT INTO rentr_comment(userid, listingid, chainid, comment) VALUES
 (3, 1, 1, 'Tenant (uid=3) | Comment 1 in Chain 1 in Listing 1'),
 (1, 1, 1, 'Landlord (uid=1) | Comment 2 in Chain 1 in Listing 1'),
 (3, 1, 1, 'Tenant (uid=3) | Comment 3 in Chain 1 in Listing 1'),
