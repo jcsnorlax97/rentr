@@ -140,7 +140,7 @@ class LoginDialog extends Component {
                       this.props.setStatus({
                         status: true,
                         token: response.data.token,
-                        userid: response.data.userid
+                        userid: response.data.userId
                       })
                       this.props.setLogging(false)
                     }, 5000);
@@ -329,7 +329,7 @@ class LoginDialog extends Component {
               axios.post(url, content)
                 .then(response => {
                   // If the account is registered successfully
-                  if (response.data && response.data.userid) {
+                  if (response.data && response.data.userId) {
                     this.setState({
                       registerSuccess: true,
                       registerMessage: true
