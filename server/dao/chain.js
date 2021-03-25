@@ -29,11 +29,11 @@ class ChainDao {
       // (2) create new comment
       const commentRes = await client.query(
         `
-          INSERT INTO rentr_comment (userid, listingid, chainid, content)
+          INSERT INTO rentr_comment (userid, listingid, chainid, comment)
           VALUES ($1, $2, $3, $4)
           RETURNING id;
         `,
-        [userId, listingId, chainId, body.content]
+        [userId, listingId, chainId, body.comment]
       );
       const commentId = commentRes.rows[0].id;
 
