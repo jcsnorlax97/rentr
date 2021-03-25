@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Formik } from "formik";
+import * as yup from "yup";
+import axios from "axios";
 import {
   setDialogOpen,
   setImages,
@@ -9,21 +12,22 @@ import {
 import {
   setListingArray
 } from "../../actions/ListingDetail";
-import { Button } from "@material-ui/core";
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import MenuItem from '@material-ui/core/MenuItem';
-import { Formik } from "formik";
-import * as yup from "yup";
-import axios from "axios";
-import Snackbar from '@material-ui/core/Snackbar';
+import { 
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  MenuItem,
+  Snackbar
+} from "@material-ui/core";
 import MuiAlert from '@material-ui/lab/Alert';
+
+import CloseIcon from '@material-ui/icons/Close';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+
 import ImageUploader from "../ImageUpload/ImageUploader";
 import {API_ROOT_POST, API_ROOT_GET} from "../../data/urls";
 
@@ -153,6 +157,7 @@ class CreateListingButton extends Component {
                 let url = API_ROOT_POST.concat("listing")
                 let body = {
                   images: imageCollection,
+                  userid: this.props.cookies.get("userid"),
                   title: String(values.title),
                   description: String(values.description),
                   num_bedroom: String(values.num_bedroom),
@@ -484,6 +489,10 @@ class CreateListingButton extends Component {
   resetDialogStatus = () => {
     this.props.setDialogOpen(false);
     this.props.setImages([]);
+    this.setState({
+      postListingMessage: false,
+      postListingSuccess: false
+    })
   }
 
 }
@@ -494,7 +503,6 @@ const mapStateToProps = state => {
     dialogOpen: state.createListingContent.dialogOpen,
     creatingListing: state.createListingContent.creatingListing,
     images: state.createListingContent.images,
-    // token: state.homeContent.token,
     cookies: state.homeContent.cookies,
   };
 };

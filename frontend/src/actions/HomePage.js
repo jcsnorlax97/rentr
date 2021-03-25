@@ -41,9 +41,23 @@ export const setRegister_dialog = (inputBool) =>{
   }
 }
 
-export const setToken = (inputString) =>{
+export const setSearchError = (inputBool) =>{
   return {
-    type: "SET_TOKEN",
+    type: "SET_SEARCH_ERROR",
+    payload: inputBool
+  }
+}
+
+export const setSearchValue = (inputString) =>{
+  return {
+    type: "SET_SEARCH_VALUE",
+    payload: inputString
+  }
+}
+
+export const setSearchCategory = (inputString) =>{
+  return {
+    type: "SET_SEARCH_CATEGORY",
     payload: inputString
   }
 }

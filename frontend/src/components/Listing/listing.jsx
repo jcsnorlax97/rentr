@@ -4,7 +4,8 @@ import { bindActionCreators } from "redux";
 import {
   setListingArray,
   setPageNum,
-  setNumPerPage
+  setNumPerPage,
+  setListingDetail
 } from "../../actions/ListingDetail";
 import axios from "axios";
 import BathtubIcon from '@material-ui/icons/Bathtub';
@@ -73,11 +74,11 @@ class Listing extends Component {
   checkPrice = (priceString) =>{
     let newPrice = ""
     if (String(priceString).trim().length >= 7){
-      newPrice = parseInt(priceString) / 1000000
+      newPrice = parseInt(parseInt(priceString) / 1000000)
       newPrice = String(newPrice).concat("M")
     }
     else if (String(priceString).trim().length >= 5){
-      newPrice = parseInt(priceString) / 1000
+      newPrice = parseInt(parseInt(priceString) / 1000)
       newPrice = String(newPrice).concat("K")
     }
     else{
@@ -89,7 +90,7 @@ class Listing extends Component {
   render() {
     return (
       <div className = "listingContent">
-        <div className="leftPanel">
+        <div className={this.props.showListingDetail ? "leftPanel-withDetails": "leftPanel-noDetails"}>
           {/* {this.props.listingArray.map(listingDetail, index) => (
 
           )} */}
@@ -111,6 +112,12 @@ class Listing extends Component {
                     marginBottom: 16
                   }}
                   className = "individualListingContent"
+                  onClick = {()=>{
+                    this.props.setListingDetail({
+                      open:true, 
+                      listingDetail:this.props.listingArray[currIndex]
+                    })
+                  }}
                 >
                   {/* This is for the image area */}
                   <span className = "listingImageArea">
@@ -201,7 +208,7 @@ class Listing extends Component {
                             <Tooltip title = "Pet allowed">
                               <PetsIcon
                                 style={{ color: "green" }}
-                                fontSize = "small"
+                                fontSize = "large"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -209,7 +216,7 @@ class Listing extends Component {
                             <Tooltip title = "Pet NOT allowed">
                               <PetsIcon
                                 style={{ color: "grey" }}
-                                fontSize = "small"
+                                fontSize = "large"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -224,7 +231,7 @@ class Listing extends Component {
                             <Tooltip title = "Parking is included">
                               <LocalParkingIcon
                                 style={{ color: "green" }}
-                                fontSize = "small"
+                                fontSize = "large"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -232,7 +239,7 @@ class Listing extends Component {
                             <Tooltip title = "Parking NOT included">
                               <LocalParkingIcon
                                 style={{ color: "grey" }}
-                                fontSize = "small"
+                                fontSize = "large"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -299,18 +306,31 @@ class Listing extends Component {
             </div>
           </div>
         </div>
-
-        <div className = "rightPanel">
-          <Tooltip title = "back to top">
-            <ExpandLessIcon
-              fontSize = "large"
-              className = "scrollTopIcon"
-              onClick = {()=>{
-                window.scrollTo({top: 0, behavior: "smooth"})
-              }}
-            />
-          </Tooltip>
-        </div>
+        
+        {this.props.showListingDetail
+        ? 
+          <div
+            className = "ListingDetail-Home"
+            onClick = {()=>{
+              this.props.setListingDetail({
+                open: false,
+                listingDetail: null
+              })
+            }}
+          >
+            Stuff here!
+          </div>
+        : <div className = "rightPanel"/>
+        }
+        <Tooltip title = "back to top">
+          <ExpandLessIcon
+            fontSize = "large"
+            className = "scrollTopIcon"
+            onClick = {()=>{
+              window.scrollTo({top: 0, behavior: "smooth"})
+            }}
+          />
+        </Tooltip>
       </div>
     )
   } // end of render
@@ -329,7 +349,9 @@ const mapStateToProps = state => {
   return {
     listingArray: state.listingDetail.listingArray,
     pageNum: state.listingDetail.pageNum,
-    numPerPage: state.listingDetail.numPerPage
+    numPerPage: state.listingDetail.numPerPage,
+    showListingDetail: state.listingDetail.showListingDetail,
+    listingDetail: state.listingDetail.listingDetail,
   };
 };
 
@@ -337,7 +359,8 @@ const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setListingArray,
     setPageNum,
-    setNumPerPage
+    setNumPerPage,
+    setListingDetail
   }, dispatch);
 };
 export default connect(mapStateToProps, matchDispatchToProps)(Listing);

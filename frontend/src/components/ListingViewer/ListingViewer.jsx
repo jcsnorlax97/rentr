@@ -12,7 +12,6 @@ import HotelIcon from '@material-ui/icons/Hotel';
 import LocalLaundryServiceIcon from '@material-ui/icons/LocalLaundryService';
 import PetsIcon from '@material-ui/icons/Pets';
 import { 
-  Typography,
   Divider,
   Tooltip,
   Paper

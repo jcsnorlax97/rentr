@@ -3,27 +3,30 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
   setStatus,
-  setToken,
   setLogging,
   setRegistering,
   setUserEmail,
   setLogin_dialog,
   setRegister_dialog
 } from "../actions/HomePage";
-import { Button } from "@material-ui/core";
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import EmailIcon from '@material-ui/icons/Email';
-import { VpnKey, Person } from '@material-ui/icons';
 import axios from "axios";
 import { Formik } from "formik";
 import * as yup from "yup";
-import Snackbar from '@material-ui/core/Snackbar';
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Snackbar,
+} from "@material-ui/core";
+
+import CloseIcon from '@material-ui/icons/Close';
+import EmailIcon from '@material-ui/icons/Email';
+import { VpnKey } from '@material-ui/icons';
+
 import MuiAlert from '@material-ui/lab/Alert';
 import { API_ROOT_POST, LOGIN_ADDRESS } from "../data/urls";
 
@@ -68,7 +71,7 @@ class LoginDialog extends Component {
             }}
           >
             Log In
-                  </Button>
+              </Button>
 
           {this.handleShowLogInDialog()}
           {this.handleShowRegisterDialog()}
@@ -127,7 +130,6 @@ class LoginDialog extends Component {
                     && response.data.message
                     && response.data.message === "Login successful.") {
                     // then we're logged in successfully
-                    this.props.setToken(response.data.token)
                     this.setState({
                       loginMessage: true,
                       loginSuccess: true,
@@ -135,12 +137,20 @@ class LoginDialog extends Component {
                     })
                     setTimeout(() => {
                       this.resetDialogsStatus()
-                      this.props.setStatus(true)
+                      this.props.setStatus({
+                        status: true,
+                        token: response.data.token,
+                        userid: response.data.userId
+                      })
                       this.props.setLogging(false)
                     }, 5000);
                   }
                   else {
-                    this.props.setStatus(false)
+                    this.props.setStatus({
+                      status: false,
+                      token: null,
+                      userid: null
+                    })
                     this.setState({
                       loginMessage: true,
                       loginSuccess: false,
@@ -150,13 +160,25 @@ class LoginDialog extends Component {
                   }
                 })
                 .catch(error => {
-                  console.log(error)
-                  this.props.setStatus(false)
-                  this.setState({
-                    loginMessage: true,
-                    loginSuccess: false,
-                    loginError: true
+                  this.props.setStatus({
+                    status: false,
+                    token: null,
+                    userid: null
                   })
+                  if (error.response.data === "The login email or password is not valid."){
+                    this.setState({
+                      loginMessage: true,
+                      loginSuccess: false,
+                      loginError: false
+                    })
+                  }
+                  else if (error.response.data === "Please check your login info."){
+                    this.setState({
+                      loginMessage: true,
+                      loginSuccess: false,
+                      loginError: true
+                    })
+                  }
                   this.props.setLogging(false)
                 })
             }}
@@ -333,11 +355,19 @@ class LoginDialog extends Component {
                     })
                     this.props.setRegistering(false)
                   }
-                  this.props.setStatus(false)
+                  this.props.setStatus({
+                      status: false,
+                      token: null,
+                      userid: null
+                    })
                 })
                 // If the account is registered NOT successfully
                 .catch(error => {
-                  this.props.setStatus(false)
+                  this.props.setStatus({
+                      status: false,
+                      token: null,
+                      userid: null
+                    })
                   this.setState({
                     registerMessage: true,
                     registerSuccess: false
@@ -576,7 +606,6 @@ class LoginDialog extends Component {
 const mapStateToProps = state => {
   return {
     status: state.homeContent.status,
-    token: state.homeContent.token,
     userEmail: state.homeContent.userEmail,
     logging: state.homeContent.logging,
     registering: state.homeContent.registering,
@@ -588,7 +617,6 @@ const mapStateToProps = state => {
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setStatus,
-    setToken,
     setLogging,
     setRegistering,
     setUserEmail,
