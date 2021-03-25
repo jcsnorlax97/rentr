@@ -120,8 +120,8 @@ class UserController {
   updateListingViaUserIDAndListingID = async (req, res, next) => {
     try {
       await this.listingService.updateListing(
-        req.params.uid,
         req.params.id,
+        req.params.lid,
         req.body
       );
 
