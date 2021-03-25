@@ -5,9 +5,11 @@ const validateLoggedIn = require('../../middleware/validateLoggedIn');
 const validateReqQueryString = require('../../middleware/validateReqQueryString');
 const listingDto = require('../../dto/listing');
 const listingReqQueryStringDto = require('../../dto/listingReqQueryString');
+const commentDto = require('../../dto/comment');
 
 // --- get classes via container ---
 const listingController = container.resolve('listingController');
+const chainController = container.resolve('chainController');
 
 const router = express.Router();
 router.get(
@@ -22,5 +24,17 @@ router.post(
   validate(listingDto),
   listingController.addListing
 );
+router.post(
+  '/:id/chain',
+  validateLoggedIn,
+  validate(commentDto),
+  chainController.createChain
+);
+// router.post(
+//   '/:id/chain/:chainid/comment',
+//   validateLoggedIn,
+//   validate(commentDto),
+//   chainController.createChain
+// );
 
 module.exports = router;

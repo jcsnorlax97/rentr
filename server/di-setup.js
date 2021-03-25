@@ -6,6 +6,9 @@ const userDao = require('./dao/user');
 const listingController = require('./controllers/listing');
 const listingService = require('./services/listing');
 const listingDao = require('./dao/listing');
+const chainController = require('./controllers/chain');
+const chainService = require('./services/chain');
+const chainDao = require('./dao/chain');
 const dbPool = require('./db/db');
 
 const container = awilix.createContainer({
@@ -21,6 +24,9 @@ const setup = () => {
     listingController: awilix.asClass(listingController),
     listingService: awilix.asClass(listingService),
     listingDao: awilix.asClass(listingDao),
+    chainController: awilix.asClass(chainController),
+    chainService: awilix.asClass(chainService),
+    chainDao: awilix.asClass(chainDao),
     dbPool: awilix.asValue(dbPool),
   });
 };
