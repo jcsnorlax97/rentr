@@ -4,34 +4,22 @@ class ListingService {
     this.listingDao = listingDao;
   }
 
-  addListing = ({
-    title,
-    price,
-    num_bedroom,
-    num_bathroom,
-    is_laundry_available,
-    is_pet_allowed,
-    is_parking_available,
-    images,
-    description,
-  }) => {
-    const listingId = this.listingDao.addListing(
-      title,
-      price,
-      num_bedroom,
-      num_bathroom,
-      is_laundry_available,
-      is_pet_allowed,
-      is_parking_available,
-      images,
-      description
-    );
+  addListing = (body) => {
+    const listingId = this.listingDao.addListing(body);
     return listingId;
   };
 
-  getAllListings = () => this.listingDao.getAllListings();
+  getAllListings = (query) => this.listingDao.getAllListings(query);
 
   getListingViaId = (id) => this.listingDao.getListingViaId(id);
+
+  updateListing = (uid, id, body) =>
+    this.listingDao.updateListing(uid, id, body);
+
+  getListingViaUserID = (userid) => this.listingDao.getListingViaUserId(userid);
+
+  getListingViaUserAndListingID = (userid, id) =>
+    this.listingDao.getListingViaUserAndListingId(userid, id);
 }
 
 module.exports = ListingService;
