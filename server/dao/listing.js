@@ -141,6 +141,16 @@ class ListingDao {
     return rows;
   };
 
+  deleteListing = async (uid, id) => {
+    const {
+      rows,
+    } = await this.dbPool.query(
+      `DELETE FROM rentr_listing WHERE userid = $1 AND id = $2;`,
+      [uid, id]
+    );
+    return rows;
+  };
+
   getListingViaUserId = async (userid) => {
     const {
       rows,

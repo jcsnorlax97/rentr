@@ -132,6 +132,18 @@ class UserController {
       next(ApiError.internal(`${err}`));
     }
   };
+
+  deleteListingViaUserIDAndListingID = async (req, res, next) => {
+    try {
+      await this.listingService.deleteListing(req.params.id, req.params.lid);
+
+      res.status(200).json({
+        message: `Listing has been deleted successfully!`,
+      });
+    } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
 }
 
 module.exports = UserController;

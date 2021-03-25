@@ -16,6 +16,8 @@ class ListingService {
   updateListing = (uid, id, body) =>
     this.listingDao.updateListing(uid, id, body);
 
+  deleteListing = (uid, id) => this.listingDao.deleteListing(uid, id);
+
   getListingViaUserID = (userid) => this.listingDao.getListingViaUserId(userid);
 
   getListingViaUserAndListingID = (userid, id) =>
