@@ -10,6 +10,7 @@ const commentDto = require('../../dto/comment');
 // --- get classes via container ---
 const listingController = container.resolve('listingController');
 const chainController = container.resolve('chainController');
+const commentController = container.resolve('commentController');
 
 const router = express.Router();
 router.get(
@@ -30,11 +31,11 @@ router.post(
   validate(commentDto),
   chainController.createChain
 );
-// router.post(
-//   '/:id/chain/:chainid/comment',
-//   validateLoggedIn,
-//   validate(commentDto),
-//   chainController.createChain
-// );
+router.post(
+  '/:id/chain/:chainid/comment',
+  validateLoggedIn,
+  validate(commentDto),
+  commentController.createComment
+);
 
 module.exports = router;
