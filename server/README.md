@@ -9,15 +9,15 @@
 
 #### USER
 
-| HTTP   | URI Path                     | Description                                                                                      |
-| ------ | ---------------------------- | ------------------------------------------------------------------------------------------------ |
-| GET    | /api/v1/user/:id             | Given the user id, return that user JSON object.                                                 |
-| GET    | /api/v1/user/:id/listing     | Given the user id, return all listings belonging to this user.                                   |
-| GET    | /api/v1/user/:id/listing/:id | Given the user id & the listing id, return the matching listing.                                 |
-| POST   | /api/v1/user/registration    | Register user with email & password.                                                             |
-| POST   | /api/v1/user/login           | Sign user in with their email & password. A auth token will be returned when login successfully. |
-| PUT    | /api/v1/user/:id/listing/:id | Given the user id & the listing id, update the listing details.                                  |
-| DELETE | /api/v1/user/:id/listing/:id | Given the user id & the listing id, delete the listing.                                          |
+| HTTP   | URI Path                      | Description                                                                                      |
+| ------ | ----------------------------- | ------------------------------------------------------------------------------------------------ |
+| GET    | /api/v1/user/:id              | Given the user id, return that user JSON object.                                                 |
+| GET    | /api/v1/user/:id/listing      | Given the user id, return all listings belonging to this user.                                   |
+| GET    | /api/v1/user/:id/listing/:lid | Given the user id & the listing id, return the matching listing.                                 |
+| POST   | /api/v1/user/registration     | Register user with email & password.                                                             |
+| POST   | /api/v1/user/login            | Sign user in with their email & password. A auth token will be returned when login successfully. |
+| PUT    | /api/v1/user/:id/listing/:lid | Given the user id & the listing id, update the listing details.                                  |
+| DELETE | /api/v1/user/:id/listing/:lid | Given the user id & the listing id, delete the listing.                                          |
 
 ### LISTING
 
