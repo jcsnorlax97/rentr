@@ -6,9 +6,10 @@ import {
   setPersonalListingArray
 } from "../../actions/Profile";
 import {
-  Button,
+  setListingArray
+} from "../../actions/ListingDetail";
+import {
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
@@ -35,7 +36,7 @@ import LocalParkingIcon from '@material-ui/icons/LocalParking';
 import axios from "axios";
 import { trackPromise } from "react-promise-tracker";
 import {RefreshLoader} from "../RefreshLoader";
-import {API_ROOT_GET} from "../../data/urls";
+import {API_ROOT_GET, API_ROOT_POST} from "../../data/urls";
 
 import "../../styles/HomePage.css"
 import "../../styles/Profile.css"
@@ -43,6 +44,12 @@ import "../../styles/Profile.css"
 
 
 class Profile extends Component {
+
+  state = {
+    deleteMessage: false,
+    deleteSuccess: false,
+    deleteWarning: false
+  }
 
   componentDidMount (){
     this.resetDialogStatus()
@@ -64,12 +71,13 @@ class Profile extends Component {
           </ListItemIcon>
           <ListItemText>Profile</ListItemText>
         </MenuItem>
-
+        
         <Dialog
           open = {this.props.dialogStatus}
           onClose = {this.resetDialogStatus}
           maxWidth = "lg"
         >
+          {this.displayDeleteMessage()}
           <DialogTitle className="profile-title">
             My Listings
             <IconButton
@@ -273,33 +281,24 @@ class Profile extends Component {
     )
   }
 
-  removeListing = (event, index) =>{
-    const url = ""
-    const content = {
-      
-    }
-    // axios.post(url, content)
-    // .then(response =>{
-    //   if (response.status === 200){
-
-    //   }
-    //   else{
-
-    //   }
-    // })
-    // .catch(error =>{
-    //   console.log(error)
-    // })
+  fetchGlobalListings = () =>{
+    const url = String(API_ROOT_GET).concat("listing")
+    trackPromise(
+      axios.get(url)
+      .then(response =>{
+        this.props.setListingArray(response.data)
+      })
+    , "fetchListingArea")
   }
 
   checkPrice = (priceString) =>{
     let newPrice = ""
     if (String(priceString).trim().length >= 7){
-      newPrice = parseInt(priceString) / 1000000
+      newPrice = parseInt(parseInt(priceString) / 1000000)
       newPrice = String(newPrice).concat("M")
     }
     else if (String(priceString).trim().length >= 5){
-      newPrice = parseInt(priceString) / 1000
+      newPrice = parseInt(parseInt(priceString) / 1000)
       newPrice = String(newPrice).concat("K")
     }
     else{
@@ -326,17 +325,64 @@ class Profile extends Component {
     return standard.test(newString)
   }
 
+  removeListing = (event, index) =>{
+    if (window.confirm("Are you sure to delete this listing?")){
+      this.setState({
+        deleteMessage: false,
+        deleteSuccess: false,
+        deleteWarning: false
+      })
+      const url = String(API_ROOT_POST).concat(
+        "user/",
+        this.props.cookies.get("userid"),
+        "/listing/",
+        this.props.profileListingArray[index].id
+      )
+      axios.delete(url)
+      .then(response =>{
+        if (response.status === 200){
+          this.setState({
+            deleteMessage: true,
+            deleteSuccess: true,
+            deleteWarning: false
+          })
+          this.fetchListings()
+          this.fetchGlobalListings()
+        }
+        else{
+          this.setState({
+            deleteMessage: true,
+            deleteSuccess: false,
+            deleteWarning: false
+          })
+        }
+      })
+      .catch(error =>{
+        this.setState({
+          deleteMessage: true,
+          deleteSuccess: false,
+          deleteWarning: true
+        })
+      })
+    }
+  }
+
   fetchListings = () =>{
-    // this function should return all the listings associated with a user
-    // axios.get()
-    // .then(response=>{
-      
-    // })
-    const url = String(API_ROOT_GET).concat("listing")
+    const url = String(API_ROOT_POST).concat(
+      "user/",
+      this.props.cookies.get("userid"),
+      "/listing"
+    )
     trackPromise(
       axios.get(url)
       .then(response =>{
         this.props.setPersonalListingArray(response.data)
+        console.log("data returned is:" + response.data)
+      })
+      .catch(error =>{
+        if(error.response.data === "No associated listings." && error.response.status === 404){
+          this.props.setPersonalListingArray([])
+        }
       })
     , "fetchPersonalList")
   }
@@ -344,7 +390,53 @@ class Profile extends Component {
   resetDialogStatus = () =>{
     this.props.setPersonalDialogStatus(false)
     this.props.setPersonalListingArray([])
+    this.setState({
+      deleteMessage: false,
+      deleteSuccess: false,
+      deleteWarning: false
+    })
   }
+
+  displayDeleteMessage = () =>{
+    let alertMessage;
+    if (this.state.deleteSuccess) {
+      alertMessage = (
+        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseDeleteMessage} severity="success">
+          Deletion complete
+        </MuiAlert>
+      )
+    }
+    else if (!this.state.deleteSuccess && !this.state.deleteWarning) {
+      alertMessage = (
+        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseDeleteMessage} severity="error">
+          Deletion was not successful
+        </MuiAlert>
+      )
+    }
+    else if (!this.state.deleteSuccess && this.state.deleteWarning) {
+      alertMessage = (
+        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseDeleteMessage} severity="warning">
+          Server Error, please try again later
+        </MuiAlert>
+      )
+    }
+    return (
+      <Snackbar
+        open={this.state.deleteMessage}
+        autoHideDuration={4000}
+        onClose={this.handleCloseDeleteMessage}
+      >
+        {alertMessage}
+      </Snackbar>
+    )
+  }
+
+  handleCloseDeleteMessage = () => {
+    this.setState({
+      deleteMessage: false
+    })
+  }
+
 }
 
 //REDUX
@@ -359,7 +451,8 @@ const mapStateToProps = state => {
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setPersonalDialogStatus,
-    setPersonalListingArray
+    setPersonalListingArray,
+    setListingArray
   }, dispatch);
 };
 
