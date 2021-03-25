@@ -144,7 +144,7 @@ class Listing extends Component {
                   </span>
 
                   <div className = "listingTextAndIcon">
-                    <div>
+                    <div className = "listingHeader">
 
                       {/* This is for the listing title area */}
                       <div className="listingTitle">
@@ -165,7 +165,7 @@ class Listing extends Component {
                         <span className = "listingIconNumber">
                           {listingDetail.num_bathroom}
                           <Tooltip title = "Washroom">
-                            <BathtubIcon className = "listingIcon" fontSize = "small"/>
+                            <BathtubIcon className = "listingIcon" fontSize = "large"/>
                           </Tooltip>
                         </span>
 
@@ -173,7 +173,7 @@ class Listing extends Component {
                         <span className = "listingIconNumber">
                           {listingDetail.num_bedroom}
                           <Tooltip title = "Bedroom">
-                            <HotelIcon className = "listingIcon" fontSize = "small"/>
+                            <HotelIcon className = "listingIcon" fontSize = "large"/>
                           </Tooltip>
                         </span>
                         
@@ -186,7 +186,7 @@ class Listing extends Component {
                               <LocalLaundryServiceIcon 
                                 style = {{color: "green"}}
                                 className = "listingIcon" 
-                                fontSize = "small"
+                                fontSize = "large"
                               />
                             </Tooltip>
                             :
@@ -194,7 +194,7 @@ class Listing extends Component {
                               <LocalLaundryServiceIcon
                                 style = {{color: "grey"}}
                                 className = "listingIcon" 
-                                fontSize = "small"
+                                fontSize = "large"
                               />
                             </Tooltip>
                           }
@@ -245,11 +245,14 @@ class Listing extends Component {
                             </Tooltip>
                           }
                         </span>
-                        <Divider orientation="vertical" flexItem style={{marginLeft: 'auto'}}/>
-                        <span className="listingPrice">
-                          ${this.checkPrice(listingDetail.price)}
-                        </span>
                       </span>
+                      <Divider orientation="vertical" flexItem style={{marginLeft: 'auto'}}/>
+                      <div
+                        className = "listingPrice"
+                      >
+                        ${this.checkPrice(listingDetail.price)}
+                      </div>
+                      
                     </div>
 
                     <Divider/>

@@ -117,15 +117,7 @@ class HomePage extends Component {
           </Toolbar>
 
         </AppBar>
-        <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
-          <Box borderRight={1} m={1} style={{width:'40%'}}>
-            <HomeContent />
-          </Box>
-          <Box m={1} style={{width: '60%'}}>
-            <ListingViewer />
-          </Box>
-        </Box>
-        
+        <HomeContent />
       </div>
     )
   }
