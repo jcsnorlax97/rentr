@@ -32,7 +32,8 @@ import {
   MenuList,
   MenuItem,
   ListItemIcon,
-  TextField
+  TextField,
+  Box
 } from "@material-ui/core";
 import { Person } from '@material-ui/icons';
 import moment from "moment";
@@ -42,6 +43,7 @@ import CreateListingButton from "../components/CreateListing/CreateListingButton
 import LoginDialogButton from "../components/LoginDialogButton";
 import Profile from "../components/Profile/Profile";
 import AdvancedSearch from "../components/AdvancedSearch";
+import ListingViewer from "../components/ListingViewer/ListingViewer"
 
 import "../styles/HomePage.css"
 
@@ -115,8 +117,14 @@ class HomePage extends Component {
           </Toolbar>
 
         </AppBar>
-          <HomeContent />
-        {/* </div> */}
+        <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
+          <Box borderRight={1} m={1} style={{width:'40%'}}>
+            <HomeContent />
+          </Box>
+          <Box m={1} style={{width: '60%'}}>
+            <ListingViewer />
+          </Box>
+        </Box>
         
       </div>
     )

@@ -1,0 +1,31 @@
+.listingFullDescription{
+    font-size: 14px;
+    word-wrap: break-word;
+    line-height: 1.625;
+}
+
+.listingIconText{
+  margin-right: 5px;
+  margin-bottom: 60px;
+  font-size: larger;
+  font-weight: 300;
+}
+
+.listingPriceText{
+  font-size: 28px;
+  font-weight: 400;
+  color: green;
+}
+
+.sectionPadding{
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.questionQnA{
+  font-size: 17px;
+}
+
+.answerQnA{
+  font-size: 15px;
+}

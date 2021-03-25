@@ -160,17 +160,25 @@ class LoginDialog extends Component {
                   }
                 })
                 .catch(error => {
-                  console.log(error)
                   this.props.setStatus({
                     status: false,
                     token: null,
                     userid: null
                   })
-                  this.setState({
-                    loginMessage: true,
-                    loginSuccess: false,
-                    loginError: true
-                  })
+                  if (error.response.data === "The login email or password is not valid."){
+                    this.setState({
+                      loginMessage: true,
+                      loginSuccess: false,
+                      loginError: false
+                    })
+                  }
+                  else if (error.response.data === "Please check your login info."){
+                    this.setState({
+                      loginMessage: true,
+                      loginSuccess: false,
+                      loginError: true
+                    })
+                  }
                   this.props.setLogging(false)
                 })
             }}
