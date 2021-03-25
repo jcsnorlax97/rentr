@@ -489,6 +489,10 @@ class CreateListingButton extends Component {
   resetDialogStatus = () => {
     this.props.setDialogOpen(false);
     this.props.setImages([]);
+    this.setState({
+      postListingMessage: false,
+      postListingSuccess: false
+    })
   }
 
 }
