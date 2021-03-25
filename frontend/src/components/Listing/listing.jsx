@@ -208,7 +208,7 @@ class Listing extends Component {
                             <Tooltip title = "Pet allowed">
                               <PetsIcon
                                 style={{ color: "green" }}
-                                fontSize = "large"
+                                fontSize = "small"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -216,7 +216,7 @@ class Listing extends Component {
                             <Tooltip title = "Pet NOT allowed">
                               <PetsIcon
                                 style={{ color: "grey" }}
-                                fontSize = "large"
+                                fontSize = "small"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -231,7 +231,7 @@ class Listing extends Component {
                             <Tooltip title = "Parking is included">
                               <LocalParkingIcon
                                 style={{ color: "green" }}
-                                fontSize = "large"
+                                fontSize = "small"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -239,7 +239,7 @@ class Listing extends Component {
                             <Tooltip title = "Parking NOT included">
                               <LocalParkingIcon
                                 style={{ color: "grey" }}
-                                fontSize = "large"
+                                fontSize = "small"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>

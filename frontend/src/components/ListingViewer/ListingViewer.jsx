@@ -88,7 +88,7 @@ class ListingViewer extends Component {
   render() {
     return (
       <div className = "listingContent">
-        <div>
+        <div style={{width:"100%"}}>
           {this.props.listingArray && this.props.listingArray.length !== 0 
           ? 
             this.props.listingArray.slice(1,2).map((listingDetail, index)=>{ // slice and map unnecessary

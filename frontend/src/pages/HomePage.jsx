@@ -118,10 +118,10 @@ class HomePage extends Component {
 
         </AppBar>
         <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
-          <Box borderRight={1} m={1} style={{width:'40%'}}>
+          <Box borderRight={1} m={1} style={{width:'50%'}}>
             <HomeContent />
           </Box>
-          <Box m={1} style={{width: '60%'}}>
+          <Box m={1} style={{width: '50%'}}>
             <ListingViewer />
           </Box>
         </Box>
