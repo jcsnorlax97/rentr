@@ -333,12 +333,13 @@ class Profile extends Component {
         deleteWarning: false
       })
       const url = String(API_ROOT_POST).concat(
-        "user/",
-        this.props.cookies.get("userid"),
-        "/listing/",
+        "listing/",
         this.props.profileListingArray[index].id
       )
-      axios.delete(url)
+      const config = {
+        headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
+      };
+      axios.delete(url, config)
       .then(response =>{
         if (response.status === 200){
           this.setState({
