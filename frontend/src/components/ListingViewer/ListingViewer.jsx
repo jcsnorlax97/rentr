@@ -609,7 +609,7 @@ class ListingViewer extends Component {
     let result = []
     for (let i = 0 ; i < question.replies.length; i++){
       result.push(
-        <div className="answerQnA" style={{backgroundColor: (index % 2 === 0) ? '#EEEFFF' : '#white' }}>
+        <div className="answerQnA" style={{backgroundColor: (i % 2 === 0) ? '#EEEFFF' : '#white' }}>
           {(question.replies[i].userid === this.props.selectedListing.userid)
             ?
             <div className="landlordText">⭐landlord replied:</div>
