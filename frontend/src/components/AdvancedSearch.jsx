@@ -372,9 +372,9 @@ class AdvancedSearch extends Component {
                         <Tooltip title = {
                           values.is_pet_allowed
                           ? 
-                          "Laundry room available" 
+                          "pet is allowed" 
                           : 
-                          "Laundry room not available"
+                          "pet is not allowed"
                         }>
                           <IconButton
                             onClick = {e=>{
@@ -394,9 +394,9 @@ class AdvancedSearch extends Component {
                         <Tooltip title = {
                           values.is_parking_available
                           ? 
-                          "Laundry room available" 
+                          "parking available" 
                           : 
-                          "Laundry room not available"
+                          "parking not available"
                         }>
                           <IconButton
                             onClick = {e=>{

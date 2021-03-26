@@ -7,6 +7,12 @@ import {
   setNumPerPage,
   setListingDetail
 } from "../../actions/ListingDetail";
+import {
+  setImages
+} from "../../actions/CreateListing"
+import {
+  // setlistDetailsImages
+} from "../../actions/ListingDetail"
 import axios from "axios";
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import HotelIcon from '@material-ui/icons/Hotel';
@@ -105,6 +111,7 @@ class Listing extends Component {
                   elevation = {3}
                   style = {{
                     width: "100%",
+                    minWidth: 900,
                     height: 150,
                     marginTop: 16,
                     marginBottom: 16
@@ -115,6 +122,7 @@ class Listing extends Component {
                       open:true, 
                       selectedListing: listingDetail
                     })
+                    this.props.setImages(listingDetail.images)
                   }}
                 >
                   {/* This is for the image area */}
@@ -353,7 +361,9 @@ const matchDispatchToProps = dispatch => {
     setListingArray,
     setPageNum,
     setNumPerPage,
-    setListingDetail
+    setListingDetail,
+    setImages,
+    // setlistDetailsImages
   }, dispatch);
 };
 export default connect(mapStateToProps, matchDispatchToProps)(Listing);
