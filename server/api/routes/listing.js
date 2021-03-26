@@ -25,6 +25,7 @@ router.post(
   validate(listingDto),
   listingController.addListing
 );
+router.get('/:id/comment', listingController.getListingCommentsViaListingId);
 router.post(
   '/:id/chain',
   validateLoggedIn,
