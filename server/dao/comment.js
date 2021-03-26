@@ -16,6 +16,19 @@ class CommentDao {
     const commentId = rows[0].id;
     return commentId;
   };
+
+  getCommentsViaListingId = async (listingId) => {
+    const res = await this.dbPool.query(
+      `
+        SELECT * 
+        FROM rentr_comment
+        WHERE listingid = $1;
+      `,
+      [listingId]
+    );
+    const { rows } = res;
+    return rows;
+  };
 }
 
 module.exports = CommentDao;

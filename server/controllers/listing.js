@@ -1,8 +1,9 @@
 const ApiError = require('../error/api-error');
 
 class ListingController {
-  constructor({ listingService }) {
+  constructor({ listingService, commentService }) {
     this.listingService = listingService;
+    this.commentService = commentService;
   }
 
   addListing = async (req, res, next) => {
@@ -35,6 +36,18 @@ class ListingController {
         return;
       }
       res.status(200).json(listing);
+    } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
+
+  getListingCommentsViaListingId = async (req, res, next) => {
+    try {
+      const listingId = req.params.id;
+      const comments = await this.commentService.getCommentsViaListingId(
+        listingId
+      );
+      res.status(200).json(comments);
     } catch (err) {
       next(ApiError.internal(`${err}`));
     }
