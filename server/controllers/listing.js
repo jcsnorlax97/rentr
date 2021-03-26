@@ -9,6 +9,11 @@ class ListingController {
 
   addListing = async (req, res, next) => {
     try {
+      // quick fix that does not require front-end to change in sprint 3
+      // shd refactor this in sprint 4!
+      const loggedInUserId = req.userData.userId;
+      req.body.userid = loggedInUserId;
+
       const listingId = await this.listingService.addListing(req.body);
       res.status(201).json({
         message: `Listing has been added successfully!`,
