@@ -1,8 +1,10 @@
 const ApiError = require('../error/api-error');
 
 class ListingController {
-  constructor({ listingService }) {
+  constructor({ listingService, chainService, commentService }) {
     this.listingService = listingService;
+    this.chainService = chainService;
+    this.commentService = commentService;
   }
 
   addListing = async (req, res, next) => {
@@ -35,6 +37,51 @@ class ListingController {
         return;
       }
       res.status(200).json(listing);
+    } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
+
+  createListingChainViaListingId = async (req, res, next) => {
+    try {
+      const user = req.userData;
+      const { userId } = user;
+      const listingId = req.params.id;
+
+      const { chainId, commentId } = await this.chainService.createChain(
+        userId,
+        listingId,
+        req.body
+      );
+
+      res.status(201).json({
+        message: `Chain has been created successfully!`,
+        chainId: `${chainId}`,
+        commentId: `${commentId}`,
+      });
+    } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
+
+  createListingChainCommentViaListingIdAndChainId = async (req, res, next) => {
+    try {
+      const user = req.userData;
+      const { userId } = user;
+      const listingId = req.params.id;
+      const chainId = req.params.chainid;
+
+      const commentId = await this.commentService.createComment(
+        userId,
+        listingId,
+        chainId,
+        req.body
+      );
+
+      res.status(201).json({
+        message: `Comment has been created successfully!`,
+        commentId: `${commentId}`,
+      });
     } catch (err) {
       next(ApiError.internal(`${err}`));
     }
