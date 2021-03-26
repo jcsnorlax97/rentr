@@ -33,3 +33,9 @@ export const setReadOnly = (inputBool) =>{
   }
 }
 
+export const setQnAInfo = (inputObj) =>{
+  return{
+    type: "SETQNA_INFO",
+    payload: inputObj
+  }
+}

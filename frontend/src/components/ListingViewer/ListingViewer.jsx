@@ -5,12 +5,12 @@ import {
   setListingArray,
   setPageNum,
   setNumPerPage,
-  setListingDetail
+  setListingDetail,
+  setQnAInfo
 } from "../../actions/ListingDetail";
 import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-import ImageUploader from "../ImageUpload/ImageUploader";
 
 import {
   Button,
@@ -34,6 +34,7 @@ import LocalParkingIcon from '@material-ui/icons/LocalParking';
 import {dropdownNumberOptions} from "../../data/dropdownData";
 import {API_ROOT_POST, API_ROOT_GET} from "../../data/urls";
 
+import ImageUploader from "../ImageUpload/ImageUploader";
 import "../../styles/ListingView.css";
 import "../../styles/Listing.css";
 
@@ -42,10 +43,16 @@ class ListingViewer extends Component {
   state = {
     updateListingMessage: false,
     updatelistingSuccess: false,
+    qnaInfo: []
   }
   componentDidMount (){
-    console.log(this.props.showListingDetail)
-    console.log(this.props.selectedListing)
+    this.fetchQnAInfo(this.props.selectedListing.id)
+  }
+
+  componentDidUpdate (prevProps, prevState){
+    if (prevProps.selectedListing.id !== this.props.selectedListing.id){
+      this.fetchQnAInfo(this.props.selectedListing.id)
+    }
   }
 
   fetchListing = () =>{
@@ -468,10 +475,80 @@ class ListingViewer extends Component {
             )
           }}
         </Formik>
+
+        <div className="listingIconText" style={{marginTop:'10px', paddingBottom:'20px', display: 'inline'}}>
+          Questions and Answers:
+            {this.props.qnaInfo !== null && this.props.qnaInfo.length !== 0
+            ?
+            this.props.qnaInfo.map((question, index) => {
+              return (
+                <div className = "sectionPadding">
+                  <div className="questionQnA">Q: {question.questionBody}
+                  
+                      {question.replies.map((answer, index) => {
+                        return (
+                          <div className="answerQnA" style={{backgroundColor: (index % 2 === 0) ? '#EEEFFF' : '#white' }}>
+                            {(answer.userid === listingDetail.userid)
+                              ?
+                              <div className="landlordText">⭐landlord replied:</div>
+                              :
+                              <div className="userText">user replied:</div>
+                            }
+                            - {answer.content}
+                          </div>
+                        );
+                      })}
+                      <div style={{width:'70%'}}>
+                        <TextField className="replyField" label="Reply to thread" variant="outlined" size="small"
+                          fullWidth multiline
+                          style={{ marginLeft: '32px', marginTop: '10px', marginBottom: '10px', display:'block'}}
+                          inputProps={{ maxLength: 100 }} />
+                      </div>
+                    </div>
+                </div>
+              );
+            })
+            : null
+          }
+          <div style={{ marginTop: '10px' }}>Didn't find your answer? Post a question!</div>
+          <div style={{width:'60%'}}>
+            <TextField label="Add question" variant="outlined" size="small" multiline fullWidth
+              style={{ marginLeft: '15px', marginTop: '10px', display: 'block' }}
+              inputProps={{ maxLength: 100 }}
+            />
+          </div>
+        </div>
       </Paper>
     )
   } // end of render
 
+  fetchQnAInfo(listingId) {
+    const url = String(API_ROOT_GET).concat("listing/" + listingId.toString() + "/comment")
+    let result = [];
+    let chainid = -1
+    axios.get(url)
+    .then(response => {
+      const comments = response.data
+      for (let i = 0; i < comments.length; i++){
+        //start of a new question
+        if (chainid !== comments[i].chainid){
+          chainid = comments[i].chainid
+          result.push({
+            questionBody: String(comments[i].comment).split("|")[1],
+            chainid : comments[i].chainid,
+            replies: []
+          })
+        }
+        else{
+          result[chainid-1].replies.push({
+            userid: comments[i].userid,
+            content: String(comments[i].comment).split("|")[1]
+          })
+        }
+      }
+      this.props.setQnAInfo(result)
+    })
+  }
 
 }
 
@@ -486,6 +563,7 @@ const mapStateToProps = state => {
     readOnly: state.listingDetail.readOnly,
     cookies: state.homeContent.cookies,
     images: state.createListingContent.images,
+    qnaInfo: state.listingDetail.qnaInfo
   };
 };
 
@@ -494,7 +572,8 @@ const matchDispatchToProps = dispatch => {
     setListingArray,
     setPageNum,
     setNumPerPage,
-    setListingDetail
+    setListingDetail,
+    setQnAInfo
   }, dispatch);
 };
 export default connect(mapStateToProps, matchDispatchToProps)(ListingViewer);
