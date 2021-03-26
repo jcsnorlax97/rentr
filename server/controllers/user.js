@@ -116,34 +116,6 @@ class UserController {
       next(ApiError.internal(`${err}`));
     }
   };
-
-  // updateListingViaUserIDAndListingID = async (req, res, next) => {
-  //   try {
-  //     await this.listingService.updateListing(
-  //       req.params.id,
-  //       req.params.lid,
-  //       req.body
-  //     );
-
-  //     res.status(200).json({
-  //       message: `Listing has been updated successfully!`,
-  //     });
-  //   } catch (err) {
-  //     next(ApiError.internal(`${err}`));
-  //   }
-  // };
-
-  // deleteListingViaUserIDAndListingID = async (req, res, next) => {
-  //   try {
-  //     await this.listingService.deleteListing(req.params.id, req.params.lid);
-
-  //     res.status(200).json({
-  //       message: `Listing has been deleted successfully!`,
-  //     });
-  //   } catch (err) {
-  //     next(ApiError.internal(`${err}`));
-  //   }
-  // };
 }
 
 module.exports = UserController;

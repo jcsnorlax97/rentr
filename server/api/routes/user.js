@@ -15,13 +15,5 @@ router.get(
   '/:id/listing/:lid',
   userController.getUserListingViaUserAndListingID
 );
-// router.put(
-//   '/:id/listing/:lid',
-//   userController.updateListingViaUserIDAndListingID
-// );
-// router.delete(
-//   '/:id/listing/:lid',
-//   userController.deleteListingViaUserIDAndListingID
-// );
 
 module.exports = router;
