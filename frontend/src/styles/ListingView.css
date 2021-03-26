@@ -1,7 +1,7 @@
 .listingFullDescription{
-    font-size: 14px;
-    word-wrap: break-word;
-    line-height: 1.625;
+  font-size: 14px;
+  word-wrap: break-word;
+  line-height: 1.625;
 }
 
 .listingIconText{
@@ -16,7 +16,6 @@
 }
 
 .listingPriceText{
-  margin-left: 16px;
   font-size: 28px;
   font-weight: 400;
   color: green;
@@ -29,10 +28,40 @@
 
 .questionQnA{
   font-size: 17px;
+  margin-left: 14px;
+  font-weight: 500;
 }
 
 .answerQnA{
   font-size: 15px;
+  margin-left: 28px;
+  font-weight: 450;
+}
+
+.landlordText{
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.userText{
+  font-size: 12px;
+  font-weight: 450;
+  margin-top: 4px;
+}
+
+
+.replyField{
+  font-size: 12px;
+  margin-top: 4px;
+  margin-left: 32px;
+}
+
+
+.listingDetailHeader{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 }
 
 .listingDetailHeader{
