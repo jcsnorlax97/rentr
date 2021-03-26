@@ -244,3 +244,151 @@
   - Continue/complete existing work
   - Integration
   - Testing
+
+
+## Sprint 3
+
+### Week 7: meeting 1
+
+##### March 1st, 2021 (Monday)
+- Participants: all team members
+
+- What we discussed: 
+  - User Story -> Task Breakdown
+    - Continuous vs Instant -> chose instant breakdown i.e. we make all user stories into dev tasks in the next 2 days instead of as we go.
+    - Back/Front end teams break down one UStory into DevTasks.
+      - Justin and Mike -> Search Feature
+      - Azizul and Nathan -> Modification
+      - Ronnie -> QnA -> Front End dev tasks Reviewed by Nathan and Mike
+    - Follow Justin's template in #sprint_3 for DevTasks
+    - Updated on Github issues By Wed 11:59 PM
+    - (Sidenote) We discussed Ronnie working on figuring out how to associate Users with Listings while the others convert US->DT but we decided against it. 
+
+- TODO:
+    - Everything needs to be completed by Wed 5 PM
+    - Next Meetings: Tue March 2, 5:00 PM to assess the status and discuss any hurdles.
+
+### Week 7: meeting 2
+
+##### Mar 2, 2021 (Tuesday)
+- Participants: all team members
+
+- What we discussed: 
+  - Discussed status of UStory -> DTask conversions
+    - Possibility of front end implemented search
+      - Justin will proceed with analyzing back-end search functionality
+      - Mike will look into frontend implemented search
+  - Modification will need a new field with special visibilities
+    - Aziz will finalize backend modification
+    - Nathan will finalise frontend modification
+  - QnA has 3 core parts
+    - Ronnie will finalize backend tasks and attempt to make frontend tasks
+
+- TODO:
+  - Evaluate all tasks tomorrow and decide implementations
+  - Next Meeting: Wednesday, March 3, 5:00 PM
+
+### Week 7: meeting 3
+
+##### Mar 3, 2021 (Tuesday)
+- Participants: all team members
+
+- What we discussed: 
+  - Discussed all the dev tasks
+  - Evaluated them and finalized the implementation
+
+- TODO:
+  - Picking up the dev task that suits according to our choice
+
+### Week 8: meeting 1
+
+##### Mar 8, 2021 (Monday)
+- Participants: all team members
+
+- What we discussed: 
+  - Discussed the progress of our dev tasks
+  - Discussed the time required for the assigned task 
+
+- TODO:
+  - Progressing with the task and finish it in an appropriate timeline.
+
+### Week 9: meeting 1
+
+##### Mar 16, 2021 (Tuesday)
+- Participants: all team members
+
+- What we discussed: 
+  - Discussed current tasks for everyone.
+    - Ronnie: presentation draft and MyListings backend
+    - Justin: Search backend
+    - Aziz: Modify backend
+    - Nathan: Componentisation
+    - Mike: MyListings frontend
+  - Presentation Outline:
+    - Basic overview of Rentr and Tech Stack
+    - Postman usage
+    - Heroku deployment
+    - Front end specifics 
+
+- TODO:
+  - Polish the slides for presentation.
+
+### Week 9: meeting 2
+
+##### Mar 17, 2021 (Wednesday)
+- Participants: all team members
+
+- What we discussed: 
+  - Finished the final edit for the presentation 
+
+- TODO:
+  - Practice the presentation a few times to deliver that smoothly.
+
+### Week 10: meeting 1
+
+##### Mar 22, 2021 (Monday)
+- Participants: all team members
+
+- What we discussed: 
+  - Discussed the progress of newly taken tasks
+  - Discussed the backend part of the update and delete functionalities
+
+- TODO:
+  - Have to implement mylist in the backend which will be the basis for update and delete 
+
+### Week 10: meeting 2
+
+##### Mar 23, 2021 (Tuesday)
+- Participants: all team members
+
+- What we discussed: 
+  - Discussed the backend part of the search functionalities
+
+- TODO:
+  - Focus on the individual user stories and try to finish as much as possible. 
+
+### Week 10: meeting 3
+
+##### Mar 24, 2021 (Wednesday)
+- Participants: all team members
+
+- What we discussed: 
+  - Discussed the backend part of the comment section, replies, and chaining of comments
+
+- TODO:
+  - Have to create another table in the database for comments and chain of comments
+
+### Week 10: meeting 3
+
+##### Mar 25, 2021 (Thursday)
+- Participants: all team members
+
+- What we discussed: 
+  - Ronnie: Acceptance tests-> finalize software to use-> start with acc test for registration
+  - Justin: GET req for QnA, UserID consistency bug,
+  - Aziz: Delete route for modifying feature (needs Justin's POST routes from QnA),
+  - Nathan: QnA Section frontend
+  - Mike: work on modify listing
+
+- TODO:
+  - Finalize all the tasks and finish by tomorrow morning
