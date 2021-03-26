@@ -43,9 +43,9 @@ class ListingController {
 
   getListingCommentsViaListingId = async (req, res, next) => {
     try {
-      const listinId = req.params.id;
+      const listingId = req.params.id;
       const comments = await this.commentService.getCommentsViaListingId(
-        listinId
+        listingId
       );
       res.status(200).json(comments);
     } catch (err) {
