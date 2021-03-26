@@ -17,19 +17,9 @@ import "../../styles/CreateListing.css"
 
 
 class ImageUploader extends Component {
-  state = {
-    images: []
-  }
-
-  setImages = (inputFiles) =>{
-    this.setState({
-      images: inputFiles
-    })
-  }
   
   onChange = (imageList, addUpdateIndex) => {
     console.log(imageList, addUpdateIndex);
-    this.setImages(imageList);
     this.props.setImages(imageList)
   };
 
@@ -59,7 +49,7 @@ class ImageUploader extends Component {
               imageList[i]
               ?
                 <img 
-                  src={imageList[i].data_url}
+                  src={imageList[i].data_url || imageList[i]}
                   alt="" 
                   className = "image"
                 />
@@ -112,7 +102,7 @@ class ImageUploader extends Component {
     return(
       <ImageUploading
         multiple
-        value={this.state.images}
+        value={this.props.images}
         onChange={this.onChange}
         maxNumber={3}
         dataURLKey="data_url"

@@ -1,7 +1,13 @@
 const initialState = {
   listingArray: [],
   pageNum: 1,
-  numPerPage: 5
+  numPerPage: 5,
+  showListingDetail: false,
+  selectedListing: {},
+  readOnly: false,
+  qnaInfo: null,
+  comment: "",
+  newQuestion: ""
 }
 
 export const listingDetailReducer = (state = initialState, action) => {
@@ -12,6 +18,16 @@ export const listingDetailReducer = (state = initialState, action) => {
       return {...state, pageNum: action.payload};
     case "SET_NUMPERPAGE":
       return {...state, numPerPage: action.payload};
+    case "SET_READONLY":
+      return {...state, readOnly: action.payload};
+    case "SETQNA_INFO":
+      return {...state, qnaInfo: action.payload};
+    case "SET_NEWQUESTION":
+      return {...state, newQuestion: action.payload};
+    case "SET_COMMENT":
+      return {...state, comment: action.payload};
+    case "EXHIBIT_LISTING_DETAIL":
+      return {...state, showListingDetail: action.payload.open, selectedListing: action.payload.selectedListing}
     default: 
 			return state;
   }

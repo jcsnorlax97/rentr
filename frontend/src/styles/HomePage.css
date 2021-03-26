@@ -16,6 +16,7 @@
 /* This is to adjust the header on the home page*/
 #homePage_Header{
   background-color: #131921;
+  min-width: 1500px;
 }
 
 
@@ -164,4 +165,11 @@
 .loggedInUserMenusExpand{
   display: flex;
   flex-direction: column;
+}
+
+.ListingDetail-Home{
+  width: 40%;
+  margin: 20px;
+  min-width: 600px;
+  border-left: 2px solid black;
 }

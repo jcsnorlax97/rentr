@@ -4,22 +4,35 @@ import { bindActionCreators } from "redux";
 import {
   setListingArray,
   setPageNum,
-  setNumPerPage
+  setNumPerPage,
+  setListingDetail,
+  setReadOnly
 } from "../../actions/ListingDetail";
+import {
+  setImages
+} from "../../actions/CreateListing"
+import {
+  // setlistDetailsImages
+} from "../../actions/ListingDetail"
 import axios from "axios";
-import Paper from '@material-ui/core/Paper';
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import HotelIcon from '@material-ui/icons/Hotel';
 import LocalLaundryServiceIcon from '@material-ui/icons/LocalLaundryService';
 import PetsIcon from '@material-ui/icons/Pets';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import Divider from '@material-ui/core/Divider';
-import Tooltip from '@material-ui/core/Tooltip';
-import { Typography } from "@material-ui/core";
+import { 
+  Typography,
+  Divider,
+  Tooltip,
+  Paper
+} from "@material-ui/core";
 import Pagination from '@material-ui/lab/Pagination';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import LocalParkingIcon from '@material-ui/icons/LocalParking';
 import {API_ROOT_GET} from "../../data/urls";
+import { trackPromise } from "react-promise-tracker";
+import {RefreshLoader} from "../RefreshLoader";
+import ListingViewer from "../ListingViewer/ListingViewer"
 
 import "../../styles/Listing.css";
 
@@ -29,12 +42,18 @@ class Listing extends Component {
     this.fetchListing();
   }
 
+  componentWillUnmount(){
+    this.props.setListingArray([])
+  }
+
   fetchListing = () =>{
     const url = String(API_ROOT_GET).concat("listing")
-    axios.get(url)
-    .then(response =>{
-      this.props.setListingArray(response.data)
-    })
+    trackPromise(
+      axios.get(url)
+      .then(response =>{
+        this.props.setListingArray(response.data)
+      })
+    , "fetchListingArea")
   }
 
   checkImageValid = (imgString) =>{
@@ -63,11 +82,11 @@ class Listing extends Component {
   checkPrice = (priceString) =>{
     let newPrice = ""
     if (String(priceString).trim().length >= 7){
-      newPrice = parseInt(priceString) / 1000000
+      newPrice = parseInt(parseInt(priceString) / 1000000)
       newPrice = String(newPrice).concat("M")
     }
     else if (String(priceString).trim().length >= 5){
-      newPrice = parseInt(priceString) / 1000
+      newPrice = parseInt(parseInt(priceString) / 1000)
       newPrice = String(newPrice).concat("K")
     }
     else{
@@ -79,10 +98,7 @@ class Listing extends Component {
   render() {
     return (
       <div className = "listingContent">
-        <div className="leftPanel">
-          {/* {this.props.listingArray.map(listingDetail, index) => (
-
-          )} */}
+        <div className={this.props.showListingDetail ? "leftPanel-withDetails": "leftPanel-noDetails"}>
           {this.props.listingArray && this.props.listingArray.length !== 0 
           ? 
             this.props.listingArray
@@ -96,12 +112,25 @@ class Listing extends Component {
                   elevation = {3}
                   style = {{
                     width: "100%",
-                    minWidth: 600,
+                    minWidth: 900,
                     height: 150,
                     marginTop: 16,
                     marginBottom: 16
                   }}
                   className = "individualListingContent"
+                  onClick = {()=>{
+                    this.props.setListingDetail({
+                      open:true, 
+                      selectedListing: listingDetail
+                    })
+                    this.props.setImages(listingDetail.images)
+                    if (this.props.cookies.get("userid") !== String(listingDetail.userid)){
+                      this.props.setReadOnly(true)
+                    }
+                    else{
+                      this.props.setReadOnly(false)
+                    }
+                  }}
                 >
                   {/* This is for the image area */}
                   <span className = "listingImageArea">
@@ -125,17 +154,16 @@ class Listing extends Component {
                           alt="apartment"
                         />
                     }
-                      
                   </span>
 
                   <div className = "listingTextAndIcon">
-                    <span className = "listingHeader">
-                    
-                      {/* This is for the listing title area */}
-                      <span className = "listingTitle">
-                        {listingDetail.title}
-                      </span>
+                    <div className = "listingHeader">
 
+                      {/* This is for the listing title area */}
+                      <div className="listingTitle">
+                        {listingDetail.title}
+                      </div>
+                      
                       <Typography
                         type="title"
                         color="inherit" 
@@ -143,7 +171,7 @@ class Listing extends Component {
                           flex: 1 
                         }}
                       />
-                
+                      
                       {/* This is for the listing icon area */}
                       <span className = "listingIconGroup">
                         {/* number of washrooms*/}
@@ -192,14 +220,16 @@ class Listing extends Component {
                             ? 
                             <Tooltip title = "Pet allowed">
                               <PetsIcon
-                                style = {{color: "green"}}
+                                style={{ color: "green" }}
+                                fontSize = "large"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
                             :
                             <Tooltip title = "Pet NOT allowed">
                               <PetsIcon
-                                style = {{color: "grey"}}
+                                style={{ color: "grey" }}
+                                fontSize = "large"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
@@ -213,31 +243,30 @@ class Listing extends Component {
                             ? 
                             <Tooltip title = "Parking is included">
                               <LocalParkingIcon
-                                style = {{color: "green"}}
+                                style={{ color: "green" }}
+                                fontSize = "large"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
                             :
                             <Tooltip title = "Parking NOT included">
                               <LocalParkingIcon
-                                style = {{color: "grey"}}
+                                style={{ color: "grey" }}
+                                fontSize = "large"
                                 className = "listingIconNumber"
                               />
                             </Tooltip>
                           }
                         </span>
-
                       </span>
-                      
-                      <Divider orientation="vertical" flexItem />
-
+                      <Divider orientation="vertical" flexItem style={{marginLeft: 'auto'}}/>
                       <div
                         className = "listingPrice"
                       >
                         ${this.checkPrice(listingDetail.price)}
                       </div>
-
-                    </span>
+                      
+                    </div>
 
                     <Divider/>
 
@@ -260,9 +289,8 @@ class Listing extends Component {
                 marginBottom: 16
               }}
             >
-              <h2>
-                No listing information at the moment
-              </h2>
+              {/* {No listing information at the moment} */}
+              <RefreshLoader area = "fetchListingArea"/>
             </Paper>
           }
           {/* <img
@@ -294,18 +322,23 @@ class Listing extends Component {
             </div>
           </div>
         </div>
-
-        <div className = "rightPanel">
-          <Tooltip title = "back to top">
-            <ExpandLessIcon
-              fontSize = "large"
-              className = "scrollTopIcon"
-              onClick = {()=>{
-                window.scrollTo({top: 0, behavior: "smooth"})
-              }}
-            />
-          </Tooltip>
-        </div>
+        
+        {this.props.showListingDetail
+        ? 
+          <div className = "ListingDetail-Home">
+            <ListingViewer/>
+          </div>
+        : <div className = "rightPanel"/>
+        }
+        <Tooltip title = "back to top">
+          <ExpandLessIcon
+            fontSize = "large"
+            className = "scrollTopIcon"
+            onClick = {()=>{
+              window.scrollTo({top: 0, behavior: "smooth"})
+            }}
+          />
+        </Tooltip>
       </div>
     )
   } // end of render
@@ -324,7 +357,10 @@ const mapStateToProps = state => {
   return {
     listingArray: state.listingDetail.listingArray,
     pageNum: state.listingDetail.pageNum,
-    numPerPage: state.listingDetail.numPerPage
+    numPerPage: state.listingDetail.numPerPage,
+    showListingDetail: state.listingDetail.showListingDetail,
+    selectedListing: state.listingDetail.selectedListing,
+    cookies: state.homeContent.cookies,
   };
 };
 
@@ -332,7 +368,11 @@ const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setListingArray,
     setPageNum,
-    setNumPerPage
+    setNumPerPage,
+    setListingDetail,
+    setImages,
+    setReadOnly
+    // setlistDetailsImages
   }, dispatch);
 };
 export default connect(mapStateToProps, matchDispatchToProps)(Listing);

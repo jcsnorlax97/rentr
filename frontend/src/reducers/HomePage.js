@@ -1,3 +1,5 @@
+import Cookies from "universal-cookie"
+
 const initialState = {
   userEmail: "",
   logging: false,
@@ -5,7 +7,10 @@ const initialState = {
   loginDialogOpen: false,
   registerDialogOpen: false,
   status: false,
-  token: ""
+  cookies: new Cookies(),
+  searchFieldError: false,
+  searchFieldValue: "",
+  searchCategory: ""
 }
 
 export const homeReducer = (state = initialState, action) => {
@@ -21,9 +26,22 @@ export const homeReducer = (state = initialState, action) => {
     case "SET_REGISTER_DIALOG":
       return {...state, registerDialogOpen: action.payload};
     case "SET_STATUS":
-      return {...state, status: action.payload};
-    case "SET_TOKEN":
-      return {...state, token: action.payload};
+      if (action.payload.status === true){
+        state.cookies.set("status", action.payload.token, { expires: 0, path:'/' })
+        state.cookies.set("userid", action.payload.userid, { expires: 0, path:'/' })
+      }
+      else if (action.payload.status === false){
+        state.cookies.remove("status")
+      }
+      return {...state, status: action.payload.status};
+    // case "SET_TOKEN":
+    //   return {...state, token: action.payload};
+    case "SET_SEARCH_ERROR":
+      return {...state, searchFieldError: action.payload};
+    case "SET_SEARCH_VALUE":
+      return {...state, searchFieldValue: action.payload};
+    case "SET_SEARCH_CATEGORY":
+      return {...state, searchCategory: action.payload};
     default: 
 			return state;
   }
