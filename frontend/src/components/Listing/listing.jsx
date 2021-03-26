@@ -5,7 +5,8 @@ import {
   setListingArray,
   setPageNum,
   setNumPerPage,
-  setListingDetail
+  setListingDetail,
+  setReadOnly
 } from "../../actions/ListingDetail";
 import {
   setImages
@@ -123,6 +124,12 @@ class Listing extends Component {
                       selectedListing: listingDetail
                     })
                     this.props.setImages(listingDetail.images)
+                    if (this.props.cookies.get("userid") !== String(listingDetail.userid)){
+                      this.props.setReadOnly(true)
+                    }
+                    else{
+                      this.props.setReadOnly(false)
+                    }
                   }}
                 >
                   {/* This is for the image area */}
@@ -352,7 +359,8 @@ const mapStateToProps = state => {
     pageNum: state.listingDetail.pageNum,
     numPerPage: state.listingDetail.numPerPage,
     showListingDetail: state.listingDetail.showListingDetail,
-    selectedListing: state.listingDetail.selectedListing
+    selectedListing: state.listingDetail.selectedListing,
+    cookies: state.homeContent.cookies,
   };
 };
 
@@ -363,6 +371,7 @@ const matchDispatchToProps = dispatch => {
     setNumPerPage,
     setListingDetail,
     setImages,
+    setReadOnly
     // setlistDetailsImages
   }, dispatch);
 };

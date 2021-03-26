@@ -25,3 +25,11 @@ export const setListingDetail = (inputObj) =>{
     payload: inputObj
   }
 }
+
+export const setReadOnly = (inputBool) =>{
+  return{
+    type: "SET_READONLY",
+    payload: inputBool
+  }
+}
+

@@ -135,7 +135,21 @@ class ListingViewer extends Component {
           ${this.checkPrice(listingDetail.price)} per month
         </div>
         <div className = "listingDetailImageUploader">
-          <ImageUploader />
+          {this.props.readOnly 
+          ?
+            this.props.images.map((image, index)=>{
+              return(
+                <img 
+                  key = {index}
+                  src={image.data_url || image}
+                  alt="" 
+                  className = "image"
+                />
+              )
+            })
+          : <ImageUploader />
+          }
+          
         </div>
         <Formik
           enableReinitialize
@@ -253,7 +267,10 @@ class ListingViewer extends Component {
                     name="title"
                     fullWidth
                     type="text"
-                    inputProps={{ maxLength: 100 }}
+                    inputProps={{ 
+                      maxLength: 100,
+                      readOnly: this.props.readOnly
+                    }}
                     value = {values.title}
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -264,6 +281,7 @@ class ListingViewer extends Component {
                 
                 <div className="listingdetail-textContent">
                   <TextField
+                    
                     label = "description"
                     name="description"
                     multiline
@@ -271,7 +289,10 @@ class ListingViewer extends Component {
                     rows={8}
                     margin="dense"
                     type="text"
-                    inputProps={{ maxLength: 5000 }}
+                    inputProps={{ 
+                      maxLength: 5000,
+                      readOnly: this.props.readOnly
+                    }}
                     value = {values.description}
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -285,14 +306,17 @@ class ListingViewer extends Component {
                     <HotelIcon className = "listingIcon" fontSize = "large"/>
                   </Tooltip>
                   <TextField
-                    disabled={this.props.creatingListing}
+                    
                     label = "bedroom"
                     name="num_bedroom"
                     variant="outlined"
                     margin="dense"
                     select
                     style = {{width: 150, marginRight: 30}}
-                    inputProps={{ color: 'green' }}
+                    inputProps={{ 
+                      color: 'green',
+                      readOnly: this.props.readOnly
+                    }}
                     value = {values.num_bedroom}
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -310,7 +334,9 @@ class ListingViewer extends Component {
                     <BathtubIcon className = "listingIcon" fontSize = "large"/>
                   </Tooltip>
                   <TextField
-                    disabled={this.props.creatingListing}
+                    inputProps={{
+                      readOnly: this.props.readOnly
+                    }}
                     label = "washroom"
                     name="num_bathroom"
                     variant="outlined"
@@ -334,7 +360,9 @@ class ListingViewer extends Component {
                 <div className = "secondLine">
                   <AttachMoneyIcon fontSize = "large" style = {{paddingTop: "10px"}}/>
                   <TextField
-                    disabled={this.props.creatingListing}
+                    inputProps={{
+                      readOnly: this.props.readOnly
+                    }}
                     label = "price"
                     name="price"
                     type="number"
@@ -354,7 +382,9 @@ class ListingViewer extends Component {
                   }>
                     <IconButton
                       onClick = {e=>{
-                        setFieldValue('is_laundry_available', !values.is_laundry_available)
+                        if (!this.props.readOnly){
+                          setFieldValue('is_laundry_available', !values.is_laundry_available)
+                        }
                       }}
                     >
                       <LocalLaundryServiceIcon 
@@ -376,7 +406,9 @@ class ListingViewer extends Component {
                   }>
                     <IconButton
                       onClick = {e=>{
-                        setFieldValue('is_pet_allowed', !values.is_pet_allowed)
+                        if (!this.props.readOnly){
+                          setFieldValue('is_pet_allowed', !values.is_pet_allowed)
+                        }
                       }}
                     >
                       <PetsIcon 
@@ -398,7 +430,9 @@ class ListingViewer extends Component {
                   }>
                     <IconButton
                       onClick = {e=>{
-                        setFieldValue('is_parking_available', !values.is_parking_available)
+                        if (!this.props.readOnly){
+                          setFieldValue('is_parking_available', !values.is_parking_available)
+                        }
                       }}
                     >
                       <LocalParkingIcon 
@@ -413,6 +447,9 @@ class ListingViewer extends Component {
                 </div>
 
                 <DialogActions className="listingDetail-submitSection">
+                  {this.props.readOnly 
+                  ? null
+                  :
                   <Button 
                     style = {{
                       backgroundColor: "#f0c14b",
@@ -424,6 +461,8 @@ class ListingViewer extends Component {
                   >
                     Update
                   </Button>
+                  }
+                  
                 </DialogActions>
               </form>
             )
@@ -444,6 +483,7 @@ const mapStateToProps = state => {
     numPerPage: state.listingDetail.numPerPage,
     showListingDetail: state.listingDetail.showListingDetail,
     selectedListing: state.listingDetail.selectedListing,
+    readOnly: state.listingDetail.readOnly,
     cookies: state.homeContent.cookies,
     images: state.createListingContent.images,
   };
