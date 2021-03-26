@@ -1,7 +1,8 @@
 describe('Correct Email Login', function (){
     
     it('Find Login Button', function(){
-        cy.visit('https://rentr-front-end.herokuapp.com/')
+        // cy.visit('https://rentr-front-end.herokuapp.com/')
+        cy.visit('https://localhost/')
         cy.get('[id="homePage_Header_Login"]').should('contain','Log In').click()
     })
     it('Enter login info', function(){
@@ -85,7 +86,7 @@ describe('Add Listing', function(){
             .click()
         
         cy.get('[class="MuiAlert-message"]')
-            // .should('contain', 'Your posting is submitted successfully')
+            .should('contain', 'Your posting is submitted successfully')
 
     })
 
