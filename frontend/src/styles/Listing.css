@@ -7,7 +7,13 @@
 
 .leftPanel-withDetails{
   margin-left: 16px;
-  margin-right: 16px;
+  width: 60%;
+  height: 100%;
+}
+
+.leftPanel-noDetails{
+  margin-left: 16px;
+  width: 100%;
   height: 100%;
 }
 
@@ -41,31 +47,50 @@
   height: 100%;
 }
 
+.listingHeader{
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+}
+
 .listingTitle{
-  font-size: 18px;
+  font-size: 26px;
   font-weight: 700;
-  margin-top: 10px;
-  margin-bottom: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .listingIconNumber{
   display: flex;
+  align-items: center;
   margin-left: 5px;
   margin-right: 5px;
-  align-items: center;
+  font-size: large;
+  width: 50px;
   font-weight: 500;
+}
+
+.listingIconNumber>
+.MuiSvgIcon-root.listingIcon.MuiSvgIcon-fontSizeLarge{
+  margin: auto;
 }
 
 .listingPrice{
   height: 100%;
-  font-size: 20px;
-  font-weight: 750;
+  width: 80px;
+  font-size: 26px;
+  font-weight: 700;
   color: green;
   padding-left: 10px;
   padding-right: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .listingIcon{
@@ -74,14 +99,15 @@
 }
 
 .listingIconGroup{
-  width: 100%;
+  width: 270px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  float:right;
 }
 
 .listingDescription{
-  font-size: 14px;
+  font-size: 16px;
   display: -webkit-box;
   max-width: 100%;
   height: 68px;

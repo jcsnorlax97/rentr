@@ -25,6 +25,7 @@ import LocalParkingIcon from '@material-ui/icons/LocalParking';
 import {API_ROOT_GET} from "../../data/urls";
 import { trackPromise } from "react-promise-tracker";
 import {RefreshLoader} from "../RefreshLoader";
+import ListingViewer from "../ListingViewer/ListingViewer"
 
 import "../../styles/Listing.css";
 
@@ -91,9 +92,6 @@ class Listing extends Component {
     return (
       <div className = "listingContent">
         <div className={this.props.showListingDetail ? "leftPanel-withDetails": "leftPanel-noDetails"}>
-          {/* {this.props.listingArray.map(listingDetail, index) => (
-
-          )} */}
           {this.props.listingArray && this.props.listingArray.length !== 0 
           ? 
             this.props.listingArray
@@ -115,7 +113,7 @@ class Listing extends Component {
                   onClick = {()=>{
                     this.props.setListingDetail({
                       open:true, 
-                      listingDetail:this.props.listingArray[currIndex]
+                      selectedListing: listingDetail
                     })
                   }}
                 >
@@ -144,7 +142,7 @@ class Listing extends Component {
                   </span>
 
                   <div className = "listingTextAndIcon">
-                    <div>
+                    <div className = "listingHeader">
 
                       {/* This is for the listing title area */}
                       <div className="listingTitle">
@@ -165,7 +163,7 @@ class Listing extends Component {
                         <span className = "listingIconNumber">
                           {listingDetail.num_bathroom}
                           <Tooltip title = "Washroom">
-                            <BathtubIcon className = "listingIcon" fontSize = "small"/>
+                            <BathtubIcon className = "listingIcon" fontSize = "large"/>
                           </Tooltip>
                         </span>
 
@@ -173,7 +171,7 @@ class Listing extends Component {
                         <span className = "listingIconNumber">
                           {listingDetail.num_bedroom}
                           <Tooltip title = "Bedroom">
-                            <HotelIcon className = "listingIcon" fontSize = "small"/>
+                            <HotelIcon className = "listingIcon" fontSize = "large"/>
                           </Tooltip>
                         </span>
                         
@@ -186,7 +184,7 @@ class Listing extends Component {
                               <LocalLaundryServiceIcon 
                                 style = {{color: "green"}}
                                 className = "listingIcon" 
-                                fontSize = "small"
+                                fontSize = "large"
                               />
                             </Tooltip>
                             :
@@ -194,7 +192,7 @@ class Listing extends Component {
                               <LocalLaundryServiceIcon
                                 style = {{color: "grey"}}
                                 className = "listingIcon" 
-                                fontSize = "small"
+                                fontSize = "large"
                               />
                             </Tooltip>
                           }
@@ -245,11 +243,14 @@ class Listing extends Component {
                             </Tooltip>
                           }
                         </span>
-                        <Divider orientation="vertical" flexItem style={{marginLeft: 'auto'}}/>
-                        <span className="listingPrice">
-                          ${this.checkPrice(listingDetail.price)}
-                        </span>
                       </span>
+                      <Divider orientation="vertical" flexItem style={{marginLeft: 'auto'}}/>
+                      <div
+                        className = "listingPrice"
+                      >
+                        ${this.checkPrice(listingDetail.price)}
+                      </div>
+                      
                     </div>
 
                     <Divider/>
@@ -309,16 +310,8 @@ class Listing extends Component {
         
         {this.props.showListingDetail
         ? 
-          <div
-            className = "ListingDetail-Home"
-            onClick = {()=>{
-              this.props.setListingDetail({
-                open: false,
-                listingDetail: null
-              })
-            }}
-          >
-            Stuff here!
+          <div className = "ListingDetail-Home">
+            <ListingViewer/>
           </div>
         : <div className = "rightPanel"/>
         }
@@ -351,7 +344,7 @@ const mapStateToProps = state => {
     pageNum: state.listingDetail.pageNum,
     numPerPage: state.listingDetail.numPerPage,
     showListingDetail: state.listingDetail.showListingDetail,
-    listingDetail: state.listingDetail.listingDetail,
+    selectedListing: state.listingDetail.selectedListing
   };
 };
 

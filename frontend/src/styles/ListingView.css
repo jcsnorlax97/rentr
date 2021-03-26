@@ -6,9 +6,13 @@
 
 .listingIconText{
   margin-right: 5px;
-  margin-bottom: 60px;
   font-size: larger;
   font-weight: 300;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-self: center;
 }
 
 .listingPriceText{
@@ -28,4 +32,10 @@
 
 .answerQnA{
   font-size: 15px;
+}
+
+.listingDetailHeader{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 }
