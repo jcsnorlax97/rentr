@@ -1,0 +1,22 @@
+.MuiDialogTitle-root.profile-title
+> .MuiTypography-root.MuiTypography-h6
+> .MuiButtonBase-root.MuiIconButton-root.profile-title-closeButton{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.profile-title{
+  width: 700px;
+  margin: auto;
+  box-sizing: border-box;
+}
+
+.removeListingButton{
+  display: flex;
+  align-items: center;
+}
+
+.removeListingButton:hover{
+  background-color: lightgrey;
+}

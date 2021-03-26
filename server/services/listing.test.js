@@ -7,7 +7,7 @@ describe('listingService', () => {
     };
     const listingService = new ListingService({ listingDao });
     const reqBody = {
-      title: 'Serious appartment',
+      title: 'Serious apartment',
       price: '320',
       num_bedroom: '3',
       num_bathroom: '2',
@@ -16,7 +16,7 @@ describe('listingService', () => {
       is_parking_available: false,
       images: ['this_is_the_image_url.com'],
       description:
-        'An appartment closed to the university and the bus stop. Contact me!',
+        'An apartment close to the university and the bus stop. Contact me!',
     };
     it('succeeds', () => {
       const newListingId = listingService.addListing(reqBody);
@@ -46,7 +46,7 @@ describe('listingService', () => {
       getAllListings: () => [
         {
           id: 3,
-          title: 'Serious appartment',
+          title: 'Serious apartment',
           price: '320',
           num_bedroom: '3',
           num_bathroom: '2',
@@ -55,7 +55,7 @@ describe('listingService', () => {
           is_parking_available: false,
           images: ['this_is_the_image_url.com'],
           description:
-            'An appartment closed to the university and the bus stop. Contact me!',
+            'An apartment close to the university and the bus stop. Contact me!',
         },
       ],
     };
@@ -69,7 +69,7 @@ describe('listingService', () => {
       expect(listings.length).toEqual(1);
 
       // testing title name
-      expect(listings[0].title).toEqual('Serious appartment');
+      expect(listings[0].title).toEqual('Serious apartment');
     });
   });
 
@@ -79,7 +79,7 @@ describe('listingService', () => {
       getListingViaId: (_) => [
         {
           id: 3,
-          title: 'Serious appartment',
+          title: 'Serious apartment',
           price: '320',
           num_bedroom: '3',
           num_bathroom: '2',
@@ -88,7 +88,7 @@ describe('listingService', () => {
           is_parking_available: false,
           images: ['this_is_the_image_url.com'],
           description:
-            'An appartment closed to the university and the bus stop. Contact me!',
+            'An apartment close to the university and the bus stop. Contact me!',
         },
       ],
     };
@@ -111,14 +111,63 @@ describe('listingService', () => {
       const listingService = new ListingService({ listingDao });
       // invalid id which is not present
       const id = 100;
-  
+
       it('404', () => {
         // WHEN
         const result = listingService.getListingViaId(id);
-  
+
         // THEN
         expect(result).toEqual(null);
       });
+    });
+  });
+
+  describe('updateListing test', () => {
+    // GIVEN
+    const listingDao = {
+      updateListing: (_) => 101,
+    };
+    const listingService = new ListingService({ listingDao });
+    const reqBody = {
+      title: 'Serious apartment',
+      price: '350',
+      num_bedroom: '4',
+      num_bathroom: '2',
+      is_laundry_available: true,
+      is_pet_allowed: true,
+      is_parking_available: false,
+      images: ['this_is_the_image_url.com'],
+      description:
+        'An apartment close to the university and the bus stop. Contact me!',
+    };
+    it('succeeds', () => {
+      const updatedListingId = listingService.updateListing(reqBody);
+      expect(updatedListingId).toEqual(101);
+    });
+  });
+
+  describe('deleteListing test', () => {
+    // GIVEN
+    const listingDao = {
+      deleteListing: (_) => 101,
+    };
+    const listingService = new ListingService({ listingDao });
+    const reqBody = {
+      title: 'Serious apartment',
+      userid: 1,
+      price: '350',
+      num_bedroom: '4',
+      num_bathroom: '2',
+      is_laundry_available: true,
+      is_pet_allowed: true,
+      is_parking_available: false,
+      images: ['this_is_the_image_url.com'],
+      description:
+        'An apartment close to the university and the bus stop. Contact me!',
+    };
+    it('succeeds', () => {
+      const deleteListingId = listingService.deleteListing(reqBody);
+      expect(deleteListingId).toEqual(101);
     });
   });
 });

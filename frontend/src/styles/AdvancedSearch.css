@@ -1,0 +1,54 @@
+.MuiButtonBase-root.MuiIconButton-root.advancedSearch-Button.MuiIconButton-edgeEnd{
+  color: white;
+}
+
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.keywordSearchButton{
+  color: black;
+  background-color: #f0c14b;
+  font-weight: 600;
+}
+
+.MuiDialogTitle-root.advancedSearch-title{
+  width: 400px;
+}
+
+.MuiButtonBase-root.MuiIconButton-root.advancedSearch-title-closeButton{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.advancedSearchForm{
+  display: flex;
+  flex-direction: column;
+}
+
+.advancedSearchForm-iconButtons{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.advancedSearchForm_min_price,
+.advancedSearchForm_max_price,
+.advancedSearchForm_min_num_bathroom, 
+.advancedSearchForm_max_num_bathroom,
+.advancedSearchForm_min_num_bedroom,
+.advancedSearchForm_max_num_bedroom{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+
+
+.MuiTypography-root.advancedSearchForm_numberDropdown.MuiTypography-body1{
+  width: 150px;
+}
+
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.advancedSearchDialog-normalButton{
+  background-color: #f0c14b;
+  font-size: 16px;
+  font-weight: 600;
+}

@@ -18,3 +18,38 @@ export const setNumPerPage = (inputInt) => {
     payload: inputInt
   }
 }
+
+export const setListingDetail = (inputObj) =>{
+  return{
+    type: "EXHIBIT_LISTING_DETAIL",
+    payload: inputObj
+  }
+}
+
+export const setReadOnly = (inputBool) =>{
+  return{
+    type: "SET_READONLY",
+    payload: inputBool
+  }
+}
+
+export const setQnAInfo = (inputObj) =>{
+  return{
+    type: "SETQNA_INFO",
+    payload: inputObj
+  }
+}
+
+export const setComment = (inputObj) =>{
+  return{
+    type: "SET_COMMENT",
+    payload: inputObj
+  }
+}
+
+export const setNewQuestion = (inputObj) =>{
+  return{
+    type: "SET_NEWQUESTION",
+    payload: inputObj
+  }
+}
