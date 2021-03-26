@@ -5,7 +5,9 @@ const initialState = {
   showListingDetail: false,
   selectedListing: {},
   readOnly: false,
-  qnaInfo: null
+  qnaInfo: null,
+  comment: "",
+  newQuestion: ""
 }
 
 export const listingDetailReducer = (state = initialState, action) => {
@@ -20,6 +22,10 @@ export const listingDetailReducer = (state = initialState, action) => {
       return {...state, readOnly: action.payload};
     case "SETQNA_INFO":
       return {...state, qnaInfo: action.payload};
+    case "SET_NEWQUESTION":
+      return {...state, newQuestion: action.payload};
+    case "SET_COMMENT":
+      return {...state, comment: action.payload};
     case "EXHIBIT_LISTING_DETAIL":
       return {...state, showListingDetail: action.payload.open, selectedListing: action.payload.selectedListing}
     default: 

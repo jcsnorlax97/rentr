@@ -39,3 +39,17 @@ export const setQnAInfo = (inputObj) =>{
     payload: inputObj
   }
 }
+
+export const setComment = (inputObj) =>{
+  return{
+    type: "SET_COMMENT",
+    payload: inputObj
+  }
+}
+
+export const setNewQuestion = (inputObj) =>{
+  return{
+    type: "SET_NEWQUESTION",
+    payload: inputObj
+  }
+}

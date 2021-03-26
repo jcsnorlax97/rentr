@@ -6,7 +6,9 @@ import {
   setPageNum,
   setNumPerPage,
   setListingDetail,
-  setQnAInfo
+  setQnAInfo,
+  setComment,
+  setNewQuestion
 } from "../../actions/ListingDetail";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -43,7 +45,6 @@ class ListingViewer extends Component {
   state = {
     updateListingMessage: false,
     updatelistingSuccess: false,
-    repliedComment: ""
   }
   componentDidMount (){
     this.fetchQnAInfo(this.props.selectedListing.id)
@@ -481,18 +482,61 @@ class ListingViewer extends Component {
           {this.displayQnAInfo()}
           <div style={{ marginTop: '10px' }}>Didn't find your answer? Post a question!</div>
           <div style={{width:'60%'}}>
-          <TextField label="Add question" variant="outlined" size="small" multiline fullWidth
-            style={{ marginLeft: '15px', marginTop: '10px', display: 'block' }}
+          <TextField 
+            label="Add question" 
+            variant="outlined" 
+            size="small" 
+            multiline
+            style = {{
+              marginRight: 20
+            }}
             inputProps={{ maxLength: 100 }}
+            value = {this.props.newQuestion}
+            onChange = {(event)=>{this.props.setNewQuestion(event.target.value)}}
           />
+          <Button 
+            style = {{
+              width: 100,
+              height: "100%",
+              backgroundColor: "#f0c14b",
+              color: "black",
+              fontSize: 16,
+              fontWeight: 600
+            }}
+            onClick = {(event)=>{
+            this.handleCreateNewQuestion()
+          }}>Create</Button>
           </div>
         </div>
       </Paper>
     )
   } // end of render
 
+  handleCreateNewQuestion = () =>{
+    if (this.props.newQuestion !== ""){
+      const url = API_ROOT_POST.concat(
+        "listing/",
+        this.props.selectedListing.id,
+        "/chain"
+      )
+      const body = {
+        comment: this.props.newQuestion
+      }
+      const config = {
+        headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
+      };
+      axios.post(url, body, config)
+      .then(response=>{
+        // if (response.data.message === "Comment has been created successfully!"){
+          this.fetchQnAInfo(this.props.selectedListing.id)
+          this.props.setNewQuestion("")
+        // }
+      })
+    }
+  }
+
   handleReply = (chainid) =>{
-    if (this.state.repliedComment !== ""){
+    if (this.props.comment !== ""){
       const url = API_ROOT_POST.concat(
         "listing/",
         this.props.selectedListing.id,
@@ -501,18 +545,16 @@ class ListingViewer extends Component {
         "/comment"
       )
       const body = {
-        comment: this.state.repliedComment
+        comment: this.props.comment
       }
       const config = {
         headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
       };
       axios.post(url, body, config)
       .then(response=>{
-        if (response.status.message === "Comment has been created successfully!"){
-          this.fetchQnAInfo()
-          this.setState({
-            repliedComment: ""
-          })
+        if (response.data.message === "Comment has been created successfully!"){
+          this.fetchQnAInfo(this.props.selectedListing.id)
+          this.props.setComment("")
         }
       })
     }
@@ -539,12 +581,8 @@ class ListingViewer extends Component {
                     style = {{
                       marginRight: 20
                     }}
-                    value = {this.state.repliedComment}
-                    onChange = {(event)=>{
-                      this.setState({
-                        repliedComment: event.target.value
-                      })
-                    }}
+                    value = {this.props.comment}
+                    onChange = {(event)=>{this.props.setComment(event.target.value)}}
                   />
                   <Button 
                     style = {{
@@ -629,7 +667,9 @@ const mapStateToProps = state => {
     readOnly: state.listingDetail.readOnly,
     cookies: state.homeContent.cookies,
     images: state.createListingContent.images,
-    qnaInfo: state.listingDetail.qnaInfo
+    qnaInfo: state.listingDetail.qnaInfo,
+    comment: state.listingDetail.comment,
+    newQuestion: state.listingDetail.newQuestion,
   };
 };
 
@@ -639,7 +679,9 @@ const matchDispatchToProps = dispatch => {
     setPageNum,
     setNumPerPage,
     setListingDetail,
-    setQnAInfo
+    setQnAInfo,
+    setComment,
+    setNewQuestion
   }, dispatch);
 };
 export default connect(mapStateToProps, matchDispatchToProps)(ListingViewer);
