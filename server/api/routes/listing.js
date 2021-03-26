@@ -36,5 +36,12 @@ router.post(
   validate(commentDto),
   listingController.createListingChainCommentViaListingIdAndChainId
 );
+router.put(
+  '/:id',
+  validateLoggedIn,
+  // validate(listingDto),
+  listingController.updateListingViaId
+);
+router.delete('/:id', validateLoggedIn, listingController.deleteListingViaId);
 
 module.exports = router;
