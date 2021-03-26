@@ -98,6 +98,56 @@ class ListingController {
       next(ApiError.internal(`${err}`));
     }
   };
+
+  updateListingViaId = async (req, res, next) => {
+    try {
+      // (1) verify user permission to update the listing
+      const listingId = req.params.id;
+      const loggedInUserId = req.userData.userId;
+      const listing = await this.listingService.getListingViaId(listingId);
+      const listingOwnerId = listing.userid;
+      if (parseInt(listingOwnerId) !== parseInt(loggedInUserId)) {
+        return next(
+          ApiError.unauthorized(
+            'You cannot update listings owned by other user!'
+          )
+        );
+      }
+
+      // (2) update!
+      await this.listingService.updateListing(listingId, req.body);
+      res.status(200).json({
+        message: `Listing has been updated successfully!`,
+      });
+    } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
+
+  deleteListingViaId = async (req, res, next) => {
+    try {
+      // (1) verify user permission to update the listing
+      const listingId = req.params.id;
+      const loggedInUserId = req.userData.userId;
+      const listing = await this.listingService.getListingViaId(listingId);
+      const listingOwnerId = listing.userid;
+      if (parseInt(listingOwnerId) !== parseInt(loggedInUserId)) {
+        return next(
+          ApiError.unauthorized(
+            'You cannot delete listings owned by other user!'
+          )
+        );
+      }
+
+      // (2) delete!
+      await this.listingService.deleteListing(listingId);
+      res.status(200).json({
+        message: `Listing has been deleted successfully!`,
+      });
+    } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
 }
 
 module.exports = ListingController;

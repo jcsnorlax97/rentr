@@ -73,7 +73,7 @@ class ListingDao {
     return rows && rows.length >= 1 ? rows[0] : null;
   };
 
-  updateListing = async (uid, id, body) => {
+  updateListing = async (id, body) => {
     const { rows } = await this.dbPool.query(
       `UPDATE rentr_listing
       SET 
@@ -82,7 +82,6 @@ class ListingDao {
                 ELSE rentr_listing.title END
                 FROM rentr_listing
                 WHERE id = $10),
-        userid = $11,
         price = (SELECT
                 CASE WHEN price = $2 IS NOT NULL THEN $2 
                 ELSE rentr_listing.price END
@@ -135,19 +134,18 @@ class ListingDao {
         body.images,
         body.description,
         id,
-        uid,
       ]
     );
     return rows;
   };
 
-  deleteListing = async (uid, id) => {
+  deleteListing = async (id) => {
+    console.log(id);
     const {
       rows,
-    } = await this.dbPool.query(
-      `DELETE FROM rentr_listing WHERE userid = $1 AND id = $2;`,
-      [uid, id]
-    );
+    } = await this.dbPool.query(`DELETE FROM rentr_listing WHERE id = $1;`, [
+      id,
+    ]);
     return rows;
   };
 
