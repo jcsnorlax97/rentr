@@ -86,6 +86,18 @@ class ListingController {
       next(ApiError.internal(`${err}`));
     }
   };
+
+  getListingCommentsViaListingId = async (req, res, next) => {
+    try {
+      const listingId = req.params.id;
+      const comments = await this.commentService.getCommentsViaListingId(
+        listingId
+      );
+      res.status(200).json(comments);
+    } catch (err) {
+      next(ApiError.internal(`${err}`));
+    }
+  };
 }
 
 module.exports = ListingController;
