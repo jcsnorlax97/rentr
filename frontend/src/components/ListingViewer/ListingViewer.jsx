@@ -5,12 +5,14 @@ import {
   setListingArray,
   setPageNum,
   setNumPerPage,
-  setListingDetail
+  setListingDetail,
+  setQnAInfo,
+  setComment,
+  setNewQuestion
 } from "../../actions/ListingDetail";
 import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-import ImageUploader from "../ImageUpload/ImageUploader";
 
 import {
   Button,
@@ -34,6 +36,7 @@ import LocalParkingIcon from '@material-ui/icons/LocalParking';
 import {dropdownNumberOptions} from "../../data/dropdownData";
 import {API_ROOT_POST, API_ROOT_GET} from "../../data/urls";
 
+import ImageUploader from "../ImageUpload/ImageUploader";
 import "../../styles/ListingView.css";
 import "../../styles/Listing.css";
 
@@ -44,8 +47,13 @@ class ListingViewer extends Component {
     updatelistingSuccess: false,
   }
   componentDidMount (){
-    console.log(this.props.showListingDetail)
-    console.log(this.props.selectedListing)
+    this.fetchQnAInfo(this.props.selectedListing.id)
+  }
+
+  componentDidUpdate (prevProps, prevState){
+    if (prevProps.selectedListing.id !== this.props.selectedListing.id){
+      this.fetchQnAInfo(this.props.selectedListing.id)
+    }
   }
 
   fetchListing = () =>{
@@ -468,10 +476,183 @@ class ListingViewer extends Component {
             )
           }}
         </Formik>
+
+        <div className="listingIconText" style={{marginTop:'10px', paddingBottom:'20px', display: 'inline'}}>
+          Questions and Answers:
+          {this.displayQnAInfo()}
+          <div style={{ marginTop: '10px' }}>Didn't find your answer? Post a question!</div>
+          <div style={{width:'60%'}}>
+          <TextField 
+            label="Add question" 
+            variant="outlined" 
+            size="small" 
+            multiline
+            style = {{
+              marginRight: 20
+            }}
+            inputProps={{ maxLength: 100 }}
+            value = {this.props.newQuestion}
+            onChange = {(event)=>{this.props.setNewQuestion(event.target.value)}}
+          />
+          <Button 
+            style = {{
+              width: 100,
+              height: "100%",
+              backgroundColor: "#f0c14b",
+              color: "black",
+              fontSize: 16,
+              fontWeight: 600
+            }}
+            onClick = {(event)=>{
+            this.handleCreateNewQuestion()
+          }}>Create</Button>
+          </div>
+        </div>
       </Paper>
     )
   } // end of render
 
+  handleCreateNewQuestion = () =>{
+    if (this.props.newQuestion !== ""){
+      const url = API_ROOT_POST.concat(
+        "listing/",
+        this.props.selectedListing.id,
+        "/chain"
+      )
+      const body = {
+        comment: this.props.newQuestion
+      }
+      const config = {
+        headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
+      };
+      axios.post(url, body, config)
+      .then(response=>{
+        // if (response.data.message === "Comment has been created successfully!"){
+          this.fetchQnAInfo(this.props.selectedListing.id)
+          this.props.setNewQuestion("")
+        // }
+      })
+    }
+  }
+
+  handleReply = (chainid) =>{
+    if (this.props.comment !== ""){
+      const url = API_ROOT_POST.concat(
+        "listing/",
+        this.props.selectedListing.id,
+        "/chain/",
+        chainid,
+        "/comment"
+      )
+      const body = {
+        comment: this.props.comment
+      }
+      const config = {
+        headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
+      };
+      axios.post(url, body, config)
+      .then(response=>{
+        if (response.data.message === "Comment has been created successfully!"){
+          this.fetchQnAInfo(this.props.selectedListing.id)
+          this.props.setComment("")
+        }
+      })
+    }
+  }
+
+  displayQnAInfo = () =>{
+    let result = []
+    if (this.props.qnaInfo !== null && this.props.qnaInfo.length !== 0){
+      for (let i = 0; i < this.props.qnaInfo.length; i++){
+        result.push(
+          <div className = "sectionPadding">
+            <div className="questionQnA">Q: {this.props.qnaInfo[i].questionBody}
+            
+                {this.displayQnAAnswer(this.props.qnaInfo[i])}
+                <div className = "detailListing-QnA-Comment-of-Questions">
+                  <TextField 
+                    key = {"newanswer".concat(i)}
+                    className="replyField" 
+                    label="Reply to thread" 
+                    variant="outlined" 
+                    size="small"
+                    multiline
+                    inputProps={{ maxLength: 100 }}
+                    style = {{
+                      marginRight: 20
+                    }}
+                    value = {this.props.comment}
+                    onChange = {(event)=>{this.props.setComment(event.target.value)}}
+                  />
+                  <Button 
+                    style = {{
+                      width: 50,
+                      height: "100%",
+                      backgroundColor: "#f0c14b",
+                      color: "black",
+                      fontSize: 16,
+                      fontWeight: 600
+                    }}
+                    onClick = {(event)=>{
+                    this.handleReply(this.props.qnaInfo[i].chainid)
+                  }}>Reply</Button>
+                </div>
+              </div>
+          </div>
+        )
+      }
+    }
+    return result
+  }
+
+  displayQnAAnswer = (question, index) =>{
+    let result = []
+    for (let i = 0 ; i < question.replies.length; i++){
+      result.push(
+        <div className="answerQnA" style={{backgroundColor: (i % 2 === 0) ? '#EEEFFF' : '#white' }}>
+          {(question.replies[i].userid === this.props.selectedListing.userid)
+            ?
+            <div className="landlordText">⭐landlord replied:</div>
+            :
+            <div className="userText">user replied:</div>
+          }
+          - {question.replies[i].content}
+        </div>
+      )
+    }
+    return result
+  }
+
+  fetchQnAInfo(listingId) {
+    const url = String(API_ROOT_GET).concat("listing/" + listingId.toString() + "/comment")
+    let result = [];
+    let chainid = -1
+    let counter
+    axios.get(url)
+    .then(response => {
+      const comments = response.data
+      counter = 0
+      for (let i = 0; i < comments.length; i++){
+        //start of a new question
+        if (chainid !== comments[i].chainid){
+          chainid = comments[i].chainid
+          result.push({
+            questionBody: String(comments[i].comment),
+            chainid : comments[i].chainid,
+            replies: []
+          })
+          counter ++
+        }
+        else{
+          result[counter-1].replies.push({
+            userid: comments[i].userid,
+            content: String(comments[i].comment)
+          })
+        }
+      }
+      this.props.setQnAInfo(result)
+    })
+  }
 
 }
 
@@ -486,6 +667,9 @@ const mapStateToProps = state => {
     readOnly: state.listingDetail.readOnly,
     cookies: state.homeContent.cookies,
     images: state.createListingContent.images,
+    qnaInfo: state.listingDetail.qnaInfo,
+    comment: state.listingDetail.comment,
+    newQuestion: state.listingDetail.newQuestion,
   };
 };
 
@@ -494,7 +678,10 @@ const matchDispatchToProps = dispatch => {
     setListingArray,
     setPageNum,
     setNumPerPage,
-    setListingDetail
+    setListingDetail,
+    setQnAInfo,
+    setComment,
+    setNewQuestion
   }, dispatch);
 };
 export default connect(mapStateToProps, matchDispatchToProps)(ListingViewer);

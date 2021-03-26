@@ -33,3 +33,23 @@ export const setReadOnly = (inputBool) =>{
   }
 }
 
+export const setQnAInfo = (inputObj) =>{
+  return{
+    type: "SETQNA_INFO",
+    payload: inputObj
+  }
+}
+
+export const setComment = (inputObj) =>{
+  return{
+    type: "SET_COMMENT",
+    payload: inputObj
+  }
+}
+
+export const setNewQuestion = (inputObj) =>{
+  return{
+    type: "SET_NEWQUESTION",
+    payload: inputObj
+  }
+}
