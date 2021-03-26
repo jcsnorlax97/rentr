@@ -16,6 +16,7 @@
 /* This is to adjust the header on the home page*/
 #homePage_Header{
   background-color: #131921;
+  min-width: 1500px;
 }
 
 
@@ -169,5 +170,6 @@
 .ListingDetail-Home{
   width: 40%;
   margin: 20px;
-  border: 1px solid black;
+  min-width: 400px;
+  border-left: 2px solid black;
 }

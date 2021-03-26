@@ -32,8 +32,7 @@ import {
   MenuList,
   MenuItem,
   ListItemIcon,
-  TextField,
-  Box
+  TextField
 } from "@material-ui/core";
 import { Person } from '@material-ui/icons';
 import moment from "moment";
@@ -43,7 +42,7 @@ import CreateListingButton from "../components/CreateListing/CreateListingButton
 import LoginDialogButton from "../components/LoginDialogButton";
 import Profile from "../components/Profile/Profile";
 import AdvancedSearch from "../components/AdvancedSearch";
-import ListingViewer from "../components/ListingViewer/ListingViewer"
+// import ListingViewer from "../components/ListingViewer/ListingViewer"
 
 import "../styles/HomePage.css"
 
