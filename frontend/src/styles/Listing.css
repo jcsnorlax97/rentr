@@ -1,5 +1,6 @@
 .listingContent{
   width: 100%;
+  min-width: 1500px;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -110,7 +111,7 @@
   font-size: 16px;
   display: -webkit-box;
   max-width: 100%;
-  height: 68px;
+  height: 76px;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;

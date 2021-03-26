@@ -3,7 +3,8 @@ const initialState = {
   pageNum: 1,
   numPerPage: 5,
   showListingDetail: false,
-  selectedListing: {}
+  selectedListing: {},
+  readOnly: false
 }
 
 export const listingDetailReducer = (state = initialState, action) => {
@@ -14,6 +15,8 @@ export const listingDetailReducer = (state = initialState, action) => {
       return {...state, pageNum: action.payload};
     case "SET_NUMPERPAGE":
       return {...state, numPerPage: action.payload};
+    case "SET_READONLY":
+      return {...state, readOnly: action.payload};
     case "EXHIBIT_LISTING_DETAIL":
       return {...state, showListingDetail: action.payload.open, selectedListing: action.payload.selectedListing}
     default: 
