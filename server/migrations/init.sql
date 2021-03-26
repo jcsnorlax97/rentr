@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS rentr_chain (
     userid BIGINT NOT NULL, 
     listingid BIGINT NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY (userid) REFERENCES rentr_user(id),
-    CONSTRAINT fk_listing FOREIGN KEY (listingid) REFERENCES rentr_listing(id)
+    CONSTRAINT fk_listing FOREIGN KEY (listingid) REFERENCES rentr_listing(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS rentr_comment (
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS rentr_comment (
     chainid BIGINT NOT NULL,
     comment VARCHAR CHECK (length(comment) <= 1000) NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY (userid) REFERENCES rentr_user(id),
-    CONSTRAINT fk_listing FOREIGN KEY (listingid) REFERENCES rentr_listing(id),
+    CONSTRAINT fk_listing FOREIGN KEY (listingid) REFERENCES rentr_listing(id) ON DELETE CASCADE,
     CONSTRAINT fk_chain FOREIGN KEY (chainid) REFERENCES rentr_chain(id)
 );
 
