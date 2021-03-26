@@ -43,7 +43,7 @@ class ListingViewer extends Component {
   state = {
     updateListingMessage: false,
     updatelistingSuccess: false,
-    qnaInfo: []
+    repliedComment: ""
   }
   componentDidMount (){
     this.fetchQnAInfo(this.props.selectedListing.id)
@@ -478,71 +478,137 @@ class ListingViewer extends Component {
 
         <div className="listingIconText" style={{marginTop:'10px', paddingBottom:'20px', display: 'inline'}}>
           Questions and Answers:
-            {this.props.qnaInfo !== null && this.props.qnaInfo.length !== 0
-            ?
-            this.props.qnaInfo.map((question, index) => {
-              return (
-                <div className = "sectionPadding">
-                  <div className="questionQnA">Q: {question.questionBody}
-                  
-                      {question.replies.map((answer, index) => {
-                        return (
-                          <div className="answerQnA" style={{backgroundColor: (index % 2 === 0) ? '#EEEFFF' : '#white' }}>
-                            {(answer.userid === listingDetail.userid)
-                              ?
-                              <div className="landlordText">⭐landlord replied:</div>
-                              :
-                              <div className="userText">user replied:</div>
-                            }
-                            - {answer.content}
-                          </div>
-                        );
-                      })}
-                      <div style={{width:'70%'}}>
-                        <TextField className="replyField" label="Reply to thread" variant="outlined" size="small"
-                          fullWidth multiline
-                          style={{ marginLeft: '32px', marginTop: '10px', marginBottom: '10px', display:'block'}}
-                          inputProps={{ maxLength: 100 }} />
-                      </div>
-                    </div>
-                </div>
-              );
-            })
-            : null
-          }
+          {this.displayQnAInfo()}
           <div style={{ marginTop: '10px' }}>Didn't find your answer? Post a question!</div>
           <div style={{width:'60%'}}>
-            <TextField label="Add question" variant="outlined" size="small" multiline fullWidth
-              style={{ marginLeft: '15px', marginTop: '10px', display: 'block' }}
-              inputProps={{ maxLength: 100 }}
-            />
+          <TextField label="Add question" variant="outlined" size="small" multiline fullWidth
+            style={{ marginLeft: '15px', marginTop: '10px', display: 'block' }}
+            inputProps={{ maxLength: 100 }}
+          />
           </div>
         </div>
       </Paper>
     )
   } // end of render
 
+  handleReply = (chainid) =>{
+    if (this.state.repliedComment !== ""){
+      const url = API_ROOT_POST.concat(
+        "listing/",
+        this.props.selectedListing.id,
+        "/chain/",
+        chainid,
+        "/comment"
+      )
+      const body = {
+        comment: this.state.repliedComment
+      }
+      const config = {
+        headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
+      };
+      axios.post(url, body, config)
+      .then(response=>{
+        if (response.status.message === "Comment has been created successfully!"){
+          this.fetchQnAInfo()
+          this.setState({
+            repliedComment: ""
+          })
+        }
+      })
+    }
+  }
+
+  displayQnAInfo = () =>{
+    let result = []
+    if (this.props.qnaInfo !== null && this.props.qnaInfo.length !== 0){
+      for (let i = 0; i < this.props.qnaInfo.length; i++){
+        result.push(
+          <div className = "sectionPadding">
+            <div className="questionQnA">Q: {this.props.qnaInfo[i].questionBody}
+            
+                {this.displayQnAAnswer(this.props.qnaInfo[i])}
+                <div className = "detailListing-QnA-Comment-of-Questions">
+                  <TextField 
+                    key = {"newanswer".concat(i)}
+                    className="replyField" 
+                    label="Reply to thread" 
+                    variant="outlined" 
+                    size="small"
+                    multiline
+                    inputProps={{ maxLength: 100 }}
+                    style = {{
+                      marginRight: 20
+                    }}
+                    value = {this.state.repliedComment}
+                    onChange = {(event)=>{
+                      this.setState({
+                        repliedComment: event.target.value
+                      })
+                    }}
+                  />
+                  <Button 
+                    style = {{
+                      width: 50,
+                      height: "100%",
+                      backgroundColor: "#f0c14b",
+                      color: "black",
+                      fontSize: 16,
+                      fontWeight: 600
+                    }}
+                    onClick = {(event)=>{
+                    this.handleReply(this.props.qnaInfo[i].chainid)
+                  }}>Reply</Button>
+                </div>
+              </div>
+          </div>
+        )
+      }
+    }
+    return result
+  }
+
+  displayQnAAnswer = (question, index) =>{
+    let result = []
+    for (let i = 0 ; i < question.replies.length; i++){
+      result.push(
+        <div className="answerQnA" style={{backgroundColor: (index % 2 === 0) ? '#EEEFFF' : '#white' }}>
+          {(question.replies[i].userid === this.props.selectedListing.userid)
+            ?
+            <div className="landlordText">⭐landlord replied:</div>
+            :
+            <div className="userText">user replied:</div>
+          }
+          - {question.replies[i].content}
+        </div>
+      )
+    }
+    return result
+  }
+
   fetchQnAInfo(listingId) {
     const url = String(API_ROOT_GET).concat("listing/" + listingId.toString() + "/comment")
     let result = [];
     let chainid = -1
+    let counter
     axios.get(url)
     .then(response => {
       const comments = response.data
+      counter = 0
       for (let i = 0; i < comments.length; i++){
         //start of a new question
         if (chainid !== comments[i].chainid){
           chainid = comments[i].chainid
           result.push({
-            questionBody: String(comments[i].comment).split("|")[1],
+            questionBody: String(comments[i].comment),
             chainid : comments[i].chainid,
             replies: []
           })
+          counter ++
         }
         else{
-          result[chainid-1].replies.push({
+          result[counter-1].replies.push({
             userid: comments[i].userid,
-            content: String(comments[i].comment).split("|")[1]
+            content: String(comments[i].comment)
           })
         }
       }

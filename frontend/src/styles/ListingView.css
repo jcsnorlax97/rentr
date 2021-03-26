@@ -72,3 +72,11 @@
   margin: 16px;
   width: 100%;
 }
+
+.detailListing-QnA-Comment-of-Questions{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 40px;
+  margin: 20px;
+}
