@@ -186,9 +186,7 @@ class ListingViewer extends Component {
             //   }
             // }
             let url = API_ROOT_POST.concat(
-              "user/",
-              this.props.cookies.get("userid"),
-              "/listing/",
+              "listing/",
               listingDetail.id
             )
             let body = {
@@ -202,7 +200,10 @@ class ListingViewer extends Component {
               is_pet_allowed: Boolean(values.is_pet_allowed),
               is_parking_available: Boolean(values.is_parking_available),
             }
-            axios.put(url, body)
+            const config = {
+              headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
+            };
+            axios.put(url, body,config)
             .then(response => {
               // If the account is registered successfully
               if (response.data 
