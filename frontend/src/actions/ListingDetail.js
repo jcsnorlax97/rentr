@@ -40,9 +40,9 @@ export const setQnAInfo = (inputObj) =>{
   }
 }
 
-export const setComment = (inputObj) =>{
+export const setComments = (inputObj) =>{
   return{
-    type: "SET_COMMENT",
+    type: "SET_COMMENTS",
     payload: inputObj
   }
 }

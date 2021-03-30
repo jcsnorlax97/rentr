@@ -7,12 +7,13 @@ import {
   setNumPerPage,
   setListingDetail,
   setQnAInfo,
-  setComment,
+  setComments,
   setNewQuestion
 } from "../../actions/ListingDetail";
 import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
+import _ from "lodash";
 
 import {
   Button,
@@ -35,8 +36,8 @@ import LocalParkingIcon from '@material-ui/icons/LocalParking';
 
 import {dropdownNumberOptions} from "../../data/dropdownData";
 import {API_ROOT_POST, API_ROOT_GET} from "../../data/urls";
-
 import ImageUploader from "../ImageUpload/ImageUploader";
+
 import "../../styles/ListingView.css";
 import "../../styles/Listing.css";
 
@@ -54,6 +55,11 @@ class ListingViewer extends Component {
     if (prevProps.selectedListing.id !== this.props.selectedListing.id){
       this.fetchQnAInfo(this.props.selectedListing.id)
     }
+  }
+
+  componentWillUnmount () {
+    this.props.setComments(new Map())
+    this.props.setNewQuestion("")
   }
 
   fetchListing = () =>{
@@ -537,7 +543,8 @@ class ListingViewer extends Component {
   }
 
   handleReply = (chainid) =>{
-    if (this.props.comment !== ""){
+    const selectedComment = this.props.comments.get(chainid)
+    if (selectedComment !== ""){
       const url = API_ROOT_POST.concat(
         "listing/",
         this.props.selectedListing.id,
@@ -546,7 +553,7 @@ class ListingViewer extends Component {
         "/comment"
       )
       const body = {
-        comment: this.props.comment
+        comment: selectedComment
       }
       const config = {
         headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
@@ -555,7 +562,10 @@ class ListingViewer extends Component {
       .then(response=>{
         if (response.data.message === "Comment has been created successfully!"){
           this.fetchQnAInfo(this.props.selectedListing.id)
-          this.props.setComment("")
+          // If the comment was updated successfully, then clear the comments
+          let newComment = _.cloneDeep(this.props.comments)
+          newComment.set(chainid, "")
+          this.props.setComments(newComment)
         }
       })
     }
@@ -563,16 +573,16 @@ class ListingViewer extends Component {
 
   displayQnAInfo = () =>{
     let result = []
-    if (this.props.qnaInfo !== null && this.props.qnaInfo.length !== 0){
-      for (let i = 0; i < this.props.qnaInfo.length; i++){
+    if (this.props.qnaInfo !== null && this.props.qnaInfo.size !== 0){
+      for (let [chainid, question] of this.props.qnaInfo){
         result.push(
           <div className = "sectionPadding">
-            <div className="questionQnA">Q: {this.props.qnaInfo[i].questionBody}
+            <div className="questionQnA">Q: {question.questionBody}
             
-                {this.displayQnAAnswer(this.props.qnaInfo[i])}
+                {this.displayQnAAnswer(question)}
                 <div className = "detailListing-QnA-Comment-of-Questions">
                   <TextField 
-                    key = {"newanswer".concat(i)}
+                    key = {"newanswer".concat(chainid)}
                     className="replyField" 
                     label="Reply to thread" 
                     variant="outlined" 
@@ -582,8 +592,10 @@ class ListingViewer extends Component {
                     style = {{
                       marginRight: 20
                     }}
-                    value = {this.props.comment}
-                    onChange = {(event)=>{this.props.setComment(event.target.value)}}
+                    value = {this.props.comments.get(chainid) || ""}
+                    onChange = {event =>{
+                      this.updateComments(chainid, event.target.value)
+                    }}
                   />
                   <Button 
                     style = {{
@@ -594,9 +606,12 @@ class ListingViewer extends Component {
                       fontSize: 16,
                       fontWeight: 600
                     }}
-                    onClick = {(event)=>{
-                    this.handleReply(this.props.qnaInfo[i].chainid)
-                  }}>Reply</Button>
+                    onClick = {()=>{
+                      this.handleReply(chainid)
+                    }}
+                  >
+                    Reply
+                  </Button>
                 </div>
               </div>
           </div>
@@ -606,7 +621,13 @@ class ListingViewer extends Component {
     return result
   }
 
-  displayQnAAnswer = (question, index) =>{
+  updateComments = (inputKey,commentValue) =>{
+    let newComments = _.cloneDeep(this.props.comments)
+    newComments.set(inputKey,commentValue)
+    this.props.setComments(newComments)
+  }
+
+  displayQnAAnswer = (question) =>{
     let result = []
     for (let i = 0 ; i < question.replies.length; i++){
       result.push(
@@ -626,31 +647,31 @@ class ListingViewer extends Component {
 
   fetchQnAInfo(listingId) {
     const url = String(API_ROOT_GET).concat("listing/" + listingId.toString() + "/comment")
-    let result = [];
-    let chainid = -1
-    let counter
+    // let result = [];
+    let result = new Map()
     axios.get(url)
     .then(response => {
       const comments = response.data
-      counter = 0
-      for (let i = 0; i < comments.length; i++){
-        //start of a new question
-        if (chainid !== comments[i].chainid){
-          chainid = comments[i].chainid
-          result.push({
-            questionBody: String(comments[i].comment),
-            chainid : comments[i].chainid,
+      comments.forEach(item =>{
+        // if the chainid does not exist in the map, which stands for a new question
+        if (!result.has(item.chainid)){
+          let detail = {
+            questionBody: item.comment,
+            chainid: item.chainid,
             replies: []
-          })
-          counter ++
+          }
+          result.set(item.chainid, detail)
         }
+        // If the chainid already exists in the map, which means it's comment of an existing question
         else{
-          result[counter-1].replies.push({
-            userid: comments[i].userid,
-            content: String(comments[i].comment)
+          let newDetail = _.cloneDeep(result.get(item.chainid))
+          newDetail.replies.push({
+            userid: item.userid,
+            content: item.comment
           })
+          result.set(item.chainid, newDetail)
         }
-      }
+      })
       this.props.setQnAInfo(result)
     })
   }
@@ -669,7 +690,7 @@ const mapStateToProps = state => {
     cookies: state.homeContent.cookies,
     images: state.createListingContent.images,
     qnaInfo: state.listingDetail.qnaInfo,
-    comment: state.listingDetail.comment,
+    comments: state.listingDetail.comments,
     newQuestion: state.listingDetail.newQuestion,
   };
 };
@@ -681,7 +702,7 @@ const matchDispatchToProps = dispatch => {
     setNumPerPage,
     setListingDetail,
     setQnAInfo,
-    setComment,
+    setComments,
     setNewQuestion
   }, dispatch);
 };
