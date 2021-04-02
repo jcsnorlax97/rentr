@@ -8,9 +8,10 @@ class ListingDao {
     const {
       rows,
     } = await this.dbPool.query(
-      'INSERT INTO rentr_listing (userid, title, price, num_bedroom, num_bathroom, is_laundry_available, is_pet_allowed, is_parking_available, images, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id;',
+      'INSERT INTO rentr_listing (userid, is_available, title, price, num_bedroom, num_bathroom, is_laundry_available, is_pet_allowed, is_parking_available, images, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id;',
       [
         body.userid,
+        body.is_available,
         body.title,
         body.price,
         body.num_bedroom,
@@ -31,7 +32,8 @@ class ListingDao {
     const { rows } = await this.dbPool.query(
       `
         SELECT * FROM rentr_listing 
-        WHERE 
+        WHERE
+          rentr_listing.is_available IS TRUE AND 
           COALESCE($1 <= rentr_listing.price, TRUE) AND 
           COALESCE($2 >= rentr_listing.price, TRUE) AND
           COALESCE($3 <= rentr_listing.num_bedroom, TRUE) AND
@@ -77,6 +79,11 @@ class ListingDao {
     const { rows } = await this.dbPool.query(
       `UPDATE rentr_listing
       SET 
+        is_available = (SELECT
+                CASE WHEN is_available = $11 IS NOT NULL THEN $11 
+                ELSE rentr_listing.is_available END
+                FROM rentr_listing
+                WHERE id = $10),
         title = (SELECT
                 CASE WHEN title = $1 IS NOT NULL THEN $1 
                 ELSE rentr_listing.title END
@@ -134,6 +141,7 @@ class ListingDao {
         body.images,
         body.description,
         id,
+        body.is_available,
       ]
     );
     return rows;
