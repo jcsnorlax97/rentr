@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS rentr_listing (
     is_available BOOLEAN NOT NULL,
     title VARCHAR CHECK (length(title) <= 100) NOT NULL,
     price NUMERIC NOT NULL,
+    city VARCHAR CHECK (length(city) <= 50) NOT NULL,
     num_bedroom NUMERIC NOT NULL,
     num_bathroom NUMERIC NOT NULL,
     is_laundry_available BOOLEAN NOT NULL,
@@ -44,10 +45,10 @@ CREATE TABLE IF NOT EXISTS rentr_listing (
     CONSTRAINT fk_user FOREIGN KEY (userid) REFERENCES rentr_user(id)
 );
 
-INSERT INTO rentr_listing(userid, is_available, title, price, num_bedroom, num_bathroom, is_laundry_available, is_pet_allowed, is_parking_available, images, description) VALUES 
-(1, TRUE, 'Expensive one', 1000000, 10, 5, TRUE, TRUE, TRUE, ARRAY['image_url1.com', 'image_url2.com', 'image_url3.com'], 'one million dollars'),
-(1, FALSE, 'An appartment with full of bathroom', 10, 1, 10, FALSE, TRUE, FALSE, ARRAY[]::TEXT[], 'Smells Good.'),
-(2, TRUE, 'Serious appartment', 320, 3, 2, TRUE, TRUE, FALSE, ARRAY['this_is_the_image_url.com'], 'An appartment closed to the university and the bus stop. Contact me!');
+INSERT INTO rentr_listing(userid, is_available, title, price, city, num_bedroom, num_bathroom, is_laundry_available, is_pet_allowed, is_parking_available, images, description) VALUES 
+(1, TRUE, 'Expensive one', 1000000, 'Winnipeg', 10, 5, TRUE, TRUE, TRUE, ARRAY['image_url1.com', 'image_url2.com', 'image_url3.com'], 'one million dollars'),
+(1, FALSE, 'An appartment with full of bathroom', 10, 'Brandon', 1, 10, FALSE, TRUE, FALSE, ARRAY[]::TEXT[], 'Smells Good.'),
+(2, TRUE, 'Serious appartment', 320, 'Winnipeg', 3, 2, TRUE, TRUE, FALSE, ARRAY['this_is_the_image_url.com'], 'An appartment closed to the university and the bus stop. Contact me!');
 
 SELECT * FROM rentr_listing;
 
