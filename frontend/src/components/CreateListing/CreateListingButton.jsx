@@ -21,9 +21,8 @@ import {
   DialogTitle,
   IconButton,
   MenuItem,
-  Snackbar
 } from "@material-ui/core";
-import MuiAlert from '@material-ui/lab/Alert';
+import {DisplayInfo} from "../../Util/DisplayWarning"
 
 import CloseIcon from '@material-ui/icons/Close';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
@@ -67,7 +66,8 @@ const numberDropdownOptions = [
     label: '5'
   }
 ]
-
+const deleteSuccessMessage = "Your listing is created successfully, you'll be taken back to home page shortly"
+const deleteFailMessage = "Listing creation failed, you might need to re-login"
 
 class CreateListingButton extends Component {
 
@@ -114,8 +114,16 @@ class CreateListingButton extends Component {
             this.resetDialogStatus()
           }}
           maxWidth = "lg"
-        >
-          {this.handleRegisterMessage()}
+        > 
+          <DisplayInfo
+            displayMessage = {this.state.postListingMessage}
+            displaySuccess = {this.state.postListingSuccess}
+            displayWarning = {false}
+            successMessage = {deleteSuccessMessage}
+            failedMessage = {deleteFailMessage}
+            WarningMessage = {""}
+            handleCloseMessage = {this.handleCloseCreateListing}
+          />
           <DialogTitle className="createListing-title">
             Create a Listing
             <IconButton
@@ -132,7 +140,11 @@ class CreateListingButton extends Component {
           <DialogContent
             className="homeDialog-Content"
           >
-            <ImageUploader disabled = {this.props.creatingListing}/>
+            <ImageUploader 
+              value = {this.props.images}
+              disabled = {this.props.creatingListing}
+              setImages = {this.props.setImages}
+            />
             <Formik
               initialValues={{
                 title: "", 
@@ -448,27 +460,7 @@ class CreateListingButton extends Component {
     )
   }
 
-  handleRegisterMessage = () => {
-    return (
-      <Snackbar open={this.state.postListingMessage} autoHideDuration={6000} onClose={this.handleCloseCreateListingSnack}>
-        {this.state.postListingSuccess
-          ? (
-            <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseCreateListingSnack} severity="success">
-              Your posting is submitted successfully, you'll be taken back to home page shortly
-            </MuiAlert>
-          )
-          :
-          (
-            <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseCreateListingSnack} severity="error">
-              Listing creation failed, you might need to re-login
-            </MuiAlert>
-          )
-        }
-      </Snackbar>
-    )
-  }
-
-  handleCloseCreateListingSnack = (event, reason) => {
+  handleCloseCreateListing = (event, reason) => {
     if (reason === "clickaway")
       return
     this.setState({

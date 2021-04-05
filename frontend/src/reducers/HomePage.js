@@ -30,10 +30,11 @@ export const homeReducer = (state = initialState, action) => {
         state.cookies.set("status", action.payload.token, { expires: 0, path:'/' })
         state.cookies.set("userid", action.payload.userid, { expires: 0, path:'/' })
       }
-      else if (action.payload.status === false){
+      else{
         state.cookies.remove("status")
+        state.cookies.remove("userid")
       }
-      return {...state, status: action.payload.status};
+      return {...state, status: action.payload};
     // case "SET_TOKEN":
     //   return {...state, token: action.payload};
     case "SET_SEARCH_ERROR":

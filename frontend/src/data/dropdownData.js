@@ -20,3 +20,16 @@ export const dropdownNumberOptions = [
     label:"5"
   },
 ]
+
+export const dropDownCities = [
+  "Brandon",
+  "Dauphin",
+  "Flin Flon",
+  "Morden",
+  "Portage la Prairie",
+  "Selkirk",
+  "Steinbach",
+  "Thompson",
+  "Winkler",
+  "Winnipeg",
+]

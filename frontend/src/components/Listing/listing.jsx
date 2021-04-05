@@ -6,14 +6,9 @@ import {
   setPageNum,
   setNumPerPage,
   setListingDetail,
-  setReadOnly
+  setReadOnly,
+  setListingDetailImages
 } from "../../actions/ListingDetail";
-import {
-  setImages
-} from "../../actions/CreateListing"
-import {
-  // setlistDetailsImages
-} from "../../actions/ListingDetail"
 import axios from "axios";
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import HotelIcon from '@material-ui/icons/Hotel';
@@ -123,11 +118,12 @@ class Listing extends Component {
                       open:true, 
                       selectedListing: listingDetail
                     })
-                    this.props.setImages(listingDetail.images)
+                    this.props.setListingDetailImages(listingDetail.images)
                     if (this.props.cookies.get("userid") !== String(listingDetail.userid)){
                       this.props.setReadOnly(true)
                     }
                     else{
+                      console.log(this.props.cookies.get("userid"))
                       this.props.setReadOnly(false)
                     }
                   }}
@@ -361,6 +357,7 @@ const mapStateToProps = state => {
     showListingDetail: state.listingDetail.showListingDetail,
     selectedListing: state.listingDetail.selectedListing,
     cookies: state.homeContent.cookies,
+    listingDetailImages: state.listingDetail.listingDetailImages
   };
 };
 
@@ -370,9 +367,8 @@ const matchDispatchToProps = dispatch => {
     setPageNum,
     setNumPerPage,
     setListingDetail,
-    setImages,
-    setReadOnly
-    // setlistDetailsImages
+    setReadOnly,
+    setListingDetailImages
   }, dispatch);
 };
 export default connect(mapStateToProps, matchDispatchToProps)(Listing);

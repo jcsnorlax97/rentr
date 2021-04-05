@@ -14,7 +14,6 @@ import {
   DialogTitle,
   IconButton,
   MenuItem,
-  Snackbar,
   ListItemText,
   ListItemIcon,
   Paper,
@@ -22,7 +21,6 @@ import {
   Typography,
   Divider
 } from "@material-ui/core"
-import MuiAlert from '@material-ui/lab/Alert';
 
 import CloseIcon from '@material-ui/icons/Close';
 import BathtubIcon from '@material-ui/icons/Bathtub';
@@ -37,12 +35,15 @@ import axios from "axios";
 import { trackPromise } from "react-promise-tracker";
 import {RefreshLoader} from "../RefreshLoader";
 import {API_ROOT_GET, API_ROOT_POST} from "../../data/urls";
+import {DisplayInfo} from "../../Util/DisplayWarning"
 
 import "../../styles/HomePage.css"
 import "../../styles/Profile.css"
 
 
-
+const deleteSuccessMessage = "Listing deleted"
+const deleteFailMessage = "Deletion was not successful"
+const deleteWarningMessage = "Server Error, please try again later"
 class Profile extends Component {
 
   state = {
@@ -77,7 +78,15 @@ class Profile extends Component {
           onClose = {this.resetDialogStatus}
           maxWidth = "lg"
         >
-          {this.displayDeleteMessage()}
+          <DisplayInfo
+            displayMessage = {this.state.deleteMessage}
+            displaySuccess = {this.state.deleteSuccess}
+            displayWarning = {this.state.deleteWarning}
+            successMessage = {deleteSuccessMessage}
+            failedMessage = {deleteFailMessage}
+            WarningMessage = {deleteWarningMessage}
+            handleCloseMessage = {this.handleCloseDeleteMessage}
+          />
           <DialogTitle className="profile-title">
             My Listings
             <IconButton
@@ -396,40 +405,6 @@ class Profile extends Component {
       deleteSuccess: false,
       deleteWarning: false
     })
-  }
-
-  displayDeleteMessage = () =>{
-    let alertMessage;
-    if (this.state.deleteSuccess) {
-      alertMessage = (
-        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseDeleteMessage} severity="success">
-          Deletion complete
-        </MuiAlert>
-      )
-    }
-    else if (!this.state.deleteSuccess && !this.state.deleteWarning) {
-      alertMessage = (
-        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseDeleteMessage} severity="error">
-          Deletion was not successful
-        </MuiAlert>
-      )
-    }
-    else if (!this.state.deleteSuccess && this.state.deleteWarning) {
-      alertMessage = (
-        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseDeleteMessage} severity="warning">
-          Server Error, please try again later
-        </MuiAlert>
-      )
-    }
-    return (
-      <Snackbar
-        open={this.state.deleteMessage}
-        autoHideDuration={4000}
-        onClose={this.handleCloseDeleteMessage}
-      >
-        {alertMessage}
-      </Snackbar>
-    )
   }
 
   handleCloseDeleteMessage = () => {
