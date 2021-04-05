@@ -6,6 +6,7 @@ const initialState = {
   registering: false,
   loginDialogOpen: false,
   registerDialogOpen: false,
+  status: false,
   cookies: new Cookies(),
   searchFieldError: false,
   searchFieldValue: "",
@@ -25,12 +26,15 @@ export const homeReducer = (state = initialState, action) => {
     case "SET_REGISTER_DIALOG":
       return {...state, registerDialogOpen: action.payload};
     case "SET_STATUS":
-      const newCookies = new Cookies()
       if (action.payload.status === true){
-        newCookies.set("status", action.payload.token, { expires: 0, path:'/' })
-        newCookies.set("userid", action.payload.userid, { expires: 0, path:'/' })
+        state.cookies.set("status", action.payload.token, { expires: 0, path:'/' })
+        state.cookies.set("userid", action.payload.userid, { expires: 0, path:'/' })
       }
-      return {...state, cookies: newCookies};
+      else{
+        state.cookies.remove("status")
+        state.cookies.remove("userid")
+      }
+      return {...state, status: action.payload};
     // case "SET_TOKEN":
     //   return {...state, token: action.payload};
     case "SET_SEARCH_ERROR":
