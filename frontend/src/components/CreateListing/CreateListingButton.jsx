@@ -132,7 +132,11 @@ class CreateListingButton extends Component {
           <DialogContent
             className="homeDialog-Content"
           >
-            <ImageUploader disabled = {this.props.creatingListing}/>
+            <ImageUploader 
+              value = {this.props.images}
+              disabled = {this.props.creatingListing}
+              setImages = {this.props.setImages}
+            />
             <Formik
               initialValues={{
                 title: "", 

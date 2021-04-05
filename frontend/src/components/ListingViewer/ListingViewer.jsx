@@ -3,12 +3,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
   setListingArray,
-  setPageNum,
-  setNumPerPage,
   setListingDetail,
-  setQnAInfo,
-  setComments,
-  setNewQuestion
+  setListingDetailImages
 } from "../../actions/ListingDetail";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -57,6 +53,7 @@ class ListingViewer extends Component {
       updateListingMessage: false,
       updatelistingSuccess: false,
     })
+    this.props.setListingDetailImages([])
   }
 
   componentWillUnmount (){
@@ -167,17 +164,22 @@ class ListingViewer extends Component {
         <div className = "listingDetailImageUploader">
           {this.props.readOnly 
           ?
-            this.props.images.map((image, index)=>{
+            this.props.listingDetailImages.map((image, index)=>{
               return(
-                <img 
-                  key = {index}
-                  src={image.data_url || image}
-                  alt="" 
-                  className = "image"
-                />
+                <div className = "detailListingImagePreview">
+                  <img 
+                    key = {index}
+                    src={image.data_url || image}
+                    alt="" 
+                    className = "image"
+                  />
+                </div>
               )
             })
-          : <ImageUploader />
+          : <ImageUploader 
+              value = {this.props.listingDetailImages}
+              setImages = {this.props.setListingDetailImages}
+            />
           }
           
         </div>
@@ -196,17 +198,18 @@ class ListingViewer extends Component {
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(false)
 
-            let imageCollection = this.props.images
-            // if (this.props.detailImages && this.props.detailImages.length !== 0){
-            //   for (let i = 0; i < this.props.detailImages.length; i++){
-            //     if (this.props.detailImages[i].data_url){
-            //       imageCollection.push(this.props.detailImages[i].data_url)
-            //     }
-            //     else{
-            //       imageCollection.push(this.props.detailImages[i])
-            //     }
-            //   }
-            // }
+            let imageCollection = []
+            const existedImages = this.props.listingDetailImages
+            if (existedImages && existedImages.length !== 0){
+              for (let i = 0; i < existedImages.length; i++){
+                if (existedImages[i].data_url){
+                  imageCollection.push(existedImages[i].data_url)
+                }
+                else if (existedImages){
+                  imageCollection.push(existedImages[i])
+                }
+              }
+            }
             let url = API_ROOT_POST.concat(
               "listing/",
               listingDetail.id
@@ -510,28 +513,18 @@ class ListingViewer extends Component {
 const mapStateToProps = state => {
   return {
     listingArray: state.listingDetail.listingArray,
-    pageNum: state.listingDetail.pageNum,
-    numPerPage: state.listingDetail.numPerPage,
-    showListingDetail: state.listingDetail.showListingDetail,
     selectedListing: state.listingDetail.selectedListing,
     readOnly: state.listingDetail.readOnly,
     cookies: state.homeContent.cookies,
-    images: state.createListingContent.images,
-    qnaInfo: state.listingDetail.qnaInfo,
-    comments: state.listingDetail.comments,
-    newQuestion: state.listingDetail.newQuestion,
+    listingDetailImages: state.listingDetail.listingDetailImages
   };
 };
 
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setListingArray,
-    setPageNum,
-    setNumPerPage,
     setListingDetail,
-    setQnAInfo,
-    setComments,
-    setNewQuestion
+    setListingDetailImages
   }, dispatch);
 };
 export default connect(mapStateToProps, matchDispatchToProps)(ListingViewer);

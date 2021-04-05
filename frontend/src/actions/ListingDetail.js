@@ -53,3 +53,10 @@ export const setNewQuestion = (inputObj) =>{
     payload: inputObj
   }
 }
+
+export const setListingDetailImages = (inputArr) =>{
+  return{
+    type: "SET_LISTINGDETAIL_IMAGES",
+    payload: inputArr
+  }
+}

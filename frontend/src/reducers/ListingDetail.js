@@ -6,6 +6,7 @@ const initialState = {
   selectedListing: {},
   readOnly: false,
   qnaInfo: null,
+  listingDetailImages: [],
   comments: new Map(),
   newQuestion: ""
 }
@@ -28,6 +29,8 @@ export const listingDetailReducer = (state = initialState, action) => {
       return {...state, comments: action.payload};
     case "EXHIBIT_LISTING_DETAIL":
       return {...state, showListingDetail: action.payload.open, selectedListing: action.payload.selectedListing}
+    case "SET_LISTINGDETAIL_IMAGES":
+      return {...state, listingDetailImages: action.payload};
     default: 
 			return state;
   }
