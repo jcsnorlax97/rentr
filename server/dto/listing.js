@@ -5,6 +5,7 @@ const schema = joi.object({
   is_available: joi.bool().required(),
   title: joi.string().required().max(100),
   price: joi.number().required().positive(),
+  city: joi.string().required().max(50),
   num_bedroom: joi.number().required().max(10),
   num_bathroom: joi.number().required().max(10),
   is_laundry_available: joi.bool().required(),

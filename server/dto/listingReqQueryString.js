@@ -4,6 +4,7 @@ const joi = require('@hapi/joi');
 const schema = joi.object({
   min_price: joi.number().positive().default(null),
   max_price: joi.number().positive().default(null),
+  city_name: joi.string().default(null),
   min_num_bathroom: joi.number().positive().default(null),
   max_num_bathroom: joi.number().positive().default(null),
   min_num_bedroom: joi.number().positive().default(null),
