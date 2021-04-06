@@ -11,7 +11,8 @@
     "test": "jest && npm run test:e2e",
     "test:e2e": "testcafe chrome:headless e2e_tests",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "testcaf": "testcafe chrome tests/"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -50,6 +51,6 @@
     "prettier": "^2.2.1",
     "sequelize-cli": "^6.2.0",
     "supertest": "^6.1.3",
-    "testcafe": "^1.14.0"
+    "testcafe": "^1.13.0"
   }
 }
