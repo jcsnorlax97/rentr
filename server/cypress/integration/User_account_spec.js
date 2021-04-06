@@ -7,11 +7,11 @@ describe('Wrong Email Login', function (){
     it('Enter login info', function(){
         cy.get('[id="loginEmail"]')
             .click()
-            .type('login258@gmail.com').should('have.value', 'login258@gmail.com')
+            .type('login259@gmail.com').should('have.value', 'login259@gmail.com')
         
         cy.get('[id="loginPassword"]')
             .click()
-            .type('login258').should('have.value', 'login258')
+            .type('login259').should('have.value', 'login259')
     })
     it('Click Login', function(){
         cy.get('[class="MuiButton-label"] ')
@@ -46,14 +46,14 @@ describe('Register An Account', function (){
     it('Enter registration info', function(){
         cy.get('[id="registerEmail"]')
             .click()
-            .type('login258@gmail.com').should('have.value', 'login258@gmail.com')
+            .type('login259@gmail.com').should('have.value', 'login259@gmail.com')
         
         cy.get('[id="registerPassword"]')
             .click()
-            .type('login258').should('have.value', 'login258')
+            .type('login259').should('have.value', 'login259')
         cy.get('[id="registerPassword_confirmed"]')
             .click()
-            .type('login258').should('have.value', 'login258')
+            .type('login259').should('have.value', 'login259')
     })
     
     it('Click Register', function(){
@@ -80,11 +80,11 @@ describe('Correct Email Login', function (){
     it('Enter login info', function(){
         cy.get('[id="loginEmail"]')
             .click()
-            .type('login258@gmail.com').should('have.value', 'login258@gmail.com')
+            .type('login259@gmail.com').should('have.value', 'login259@gmail.com')
         
         cy.get('[id="loginPassword"]')
             .click()
-            .type('login258').should('have.value', 'login258')
+            .type('login259').should('have.value', 'login259')
     })
     it('Click Login', function(){
         cy.get('[class="MuiButton-label"] ')
