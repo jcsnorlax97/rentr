@@ -6,7 +6,10 @@ import {
   setPersonalListingArray
 } from "../../actions/Profile";
 import {
-  setListingArray
+  setListingArray,
+  setListingDetail,
+  setReadOnly,
+  setListingDetailImages
 } from "../../actions/ListingDetail";
 import {
   Dialog,
@@ -36,6 +39,7 @@ import { trackPromise } from "react-promise-tracker";
 import {RefreshLoader} from "../RefreshLoader";
 import {API_ROOT_GET, API_ROOT_POST} from "../../data/urls";
 import {DisplayInfo} from "../../Util/DisplayWarning"
+import Switch from "react-switch";
 
 import "../../styles/HomePage.css"
 import "../../styles/Profile.css"
@@ -114,7 +118,10 @@ class Profile extends Component {
                       }}
                       className = "individualListingContent"
                     >
-                      <span className = "listingImageArea">
+                      <span 
+                        onClick = {()=> this.checkDetailListing(listingDetail)}
+                        className = "listingImageArea"
+                      >
                         {this.checkImageValid(listingDetail.images[0])
                           ?
                             <img
@@ -136,7 +143,10 @@ class Profile extends Component {
                             />
                         }
                       </span>
-                      <div className = "listingTextAndIcon">
+                      <div 
+                        onClick = {()=> this.checkDetailListing(listingDetail)}
+                        className = "listingTextAndIcon"
+                      >
                         <span className = "listingHeader">
                         
                           {/* This is for the listing title area */}
@@ -250,22 +260,36 @@ class Profile extends Component {
                         <Divider/>
 
                         <div className = "listingDescription">
-                          {listingDetail.description}
+                          <Typography
+                            style={{whiteSpace: 'pre-line'}}
+                          >
+                            {listingDetail.description}
+                          </Typography>
                         </div>
 
                       </div>
                       <Divider orientation="vertical" flexItem />
-                      <div className = "removeListingButton">
-                        <Tooltip title = "Remove listing from your account">
-                          <IconButton
-                            className="profile-title-closeButton"
-                            onClick={(e)=>{
-                              this.removeListing(e, index)
+                      <div className = "removeListingButtonGroup">
+                        <div className = "removeListingButton">
+                          <Tooltip title = "Remove listing from your account">
+                            <IconButton
+                              className="profile-title-closeButton"
+                              onClick={(e)=>{
+                                this.removeListing(e, index)
+                              }}
+                            >
+                              <CloseIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </div>
+                        <div className = "listingAvailableSwitch">
+                          <Switch 
+                            checked = {listingDetail.is_available} 
+                            onChange = {() =>{
+                              this.handleAvailability(listingDetail)
                             }}
-                          >
-                            <CloseIcon />
-                          </IconButton>
-                        </Tooltip>
+                          />
+                        </div>
                       </div>
                     </Paper>
                   )
@@ -288,6 +312,41 @@ class Profile extends Component {
         </Dialog>
       </div>
     )
+  }
+
+  checkDetailListing = (listingDetail) =>{
+    this.props.setPersonalDialogStatus(false)
+    this.props.setListingDetail({
+      open:true, 
+      selectedListing: listingDetail
+    })
+    this.props.setListingDetailImages(listingDetail.images)
+    if (this.props.cookies.get("userid") !== String(listingDetail.userid)){
+      this.props.setReadOnly(true)
+    }
+    else{
+      this.props.setReadOnly(false)
+    }
+  }
+
+  handleAvailability = (listingDetail) =>{
+    let url = API_ROOT_POST.concat(
+      "listing/",
+      listingDetail.id
+    )
+    let body = {
+      is_available: !listingDetail.is_available
+    }
+    const config = {
+      headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
+    };
+    axios.put(url, body,config)
+    .then(response=>{
+      if (response.status === 200 || response.sattus === 201){
+        this.fetchListings()
+        this.fetchGlobalListings()
+      }
+    })
   }
 
   fetchGlobalListings = () =>{
@@ -387,7 +446,6 @@ class Profile extends Component {
       axios.get(url)
       .then(response =>{
         this.props.setPersonalListingArray(response.data)
-        console.log("data returned is:" + response.data)
       })
       .catch(error =>{
         if(error.response.data === "No associated listings." && error.response.status === 404){
@@ -428,7 +486,10 @@ const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setPersonalDialogStatus,
     setPersonalListingArray,
-    setListingArray
+    setListingArray,
+    setReadOnly,
+    setListingDetail,
+    setListingDetailImages
   }, dispatch);
 };
 

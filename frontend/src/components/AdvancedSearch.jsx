@@ -39,6 +39,7 @@ import PetsIcon from '@material-ui/icons/Pets';
 
 import {API_ROOT_GET} from "../data/urls";
 import {dropdownNumberOptions} from "../data/dropdownData";
+import {dropDownCities} from "../data/dropdownData"
 
 import "../styles/AdvancedSearch.css";
 
@@ -104,6 +105,7 @@ class AdvancedSearch extends Component {
                 is_pet_allowed: false,
                 is_parking_available: false,
                 keywords: "",
+                city: ""
               }}
               onSubmit={(values, { setSubmitting }) => {
                 setSubmitting(false)
@@ -140,7 +142,9 @@ class AdvancedSearch extends Component {
                 if (String(values.keywords) !== ""){
                   url = url.concat("&keywords=",values.keywords)
                 }
-                console.log(url)
+                if (String(values.city) !== ""){
+                  url = url.concat("&city_name=",values.city)
+                }
                 axios.get(url)
                 .then(response => {
                   // this is when search was successful
@@ -205,6 +209,8 @@ class AdvancedSearch extends Component {
                 is_parking_available: yup
                   .boolean("Choose if laundry is required")
                   .required("This field is required"),
+                city: yup
+                  .string("Choose a city"),
                 keywords: yup
                   .string("Search by keywords")
               })}
@@ -338,6 +344,28 @@ class AdvancedSearch extends Component {
                           error={touched.max_num_bedroom && Boolean(errors.max_num_bedroom)}
                         >
                           {dropdownNumberOptions.map((item) => (
+                            <MenuItem key={item.value} value={item.value}>
+                              {item.label}
+                            </MenuItem>
+                          ))}
+                        </Select>  
+                      </span>
+
+                      <span className = "advancedSearchForm_city">
+                        <Typography className = "advancedSearchForm_numberDropdown">
+                          City location: 
+                        </Typography>
+                        <Select
+                          name = "city"
+                          style = {{
+                            width: 100
+                          }}
+                          value = {values.city}
+                          onBlur = {handleBlur}
+                          onChange = {handleChange}
+                          error={touched.city && Boolean(errors.city)}
+                        >
+                          {dropDownCities.map((item) => (
                             <MenuItem key={item.value} value={item.value}>
                               {item.label}
                             </MenuItem>
