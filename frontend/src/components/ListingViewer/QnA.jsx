@@ -237,10 +237,10 @@ class QnA extends Component {
     if (this.props.qnaInfo !== null && this.props.qnaInfo.size !== 0){
       for (let [chainid, question] of this.props.qnaInfo){
         result.push(
-          <div className = "sectionPadding">
+          <div key = {"sectionPadding_Q".concat(chainid)} className = "sectionPadding">
             <div className="questionQnA">Q: {question.questionBody}
             
-                {this.displayQnAAnswer(question)}
+                {this.displayQnAAnswer(question, chainid)}
                 <div className = "detailListing-QnA-Comment-of-Questions">
                   <TextField 
                     key = {"newanswer".concat(chainid)}
@@ -288,11 +288,11 @@ class QnA extends Component {
     this.props.setComments(newComments)
   }
 
-  displayQnAAnswer = (question) =>{
+  displayQnAAnswer = (question, chainid) =>{
     let result = []
     for (let i = 0 ; i < question.replies.length; i++){
       result.push(
-        <div className="answerQnA" style={{backgroundColor: (i % 2 === 0) ? '#EEEFFF' : '#white' }}>
+        <div key = {"comment".concat(i, "_of_question", chainid)} className="answerQnA" style={{backgroundColor: (i % 2 === 0) ? '#EEEFFF' : '#white' }}>
           {(question.replies[i].userid === (this.props.selectedListing.userid).toString())
             ?
             <div className="landlordText">⭐landlord replied:</div>

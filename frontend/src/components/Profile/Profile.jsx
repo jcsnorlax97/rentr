@@ -250,7 +250,11 @@ class Profile extends Component {
                         <Divider/>
 
                         <div className = "listingDescription">
-                          {listingDetail.description}
+                          <Typography
+                            style={{whiteSpace: 'pre-line'}}
+                          >
+                            {listingDetail.description}
+                          </Typography>
                         </div>
 
                       </div>

@@ -34,7 +34,8 @@
 .advancedSearchForm_min_num_bathroom, 
 .advancedSearchForm_max_num_bathroom,
 .advancedSearchForm_min_num_bedroom,
-.advancedSearchForm_max_num_bedroom{
+.advancedSearchForm_max_num_bedroom,
+.advancedSearchForm_city{
   display: flex;
   flex-direction: row;
   align-items: center;
