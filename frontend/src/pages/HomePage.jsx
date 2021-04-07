@@ -85,8 +85,13 @@ class HomePage extends Component {
                 marginRight: 20,
                 marginLeft: 30
               }}
+              onKeyPress={(e) => {
+                if (e.which === 32) { //32 is the space character
+                  e.preventDefault()
+                }
+              }}
               error = {this.props.searchFieldError}
-              placeholder = "Search with keywords"
+              placeholder = "Enter a keyword"
               onChange={e => {
                 if(this.props.searchFieldError){
                   this.props.setSearchError(false)
