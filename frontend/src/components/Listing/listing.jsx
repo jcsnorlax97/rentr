@@ -101,181 +101,8 @@ class Listing extends Component {
             .map((listingDetail, index)=>{
             // return
               const currIndex = this.props.pageNum * 10 + index;
-              return (
-                <Paper
-                  key = {currIndex}
-                  elevation = {3}
-                  style = {{
-                    width: "100%",
-                    minWidth: 900,
-                    height: 150,
-                    marginTop: 16,
-                    marginBottom: 16
-                  }}
-                  className = "individualListingContent"
-                  onClick = {()=>{
-                    this.props.setListingDetail({
-                      open:true, 
-                      selectedListing: listingDetail
-                    })
-                    this.props.setListingDetailImages(listingDetail.images)
-                    if (this.props.cookies.get("userid") !== String(listingDetail.userid)){
-                      this.props.setReadOnly(true)
-                    }
-                    else{
-                      console.log(this.props.cookies.get("userid"))
-                      this.props.setReadOnly(false)
-                    }
-                  }}
-                >
-                  {/* This is for the image area */}
-                  <span className = "listingImageArea">
-                    {this.checkImageValid(listingDetail.images[0])
-                      ?
-                        <img
-                          style = {{
-                            width: "100%",
-                            height: "100%"
-                          }}
-                          src={listingDetail.images[0]}
-                          alt="apartment"
-                        />
-                      :
-                        <ApartmentIcon
-                          style = {{
-                            width: "100%",
-                            height: "100%",
-                            color: "lightgray"
-                          }}
-                          alt="apartment"
-                        />
-                    }
-                  </span>
-
-                  <div className = "listingTextAndIcon">
-                    <div className = "listingHeader">
-
-                      {/* This is for the listing title area */}
-                      <div className="listingTitle">
-                        {listingDetail.title}
-                      </div>
-                      
-                      <Typography
-                        type="title"
-                        color="inherit" 
-                        style={{
-                          flex: 1 
-                        }}
-                      />
-                      
-                      {/* This is for the listing icon area */}
-                      <span className = "listingIconGroup">
-                        {/* number of washrooms*/}
-                        <span className = "listingIconNumber">
-                          {listingDetail.num_bathroom}
-                          <Tooltip title = "Washroom">
-                            <BathtubIcon className = "listingIcon" fontSize = "large"/>
-                          </Tooltip>
-                        </span>
-
-                        {/* Number of bedrooms */}
-                        <span className = "listingIconNumber">
-                          {listingDetail.num_bedroom}
-                          <Tooltip title = "Bedroom">
-                            <HotelIcon className = "listingIcon" fontSize = "large"/>
-                          </Tooltip>
-                        </span>
-                        
-                        {/* Number of laundry rooms */}
-                        <span className = "listingIconNumber">
-                          {
-                            listingDetail.is_laundry_available
-                            ?
-                            <Tooltip title = "Laundry Room is available">
-                              <LocalLaundryServiceIcon 
-                                style = {{color: "green"}}
-                                className = "listingIcon" 
-                                fontSize = "large"
-                              />
-                            </Tooltip>
-                            :
-                            <Tooltip title = "Laundry Room not available">
-                              <LocalLaundryServiceIcon
-                                style = {{color: "grey"}}
-                                className = "listingIcon" 
-                                fontSize = "large"
-                              />
-                            </Tooltip>
-                          }
-                        </span>
-                        
-                        {/* Indicate whether pets allowed or not */}
-                        <span>
-                          {
-                            listingDetail.is_pet_allowed 
-                            ? 
-                            <Tooltip title = "Pet allowed">
-                              <PetsIcon
-                                style={{ color: "green" }}
-                                fontSize = "large"
-                                className = "listingIconNumber"
-                              />
-                            </Tooltip>
-                            :
-                            <Tooltip title = "Pet NOT allowed">
-                              <PetsIcon
-                                style={{ color: "grey" }}
-                                fontSize = "large"
-                                className = "listingIconNumber"
-                              />
-                            </Tooltip>
-                          }
-                        </span>
-                        
-                        {/* Indicate whether parking included or not */}
-                        <span>
-                          {
-                            listingDetail.is_parking_available 
-                            ? 
-                            <Tooltip title = "Parking is included">
-                              <LocalParkingIcon
-                                style={{ color: "green" }}
-                                fontSize = "large"
-                                className = "listingIconNumber"
-                              />
-                            </Tooltip>
-                            :
-                            <Tooltip title = "Parking NOT included">
-                              <LocalParkingIcon
-                                style={{ color: "grey" }}
-                                fontSize = "large"
-                                className = "listingIconNumber"
-                              />
-                            </Tooltip>
-                          }
-                        </span>
-                      </span>
-                      <Divider orientation="vertical" flexItem style={{marginLeft: 'auto'}}/>
-                      <div
-                        className = "listingPrice"
-                      >
-                        ${this.checkPrice(listingDetail.price)}
-                      </div>
-                      
-                    </div>
-
-                    <Divider/>
-
-                    <div className = "listingDescription">
-                      <Typography
-                        style={{whiteSpace: 'pre-line'}}
-                      >
-                        {listingDetail.description}
-                      </Typography>
-                    </div>
-
-                  </div>
-                </Paper>
+              return(
+                this.renderAvailablePosting(currIndex, listingDetail)
               )
             })
           : 
@@ -342,6 +169,187 @@ class Listing extends Component {
       </div>
     )
   } // end of render
+
+  renderAvailablePosting = (currIndex, listingDetail) =>{
+    let result = null
+    if (listingDetail.is_available){
+      result = 
+        <Paper
+          key = {currIndex}
+          elevation = {3}
+          style = {{
+            width: "100%",
+            minWidth: 900,
+            height: 150,
+            marginTop: 16,
+            marginBottom: 16
+          }}
+          className = "individualListingContent"
+          onClick = {()=>{
+            this.props.setListingDetail({
+              open:true, 
+              selectedListing: listingDetail
+            })
+            this.props.setListingDetailImages(listingDetail.images)
+            if (this.props.cookies.get("userid") !== String(listingDetail.userid)){
+              this.props.setReadOnly(true)
+            }
+            else{
+              this.props.setReadOnly(false)
+            }
+          }}
+        >
+          {/* This is for the image area */}
+          <span className = "listingImageArea">
+            {this.checkImageValid(listingDetail.images[0])
+              ?
+                <img
+                  style = {{
+                    width: "100%",
+                    height: "100%"
+                  }}
+                  src={listingDetail.images[0]}
+                  alt="apartment"
+                />
+              :
+                <ApartmentIcon
+                  style = {{
+                    width: "100%",
+                    height: "100%",
+                    color: "lightgray"
+                  }}
+                  alt="apartment"
+                />
+            }
+          </span>
+
+          <div className = "listingTextAndIcon">
+            <div className = "listingHeader">
+
+              {/* This is for the listing title area */}
+              <div className="listingTitle">
+                {listingDetail.title}
+              </div>
+              
+              <Typography
+                type="title"
+                color="inherit" 
+                style={{
+                  flex: 1 
+                }}
+              />
+              
+              {/* This is for the listing icon area */}
+              <span className = "listingIconGroup">
+                {/* number of washrooms*/}
+                <span className = "listingIconNumber">
+                  {listingDetail.num_bathroom}
+                  <Tooltip title = "Washroom">
+                    <BathtubIcon className = "listingIcon" fontSize = "large"/>
+                  </Tooltip>
+                </span>
+
+                {/* Number of bedrooms */}
+                <span className = "listingIconNumber">
+                  {listingDetail.num_bedroom}
+                  <Tooltip title = "Bedroom">
+                    <HotelIcon className = "listingIcon" fontSize = "large"/>
+                  </Tooltip>
+                </span>
+                
+                {/* Number of laundry rooms */}
+                <span className = "listingIconNumber">
+                  {
+                    listingDetail.is_laundry_available
+                    ?
+                    <Tooltip title = "Laundry Room is available">
+                      <LocalLaundryServiceIcon 
+                        style = {{color: "green"}}
+                        className = "listingIcon" 
+                        fontSize = "large"
+                      />
+                    </Tooltip>
+                    :
+                    <Tooltip title = "Laundry Room not available">
+                      <LocalLaundryServiceIcon
+                        style = {{color: "grey"}}
+                        className = "listingIcon" 
+                        fontSize = "large"
+                      />
+                    </Tooltip>
+                  }
+                </span>
+                
+                {/* Indicate whether pets allowed or not */}
+                <span>
+                  {
+                    listingDetail.is_pet_allowed 
+                    ? 
+                    <Tooltip title = "Pet allowed">
+                      <PetsIcon
+                        style={{ color: "green" }}
+                        fontSize = "large"
+                        className = "listingIconNumber"
+                      />
+                    </Tooltip>
+                    :
+                    <Tooltip title = "Pet NOT allowed">
+                      <PetsIcon
+                        style={{ color: "grey" }}
+                        fontSize = "large"
+                        className = "listingIconNumber"
+                      />
+                    </Tooltip>
+                  }
+                </span>
+                
+                {/* Indicate whether parking included or not */}
+                <span>
+                  {
+                    listingDetail.is_parking_available 
+                    ? 
+                    <Tooltip title = "Parking is included">
+                      <LocalParkingIcon
+                        style={{ color: "green" }}
+                        fontSize = "large"
+                        className = "listingIconNumber"
+                      />
+                    </Tooltip>
+                    :
+                    <Tooltip title = "Parking NOT included">
+                      <LocalParkingIcon
+                        style={{ color: "grey" }}
+                        fontSize = "large"
+                        className = "listingIconNumber"
+                      />
+                    </Tooltip>
+                  }
+                </span>
+              </span>
+              <Divider orientation="vertical" flexItem style={{marginLeft: 'auto'}}/>
+              <div
+                className = "listingPrice"
+              >
+                ${this.checkPrice(listingDetail.price)}
+              </div>
+              
+            </div>
+
+            <Divider/>
+
+            <div className = "listingDescription">
+              <Typography
+                style={{whiteSpace: 'pre-line'}}
+              >
+                {listingDetail.description}
+              </Typography>
+            </div>
+
+          </div>
+        </Paper>
+    }
+    return result
+  }
 
   handleChange = (event, value) =>{
     this.props.setPageNum(value);

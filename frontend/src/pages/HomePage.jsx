@@ -4,21 +4,15 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
   setStatus,
-  setLogging,
-  setRegistering,
-  setUserEmail,
   setLogin_dialog,
   setRegister_dialog,
   setSearchError,
   setSearchValue,
-  setSearchCategory
 } from "../actions/HomePage";
 import {
-  setListingDetail
+  setListingArray,
+  setPageNum
 } from "../actions/ListingDetail";
-import {
-  setPersonalDialogStatus
-} from "../actions/Profile";
 import logo from "../resources/logo.png";
 import { 
   AppBar, 
@@ -42,8 +36,10 @@ import CreateListingButton from "../components/CreateListing/CreateListingButton
 import LoginDialogButton from "../components/LoginDialogButton";
 import Profile from "../components/Profile/Profile";
 import AdvancedSearch from "../components/AdvancedSearch";
-// import ListingViewer from "../components/ListingViewer/ListingViewer"
+import { trackPromise } from "react-promise-tracker";
 
+import {API_ROOT_GET} from "../data/urls"
+import axios from "axios";
 import "../styles/HomePage.css"
 
 
@@ -65,6 +61,7 @@ class HomePage extends Component {
 
             {/* this is our rentr logo */}
             <img
+              onClick = {this.handleClickLogo}
               id="logo"
               src={logo}
               alt="Rentr Logo"
@@ -216,6 +213,33 @@ class HomePage extends Component {
       : "Good morning";
   }
 
+  handleClickLogo = () =>{
+    this.fetchListing()
+    this.props.setPageNum(1)
+  }
+
+  fetchListing = () =>{
+    this.props.setListingArray([])
+    trackPromise(
+      this.fetchWithDelay()
+    , "fetchListingArea")
+  }
+
+  fetchWithDelay = () =>{
+    const url = String(API_ROOT_GET).concat("listing")
+    const promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(
+          axios.get(url)
+          .then(response =>{
+            this.props.setListingArray(response.data)
+          })
+        );
+      }, 1000)
+    });
+  
+    return promise;
+  }
 }
 
 //REDUX
@@ -225,25 +249,18 @@ const mapStateToProps = state => {
     cookies: state.homeContent.cookies,
     searchFieldError: state.homeContent.searchFieldError,
     searchFieldValue: state.homeContent.searchFieldValue,
-    searchCategory: state.homeContent.searchCategory,
-    showListingDetail: state.listingDetail.showListingDetail,
-    listingDetail: state.listingDetail.listingDetail,
   };
 };
 
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setStatus,
-    setLogging,
-    setRegistering,
-    setUserEmail,
     setLogin_dialog,
     setRegister_dialog,
-    setPersonalDialogStatus,
-    setListingDetail,
     setSearchError,
     setSearchValue,
-    setSearchCategory
+    setListingArray,
+    setPageNum
   }, dispatch);
 };
 

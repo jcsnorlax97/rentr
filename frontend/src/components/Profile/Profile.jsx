@@ -36,6 +36,7 @@ import { trackPromise } from "react-promise-tracker";
 import {RefreshLoader} from "../RefreshLoader";
 import {API_ROOT_GET, API_ROOT_POST} from "../../data/urls";
 import {DisplayInfo} from "../../Util/DisplayWarning"
+import Switch from "react-switch";
 
 import "../../styles/HomePage.css"
 import "../../styles/Profile.css"
@@ -270,6 +271,12 @@ class Profile extends Component {
                             <CloseIcon />
                           </IconButton>
                         </Tooltip>
+                        <Switch 
+                          checked = {listingDetail.is_available} 
+                          onChange = {() =>{
+                            this.handleAvailability(listingDetail)
+                          }}
+                        />
                       </div>
                     </Paper>
                   )
@@ -292,6 +299,26 @@ class Profile extends Component {
         </Dialog>
       </div>
     )
+  }
+
+  handleAvailability = (listingDetail) =>{
+    let url = API_ROOT_POST.concat(
+      "listing/",
+      listingDetail.id
+    )
+    let body = {
+      is_available: !listingDetail.is_available
+    }
+    const config = {
+      headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
+    };
+    axios.put(url, body,config)
+    .then(response=>{
+      if (response.status === 200 || response.sattus === 201){
+        this.fetchListings()
+        this.fetchGlobalListings()
+      }
+    })
   }
 
   fetchGlobalListings = () =>{
@@ -391,7 +418,6 @@ class Profile extends Component {
       axios.get(url)
       .then(response =>{
         this.props.setPersonalListingArray(response.data)
-        console.log("data returned is:" + response.data)
       })
       .catch(error =>{
         if(error.response.data === "No associated listings." && error.response.status === 404){
