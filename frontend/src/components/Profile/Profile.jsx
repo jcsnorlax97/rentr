@@ -6,7 +6,10 @@ import {
   setPersonalListingArray
 } from "../../actions/Profile";
 import {
-  setListingArray
+  setListingArray,
+  setListingDetail,
+  setReadOnly,
+  setListingDetailImages
 } from "../../actions/ListingDetail";
 import {
   Dialog,
@@ -115,7 +118,10 @@ class Profile extends Component {
                       }}
                       className = "individualListingContent"
                     >
-                      <span className = "listingImageArea">
+                      <span 
+                        onClick = {()=> this.checkDetailListing(listingDetail)}
+                        className = "listingImageArea"
+                      >
                         {this.checkImageValid(listingDetail.images[0])
                           ?
                             <img
@@ -137,7 +143,10 @@ class Profile extends Component {
                             />
                         }
                       </span>
-                      <div className = "listingTextAndIcon">
+                      <div 
+                        onClick = {()=> this.checkDetailListing(listingDetail)}
+                        className = "listingTextAndIcon"
+                      >
                         <span className = "listingHeader">
                         
                           {/* This is for the listing title area */}
@@ -260,23 +269,27 @@ class Profile extends Component {
 
                       </div>
                       <Divider orientation="vertical" flexItem />
-                      <div className = "removeListingButton">
-                        <Tooltip title = "Remove listing from your account">
-                          <IconButton
-                            className="profile-title-closeButton"
-                            onClick={(e)=>{
-                              this.removeListing(e, index)
+                      <div className = "removeListingButtonGroup">
+                        <div className = "removeListingButton">
+                          <Tooltip title = "Remove listing from your account">
+                            <IconButton
+                              className="profile-title-closeButton"
+                              onClick={(e)=>{
+                                this.removeListing(e, index)
+                              }}
+                            >
+                              <CloseIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </div>
+                        <div className = "listingAvailableSwitch">
+                          <Switch 
+                            checked = {listingDetail.is_available} 
+                            onChange = {() =>{
+                              this.handleAvailability(listingDetail)
                             }}
-                          >
-                            <CloseIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Switch 
-                          checked = {listingDetail.is_available} 
-                          onChange = {() =>{
-                            this.handleAvailability(listingDetail)
-                          }}
-                        />
+                          />
+                        </div>
                       </div>
                     </Paper>
                   )
@@ -299,6 +312,21 @@ class Profile extends Component {
         </Dialog>
       </div>
     )
+  }
+
+  checkDetailListing = (listingDetail) =>{
+    this.props.setPersonalDialogStatus(false)
+    this.props.setListingDetail({
+      open:true, 
+      selectedListing: listingDetail
+    })
+    this.props.setListingDetailImages(listingDetail.images)
+    if (this.props.cookies.get("userid") !== String(listingDetail.userid)){
+      this.props.setReadOnly(true)
+    }
+    else{
+      this.props.setReadOnly(false)
+    }
   }
 
   handleAvailability = (listingDetail) =>{
@@ -458,7 +486,10 @@ const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setPersonalDialogStatus,
     setPersonalListingArray,
-    setListingArray
+    setListingArray,
+    setReadOnly,
+    setListingDetail,
+    setListingDetailImages
   }, dispatch);
 };
 
