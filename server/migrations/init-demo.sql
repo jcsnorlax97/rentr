@@ -40,7 +40,15 @@ CREATE TABLE IF NOT EXISTS rentr_listing (
 );
 
 INSERT INTO rentr_listing(userid, is_available, title, price, city, num_bedroom, num_bathroom, is_laundry_available, is_pet_allowed, is_parking_available, images, description) VALUES 
-(1, TRUE, 'An appartment near the university', 500, 'Winnipeg', 3, 2, TRUE, TRUE, TRUE, ARRAY[]::TEXT[], 'This apartment near the university, also the bus stop. Only 2 mins walk to the bus stop, only thing is pet is not allowed.');
+(1, TRUE, 'An appartment near the university', 500, 'Winnipeg', 3, 2, TRUE, TRUE, TRUE, ARRAY[]::TEXT[], 'This apartment near the university, also the bus stop. Only 2 mins walk to the bus stop, only thing is pet is not allowed.'),
+(1, TRUE, 'Apartment along with Dalhousie Street!', 600, 'Winnipeg', 2, 2, TRUE, FALSE, TRUE, ARRAY[]::TEXT[], '- Next to University of Manitoba, Winnipeg, MB.
+- Laundry Room included.
+- (Single) Parking lot included
+- Pets are NOT allowed.
+- $600 Per month.
+
+Welcome to leave a comment in the QnA Section if you have any question! 
+');
 
 CREATE TABLE IF NOT EXISTS rentr_chain (
     id BIGSERIAL PRIMARY KEY NOT NULL,
