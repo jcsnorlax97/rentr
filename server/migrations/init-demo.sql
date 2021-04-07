@@ -20,9 +20,7 @@ CREATE TABLE IF NOT EXISTS rentr_user (
 );
 
 INSERT INTO rentr_user(email, password) VALUES 
-('admin@gmail.com', '$2b$10$VcG9Jd24EM.wOH6EIBXY5uKvuV7wOr7wyqIilOOil/uJCUvQTIxKG');
-
--- SELECT * FROM rentr_user;
+('demo@gmail.com', '$2b$10$VcG9Jd24EM.wOH6EIBXY5uKvuV7wOr7wyqIilOOil/uJCUvQTIxKG');
 
 CREATE TABLE IF NOT EXISTS rentr_listing (
     id BIGSERIAL PRIMARY KEY, 
@@ -43,8 +41,6 @@ CREATE TABLE IF NOT EXISTS rentr_listing (
 
 INSERT INTO rentr_listing(userid, is_available, title, price, city, num_bedroom, num_bathroom, is_laundry_available, is_pet_allowed, is_parking_available, images, description) VALUES 
 (1, TRUE, 'An appartment near the university', 500, 'Winnipeg', 3, 2, TRUE, TRUE, TRUE, ARRAY[]::TEXT[], 'This apartment near the university, also the bus stop. Only 2 mins walk to the bus stop, only thing is pet is not allowed.');
-
--- SELECT * FROM rentr_listing;
 
 CREATE TABLE IF NOT EXISTS rentr_chain (
     id BIGSERIAL PRIMARY KEY NOT NULL,
