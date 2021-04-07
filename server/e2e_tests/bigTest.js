@@ -1,12 +1,10 @@
-//I don't know how to split tests up so that they can be run one before the othert
-// so hooking a whole bunch of stuff together for now. 
 
 import {Selector} from 'testcafe';
 
-fixture('Testing many features (creation, search, deletion)')
+fixture('Create and delete a listing')
     .page('https://rentr-front-end.herokuapp.com/');
 
-test('Testing login, creation, search, deletion', async t => {
+test('Create and delete a listing test', async t => {
     await t
         .click('[id="homePage_Header_Login"]')
         .typeText('[id="loginEmail"]', 'test123@gmail.com')
@@ -33,7 +31,6 @@ test('Testing login, creation, search, deletion', async t => {
         
         .click('body > div.MuiDialog-root > div.MuiDialog-container.MuiDialog-scrollPaper > div > div.MuiDialogContent-root.homeDialog-Content > form > div.MuiDialogActions-root.createlistingDialog-Actions.MuiDialogActions-spacing > button > span.MuiButton-label')
         .wait(5000)
-
 
 
         .click('#homePage_Header > div > button > span.MuiButton-label > svg')
