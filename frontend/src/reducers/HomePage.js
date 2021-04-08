@@ -34,7 +34,7 @@ export const homeReducer = (state = initialState, action) => {
         state.cookies.remove("status")
         state.cookies.remove("userid")
       }
-      return {...state, status: action.payload};
+      return {...state, status: action.payload.status};
     // case "SET_TOKEN":
     //   return {...state, token: action.payload};
     case "SET_SEARCH_ERROR":

@@ -28,8 +28,9 @@ import PetsIcon from '@material-ui/icons/Pets';
 import CloseIcon from '@material-ui/icons/Close';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import LocalParkingIcon from '@material-ui/icons/LocalParking';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
-import {dropdownNumberOptions} from "../../data/dropdownData";
+import {dropDownCities, dropdownNumberOptions} from "../../data/dropdownData";
 import {API_ROOT_POST, API_ROOT_GET} from "../../data/urls";
 import ImageUploader from "../ImageUpload/ImageUploader";
 import QnA from "./QnA";
@@ -166,7 +167,7 @@ class ListingViewer extends Component {
           ?
             this.props.listingDetailImages.map((image, index)=>{
               return(
-                <div className = "detailListingImagePreview">
+                <div key = {"container_".concat(index)} className = "detailListingImagePreview">
                   <img 
                     key = {index}
                     src={image.data_url || image}
@@ -193,7 +194,8 @@ class ListingViewer extends Component {
             price: listingDetail.price,
             is_laundry_available: listingDetail.is_laundry_available,
             is_pet_allowed: listingDetail.is_pet_allowed,
-            is_parking_available: listingDetail.is_parking_available
+            is_parking_available: listingDetail.is_parking_available,
+            city: listingDetail.city
           }}
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(false)
@@ -224,6 +226,7 @@ class ListingViewer extends Component {
               is_laundry_available: Boolean(values.is_laundry_available),
               is_pet_allowed: Boolean(values.is_pet_allowed),
               is_parking_available: Boolean(values.is_parking_available),
+              city: String(values.city)
             }
             const config = {
               headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
@@ -280,7 +283,10 @@ class ListingViewer extends Component {
               .required('Pet info is required'),
             is_parking_available: yup
               .string("Select is parking is available")
-              .required('Parking info is required')
+              .required('Parking info is required'),
+            city: yup
+              .string("Select location of the listing")
+              .required('Location info is required'),
           })}
         >
           {props => {
@@ -376,7 +382,7 @@ class ListingViewer extends Component {
                     variant="outlined"
                     margin="dense"
                     select
-                    style = {{width: 150}}
+                    style = {{width: 150, marginRight: 30}}
                     value = {values.num_bathroom}
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -384,6 +390,32 @@ class ListingViewer extends Component {
                     helperText={touched.num_bathroom && errors.num_bathroom}
                   >
                     {dropdownNumberOptions.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+
+                  <Tooltip title = "Location">
+                    <LocationOnIcon className = "listingIcon" fontSize = "large"/>
+                  </Tooltip>
+                  <TextField
+                    inputProps={{
+                      readOnly: this.props.readOnly
+                    }}
+                    label = "city"
+                    name="city"
+                    variant="outlined"
+                    margin="dense"
+                    select
+                    style = {{width: 150}}
+                    value = {values.city}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={touched.city && Boolean(errors.city)}
+                    helperText={touched.city && errors.city}
+                  >
+                    {dropDownCities.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
