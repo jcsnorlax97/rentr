@@ -3,7 +3,7 @@ import {Selector} from 'testcafe';
 fixture('Rentr Register New Acc')
     .page('https://rentr-front-end.herokuapp.com/');
 
-test('Login Fails', async t => {
+test('NonExistent Acc\'s Login Fails', async t => {
 
     const email = 'register@test.com'
     const password = 'register'
