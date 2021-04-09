@@ -20,6 +20,12 @@ const config = {
       rejectUnauthorized: false,
     },
   },
+  demo: {
+    connectionString: process.env.DEMO_DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
 };
 
 module.exports = config[environment];
