@@ -1,6 +1,6 @@
 import {Selector} from 'testcafe';
 
-fixture('Modify a listing (Update, delete, edit availability)').page(
+fixture('Modify a listing (Update and edit availability)').page(
   'https://rentr-front-end.herokuapp.com/'
 );
 
