@@ -4,12 +4,12 @@ import { Selector } from 'testcafe';
 const listingTitle = 'Test Title';
 const listingDescription = 'Test Description';
 
-fixture('testcafe Login')
+fixture('Creation and deletion')
     .page('https://rentr-front-end.herokuapp.com/');
 
 
 //assumption: there exists an account with the given email and password
-test('Login', async t => {
+test('Creation and deletion', async t => {
     await t
         .maximizeWindow()
         // login
