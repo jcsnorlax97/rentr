@@ -8,7 +8,8 @@
     "dev": "nodemon -r dotenv/config app.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "jest",
+    "test": "jest && npm run test:e2e",
+    "test:e2e": "testcafe chrome:headless e2e_tests",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
@@ -48,6 +49,7 @@
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
     "sequelize-cli": "^6.2.0",
-    "supertest": "^6.1.3"
+    "supertest": "^6.1.3",
+    "testcafe": "^1.14.0"
   }
 }
