@@ -20,23 +20,23 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  Snackbar,
 } from "@material-ui/core";
 
 import CloseIcon from '@material-ui/icons/Close';
 import EmailIcon from '@material-ui/icons/Email';
 import { VpnKey } from '@material-ui/icons';
 
-import MuiAlert from '@material-ui/lab/Alert';
+import {DisplayInfo} from "../Util/DisplayWarning"
 import { API_ROOT_POST, LOGIN_ADDRESS } from "../data/urls";
 
 
 import "../styles/HomePage.css";
 
-/** At some point, should move Login styles into its own thing */
-
-// import "../../styles/Login.css"
-
+const loginSuccessMessage = "Welcome home, returning to home page shortly."
+const loginFailMessage = "Incorrect email and password combination is entered"
+const loginWarningMessage = "This email has not been registered yet"
+const registerSuccessMessage = "Your account is registered successfully, you'll be taken back to homePage shortly."
+const registerFailMessage = "Account with current email has already been registered"
 class LoginDialog extends Component {
 
   state = {
@@ -97,7 +97,15 @@ class LoginDialog extends Component {
           width: "500px"
         }}
       >
-        {this.handleLoginMessage()}
+        <DisplayInfo
+          displayMessage = {this.state.loginMessage}
+          displaySuccess = {this.state.loginSuccess}
+          displayWarning = {this.state.loginError}
+          successMessage = {loginSuccessMessage}
+          failedMessage = {loginFailMessage}
+          WarningMessage = {loginWarningMessage}
+          handleCloseMessage = {this.handleCloseLoginSnackBar}
+        />
         <DialogTitle className="homeDialog-title">
           Login
           <IconButton
@@ -306,7 +314,16 @@ class LoginDialog extends Component {
           width: "500px"
         }}
       >
-        {this.handleRegisterMessage()}
+        <DisplayInfo
+          displayMessage = {this.state.registerMessage}
+          displaySuccess = {this.state.registerSuccess}
+          displayWarning = {false}
+          successMessage = {registerSuccessMessage}
+          failedMessage = {registerFailMessage}
+          WarningMessage = {""}
+          handleCloseMessage = {this.handleCloseRegisterSnackBar}
+        />
+
         <DialogTitle className="homeDialog-title">
           Register
           <IconButton
@@ -508,66 +525,12 @@ class LoginDialog extends Component {
     )
   }
 
-  handleLoginMessage = () => {
-    let alertMessage;
-    if (this.state.loginSuccess) {
-      alertMessage = (
-        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseLoginSnackBar} severity="success">
-          Welcome home, you will be taken back to home page shortly.
-        </MuiAlert>
-      )
-    }
-    else if (!this.state.loginSuccess && !this.state.loginError) {
-      alertMessage = (
-        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseLoginSnackBar} severity="error">
-          Incorrect email and password combination is entered
-        </MuiAlert>
-      )
-    }
-    else if (!this.state.loginSuccess && this.state.loginError) {
-      alertMessage = (
-        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseLoginSnackBar} severity="warning">
-          This email has not been registered yet
-        </MuiAlert>
-      )
-    }
-    return (
-      <Snackbar
-        open={this.state.loginMessage}
-        autoHideDuration={6000}
-        onClose={this.handleCloseLoginSnackBar}
-      >
-        {alertMessage}
-      </Snackbar>
-    )
-  }
-
   handleCloseLoginSnackBar = (event, reason) => {
     if (reason === "clickaway")
       return
     this.setState({
       loginMessage: false
     })
-  }
-
-  handleRegisterMessage = () => {
-    return (
-      <Snackbar open={this.state.registerMessage} autoHideDuration={6000} onClose={this.handleCloseRegisterSnackBar}>
-        {this.state.registerSuccess
-          ? (
-            <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseRegisterSnackBar} severity="success">
-              Your account is registered successfully, you'll be taken back to homePage shortly.
-            </MuiAlert>
-          )
-          :
-          (
-            <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseRegisterSnackBar} severity="error">
-              Account with current email has already been registered
-            </MuiAlert>
-          )
-        }
-      </Snackbar>
-    )
   }
 
   handleCloseRegisterSnackBar = (event, reason) => {
@@ -577,6 +540,7 @@ class LoginDialog extends Component {
       registerMessage: false
     })
   }
+  
   handleClickRegister = () => {
     this.props.setLogin_dialog(false);
     this.props.setRegister_dialog(true);

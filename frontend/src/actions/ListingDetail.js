@@ -40,9 +40,9 @@ export const setQnAInfo = (inputObj) =>{
   }
 }
 
-export const setComment = (inputObj) =>{
+export const setComments = (inputObj) =>{
   return{
-    type: "SET_COMMENT",
+    type: "SET_COMMENTS",
     payload: inputObj
   }
 }
@@ -51,5 +51,12 @@ export const setNewQuestion = (inputObj) =>{
   return{
     type: "SET_NEWQUESTION",
     payload: inputObj
+  }
+}
+
+export const setListingDetailImages = (inputArr) =>{
+  return{
+    type: "SET_LISTINGDETAIL_IMAGES",
+    payload: inputArr
   }
 }

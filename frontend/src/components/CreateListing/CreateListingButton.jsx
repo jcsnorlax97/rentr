@@ -21,15 +21,15 @@ import {
   DialogTitle,
   IconButton,
   MenuItem,
-  Snackbar
 } from "@material-ui/core";
-import MuiAlert from '@material-ui/lab/Alert';
+import {DisplayInfo} from "../../Util/DisplayWarning"
 
 import CloseIcon from '@material-ui/icons/Close';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 
 import ImageUploader from "../ImageUpload/ImageUploader";
 import {API_ROOT_POST, API_ROOT_GET} from "../../data/urls";
+import {dropDownCities} from "../../data/dropdownData"
 
 import "../../styles/HomePage.css"
 import "../../styles/CreateListing.css"
@@ -67,7 +67,8 @@ const numberDropdownOptions = [
     label: '5'
   }
 ]
-
+const deleteSuccessMessage = "Your listing is created successfully, you'll be taken back to home page shortly"
+const deleteFailMessage = "Listing creation failed, you might need to re-login"
 
 class CreateListingButton extends Component {
 
@@ -114,8 +115,16 @@ class CreateListingButton extends Component {
             this.resetDialogStatus()
           }}
           maxWidth = "lg"
-        >
-          {this.handleRegisterMessage()}
+        > 
+          <DisplayInfo
+            displayMessage = {this.state.postListingMessage}
+            displaySuccess = {this.state.postListingSuccess}
+            displayWarning = {false}
+            successMessage = {deleteSuccessMessage}
+            failedMessage = {deleteFailMessage}
+            WarningMessage = {""}
+            handleCloseMessage = {this.handleCloseCreateListing}
+          />
           <DialogTitle className="createListing-title">
             Create a Listing
             <IconButton
@@ -132,7 +141,11 @@ class CreateListingButton extends Component {
           <DialogContent
             className="homeDialog-Content"
           >
-            <ImageUploader disabled = {this.props.creatingListing}/>
+            <ImageUploader 
+              value = {this.props.images}
+              disabled = {this.props.creatingListing}
+              setImages = {this.props.setImages}
+            />
             <Formik
               initialValues={{
                 title: "", 
@@ -142,7 +155,8 @@ class CreateListingButton extends Component {
                 price: "",
                 is_laundry_available: false,
                 is_pet_allowed: false,
-                is_parking_available: false
+                is_parking_available: false,
+                city: ""
               }}
               onSubmit={(values, { setSubmitting }) => {
                 setSubmitting(false)
@@ -166,6 +180,8 @@ class CreateListingButton extends Component {
                   is_laundry_available: Boolean(values.is_laundry_available),
                   is_pet_allowed: Boolean(values.is_pet_allowed),
                   is_parking_available: Boolean(values.is_parking_available),
+                  city: String(values.city),
+                  is_available:true,
                 }
                 const config = {
                   headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
@@ -230,7 +246,10 @@ class CreateListingButton extends Component {
                   .required('Pet info is required'),
                 is_parking_available: yup
                   .string("Select is parking is available")
-                  .required('Parking info is required')
+                  .required('Parking info is required'),
+                city: yup
+                  .string("Select location of the listing")
+                  .required('Location info is required'),
               })}
             >
               {props => {
@@ -250,7 +269,6 @@ class CreateListingButton extends Component {
                         label="Title"
                         id="title"
                         name="title"
-                        required
                         fullWidth
                         className="emailField"
                         type="text"
@@ -270,7 +288,6 @@ class CreateListingButton extends Component {
                         id="description"
                         name="description"
                         multiline
-                        required
                         fullWidth
                         rows={8}
                         margin="dense"
@@ -290,7 +307,6 @@ class CreateListingButton extends Component {
                       label="Bedrooms"
                       id="num_bedroom"
                       name="num_bedroom"
-                      required
                       variant="outlined"
                       margin="dense"
                       select
@@ -311,13 +327,12 @@ class CreateListingButton extends Component {
 
                     <TextField
                       disabled={this.props.creatingListing}
-                      required
                       id="num_bathroom"
                       name="num_bathroom"
                       variant="outlined"
                       margin="dense"
                       select
-                      style = {{width: 150}}
+                      style = {{width: 150, marginRight: 30}}
                       label="Bathrooms"
                       value = {values.num_bathroom}
                       onBlur={handleBlur}
@@ -331,14 +346,34 @@ class CreateListingButton extends Component {
                         </MenuItem>
                       ))}
                     </TextField>
-
+                    
+                    <TextField
+                      disabled={this.props.creatingListing}
+                      id="city"
+                      name="city"
+                      variant="outlined"
+                      margin="dense"
+                      select
+                      style = {{width: 200}}
+                      label="city location"
+                      value = {values.city}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      error={touched.city && Boolean(errors.city)}
+                      helperText={touched.city && errors.city}
+                    >
+                      {dropDownCities.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
 
                     <div className = "createListing-priceArea">
                       <AttachMoneyIcon fontSize = "large" style = {{paddingTop: "10px"}}/>
                       <TextField
                         disabled={this.props.creatingListing}
                         label="Price"
-                        required
                         id="price"
                         name="price"
                         className="emailField"
@@ -356,7 +391,6 @@ class CreateListingButton extends Component {
                     <TextField
                       disabled={this.props.creatingListing}
                       label="Laundry Room"
-                      required
                       id="is_laundry_available"
                       name="is_laundry_available"
                       variant="outlined"
@@ -379,7 +413,6 @@ class CreateListingButton extends Component {
                     <TextField
                       disabled={this.props.creatingListing}
                       label="Pets allowed"
-                      required
                       id="is_pet_allowed"
                       name="is_pet_allowed"
                       variant="outlined"
@@ -402,7 +435,6 @@ class CreateListingButton extends Component {
                     <TextField
                       disabled={this.props.creatingListing}
                       label="Parking"
-                      required
                       id="is_parking_available"
                       name="is_parking_available"
                       variant="outlined"
@@ -448,27 +480,7 @@ class CreateListingButton extends Component {
     )
   }
 
-  handleRegisterMessage = () => {
-    return (
-      <Snackbar open={this.state.postListingMessage} autoHideDuration={6000} onClose={this.handleCloseCreateListingSnack}>
-        {this.state.postListingSuccess
-          ? (
-            <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseCreateListingSnack} severity="success">
-              Your posting is submitted successfully, you'll be taken back to home page shortly
-            </MuiAlert>
-          )
-          :
-          (
-            <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseCreateListingSnack} severity="error">
-              Listing creation failed, you might need to re-login
-            </MuiAlert>
-          )
-        }
-      </Snackbar>
-    )
-  }
-
-  handleCloseCreateListingSnack = (event, reason) => {
+  handleCloseCreateListing = (event, reason) => {
     if (reason === "clickaway")
       return
     this.setState({

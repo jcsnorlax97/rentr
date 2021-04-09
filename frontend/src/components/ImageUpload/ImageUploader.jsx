@@ -1,9 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from "react-redux"
-import { bindActionCreators } from "redux"
-import {
-  setImages
-} from "../../actions/CreateListing"
 import ImageUploading from 'react-images-uploading';
 import ImageIcon from '@material-ui/icons/Image';
 import { Button } from "@material-ui/core";
@@ -46,7 +41,7 @@ class ImageUploader extends Component {
             className="createListingImage-preview"
           >
             {
-              imageList[i]
+              imageList[i].data_url || String(imageList[i]).includes("data:image")
               ?
                 <img 
                   src={imageList[i].data_url || imageList[i]}
@@ -72,8 +67,9 @@ class ImageUploader extends Component {
               disabled = {this.props.disabled}
               onClick={() => onImageRemove(i)}
               style = {{
-                width: "50%",
-                height: "100%"
+                width: "calc(50% - 5px)",
+                height: "100%",
+                marginRight: 5
               }}
             >
               Remove
@@ -85,8 +81,9 @@ class ImageUploader extends Component {
               disabled = {this.props.disabled}
               onClick={() => onImageUpdate(i)}
               style = {{
-                width: "50%",
-                height: "100%"
+                width: "calc(50% - 5px)",
+                height: "100%",
+                marginLeft: 5
               }}
             >
               Update
@@ -102,7 +99,7 @@ class ImageUploader extends Component {
     return(
       <ImageUploading
         multiple
-        value={this.props.images}
+        value={this.props.value}
         onChange={this.onChange}
         maxNumber={3}
         dataURLKey="data_url"
@@ -183,17 +180,5 @@ class ImageUploader extends Component {
   }
 }
 
-//REDUX
-const mapStateToProps = state => {
-  return {
-    images: state.createListingContent.images
-  };
-};
 
-const matchDispatchToProps = dispatch => {
-  return bindActionCreators({
-    setImages
-  }, dispatch);
-};
-
-export default connect(mapStateToProps, matchDispatchToProps)(ImageUploader);
+export default ImageUploader;

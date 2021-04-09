@@ -6,7 +6,10 @@ import {
   setPersonalListingArray
 } from "../../actions/Profile";
 import {
-  setListingArray
+  setListingArray,
+  setListingDetail,
+  setReadOnly,
+  setListingDetailImages
 } from "../../actions/ListingDetail";
 import {
   Dialog,
@@ -14,7 +17,6 @@ import {
   DialogTitle,
   IconButton,
   MenuItem,
-  Snackbar,
   ListItemText,
   ListItemIcon,
   Paper,
@@ -22,7 +24,6 @@ import {
   Typography,
   Divider
 } from "@material-ui/core"
-import MuiAlert from '@material-ui/lab/Alert';
 
 import CloseIcon from '@material-ui/icons/Close';
 import BathtubIcon from '@material-ui/icons/Bathtub';
@@ -37,12 +38,16 @@ import axios from "axios";
 import { trackPromise } from "react-promise-tracker";
 import {RefreshLoader} from "../RefreshLoader";
 import {API_ROOT_GET, API_ROOT_POST} from "../../data/urls";
+import {DisplayInfo} from "../../Util/DisplayWarning"
+import Switch from "react-switch";
 
 import "../../styles/HomePage.css"
 import "../../styles/Profile.css"
 
 
-
+const deleteSuccessMessage = "Listing deleted"
+const deleteFailMessage = "Deletion was not successful"
+const deleteWarningMessage = "Server Error, please try again later"
 class Profile extends Component {
 
   state = {
@@ -77,7 +82,15 @@ class Profile extends Component {
           onClose = {this.resetDialogStatus}
           maxWidth = "lg"
         >
-          {this.displayDeleteMessage()}
+          <DisplayInfo
+            displayMessage = {this.state.deleteMessage}
+            displaySuccess = {this.state.deleteSuccess}
+            displayWarning = {this.state.deleteWarning}
+            successMessage = {deleteSuccessMessage}
+            failedMessage = {deleteFailMessage}
+            WarningMessage = {deleteWarningMessage}
+            handleCloseMessage = {this.handleCloseDeleteMessage}
+          />
           <DialogTitle className="profile-title">
             My Listings
             <IconButton
@@ -105,7 +118,10 @@ class Profile extends Component {
                       }}
                       className = "individualListingContent"
                     >
-                      <span className = "listingImageArea">
+                      <span 
+                        onClick = {()=> this.checkDetailListing(listingDetail)}
+                        className = "listingImageArea"
+                      >
                         {this.checkImageValid(listingDetail.images[0])
                           ?
                             <img
@@ -127,7 +143,10 @@ class Profile extends Component {
                             />
                         }
                       </span>
-                      <div className = "listingTextAndIcon">
+                      <div 
+                        onClick = {()=> this.checkDetailListing(listingDetail)}
+                        className = "listingTextAndIcon"
+                      >
                         <span className = "listingHeader">
                         
                           {/* This is for the listing title area */}
@@ -241,22 +260,36 @@ class Profile extends Component {
                         <Divider/>
 
                         <div className = "listingDescription">
-                          {listingDetail.description}
+                          <Typography
+                            style={{whiteSpace: 'pre-line'}}
+                          >
+                            {listingDetail.description}
+                          </Typography>
                         </div>
 
                       </div>
                       <Divider orientation="vertical" flexItem />
-                      <div className = "removeListingButton">
-                        <Tooltip title = "Remove listing from your account">
-                          <IconButton
-                            className="profile-title-closeButton"
-                            onClick={(e)=>{
-                              this.removeListing(e, index)
+                      <div className = "removeListingButtonGroup">
+                        <div className = "removeListingButton">
+                          <Tooltip title = "Remove listing from your account">
+                            <IconButton
+                              className="profile-title-closeButton"
+                              onClick={(e)=>{
+                                this.removeListing(e, index)
+                              }}
+                            >
+                              <CloseIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </div>
+                        <div className = "listingAvailableSwitch">
+                          <Switch 
+                            checked = {listingDetail.is_available} 
+                            onChange = {() =>{
+                              this.handleAvailability(listingDetail)
                             }}
-                          >
-                            <CloseIcon />
-                          </IconButton>
-                        </Tooltip>
+                          />
+                        </div>
                       </div>
                     </Paper>
                   )
@@ -279,6 +312,41 @@ class Profile extends Component {
         </Dialog>
       </div>
     )
+  }
+
+  checkDetailListing = (listingDetail) =>{
+    this.props.setPersonalDialogStatus(false)
+    this.props.setListingDetail({
+      open:true, 
+      selectedListing: listingDetail
+    })
+    this.props.setListingDetailImages(listingDetail.images)
+    if (this.props.cookies.get("userid") !== String(listingDetail.userid)){
+      this.props.setReadOnly(true)
+    }
+    else{
+      this.props.setReadOnly(false)
+    }
+  }
+
+  handleAvailability = (listingDetail) =>{
+    let url = API_ROOT_POST.concat(
+      "listing/",
+      listingDetail.id
+    )
+    let body = {
+      is_available: !listingDetail.is_available
+    }
+    const config = {
+      headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
+    };
+    axios.put(url, body,config)
+    .then(response=>{
+      if (response.status === 200 || response.sattus === 201){
+        this.fetchListings()
+        this.fetchGlobalListings()
+      }
+    })
   }
 
   fetchGlobalListings = () =>{
@@ -378,7 +446,6 @@ class Profile extends Component {
       axios.get(url)
       .then(response =>{
         this.props.setPersonalListingArray(response.data)
-        console.log("data returned is:" + response.data)
       })
       .catch(error =>{
         if(error.response.data === "No associated listings." && error.response.status === 404){
@@ -396,40 +463,6 @@ class Profile extends Component {
       deleteSuccess: false,
       deleteWarning: false
     })
-  }
-
-  displayDeleteMessage = () =>{
-    let alertMessage;
-    if (this.state.deleteSuccess) {
-      alertMessage = (
-        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseDeleteMessage} severity="success">
-          Deletion complete
-        </MuiAlert>
-      )
-    }
-    else if (!this.state.deleteSuccess && !this.state.deleteWarning) {
-      alertMessage = (
-        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseDeleteMessage} severity="error">
-          Deletion was not successful
-        </MuiAlert>
-      )
-    }
-    else if (!this.state.deleteSuccess && this.state.deleteWarning) {
-      alertMessage = (
-        <MuiAlert elevation={6} variant="filled" onClose={this.handleCloseDeleteMessage} severity="warning">
-          Server Error, please try again later
-        </MuiAlert>
-      )
-    }
-    return (
-      <Snackbar
-        open={this.state.deleteMessage}
-        autoHideDuration={4000}
-        onClose={this.handleCloseDeleteMessage}
-      >
-        {alertMessage}
-      </Snackbar>
-    )
   }
 
   handleCloseDeleteMessage = () => {
@@ -453,7 +486,10 @@ const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setPersonalDialogStatus,
     setPersonalListingArray,
-    setListingArray
+    setListingArray,
+    setReadOnly,
+    setListingDetail,
+    setListingDetailImages
   }, dispatch);
 };
 

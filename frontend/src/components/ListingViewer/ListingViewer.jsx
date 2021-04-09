@@ -3,12 +3,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
   setListingArray,
-  setPageNum,
-  setNumPerPage,
   setListingDetail,
-  setQnAInfo,
-  setComment,
-  setNewQuestion
+  setListingDetailImages
 } from "../../actions/ListingDetail";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -32,13 +28,19 @@ import PetsIcon from '@material-ui/icons/Pets';
 import CloseIcon from '@material-ui/icons/Close';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import LocalParkingIcon from '@material-ui/icons/LocalParking';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
-import {dropdownNumberOptions} from "../../data/dropdownData";
+import {dropDownCities, dropdownNumberOptions} from "../../data/dropdownData";
 import {API_ROOT_POST, API_ROOT_GET} from "../../data/urls";
-
 import ImageUploader from "../ImageUpload/ImageUploader";
+import QnA from "./QnA";
+import {DisplayInfo} from "../../Util/DisplayWarning"
+
 import "../../styles/ListingView.css";
 import "../../styles/Listing.css";
+
+const updateSuccessMessage = "Listing information updated"
+const updateFailMessage = "Cannot update listing information at this time"
 
 class ListingViewer extends Component {
 
@@ -46,14 +48,17 @@ class ListingViewer extends Component {
     updateListingMessage: false,
     updatelistingSuccess: false,
   }
-  componentDidMount (){
-    this.fetchQnAInfo(this.props.selectedListing.id)
+
+  resetStatus = () =>{
+    this.setState({
+      updateListingMessage: false,
+      updatelistingSuccess: false,
+    })
+    this.props.setListingDetailImages([])
   }
 
-  componentDidUpdate (prevProps, prevState){
-    if (prevProps.selectedListing.id !== this.props.selectedListing.id){
-      this.fetchQnAInfo(this.props.selectedListing.id)
-    }
+  componentWillUnmount (){
+    this.resetStatus()
   }
 
   fetchListing = () =>{
@@ -98,6 +103,12 @@ class ListingViewer extends Component {
     return newPrice
   }
 
+  handleCloseUpdateMessage = () =>{
+    this.setState({
+      updateListingMessage: false
+    })
+  }
+
   render() {
     const listingDetail = this.props.selectedListing
     return (
@@ -110,6 +121,15 @@ class ListingViewer extends Component {
           top: 84
         }}
       > 
+        <DisplayInfo
+          displayMessage = {this.state.updateListingMessage}
+          displaySuccess = {this.state.updatelistingSuccess}
+          displayWarning = {false}
+          successMessage = {updateSuccessMessage}
+          failedMessage = {updateFailMessage}
+          WarningMessage = {""}
+          handleCloseMessage = {this.handleCloseUpdateMessage}
+        />
         <div className = "listingDetailHeader">
           <Typography
             style = {{
@@ -145,17 +165,22 @@ class ListingViewer extends Component {
         <div className = "listingDetailImageUploader">
           {this.props.readOnly 
           ?
-            this.props.images.map((image, index)=>{
+            this.props.listingDetailImages.map((image, index)=>{
               return(
-                <img 
-                  key = {index}
-                  src={image.data_url || image}
-                  alt="" 
-                  className = "image"
-                />
+                <div key = {"container_".concat(index)} className = "detailListingImagePreview">
+                  <img 
+                    key = {index}
+                    src={image.data_url || image}
+                    alt="" 
+                    className = "image"
+                  />
+                </div>
               )
             })
-          : <ImageUploader />
+          : <ImageUploader 
+              value = {this.props.listingDetailImages}
+              setImages = {this.props.setListingDetailImages}
+            />
           }
           
         </div>
@@ -169,22 +194,24 @@ class ListingViewer extends Component {
             price: listingDetail.price,
             is_laundry_available: listingDetail.is_laundry_available,
             is_pet_allowed: listingDetail.is_pet_allowed,
-            is_parking_available: listingDetail.is_parking_available
+            is_parking_available: listingDetail.is_parking_available,
+            city: listingDetail.city
           }}
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(false)
 
-            let imageCollection = this.props.images
-            // if (this.props.detailImages && this.props.detailImages.length !== 0){
-            //   for (let i = 0; i < this.props.detailImages.length; i++){
-            //     if (this.props.detailImages[i].data_url){
-            //       imageCollection.push(this.props.detailImages[i].data_url)
-            //     }
-            //     else{
-            //       imageCollection.push(this.props.detailImages[i])
-            //     }
-            //   }
-            // }
+            let imageCollection = []
+            const existedImages = this.props.listingDetailImages
+            if (existedImages && existedImages.length !== 0){
+              for (let i = 0; i < existedImages.length; i++){
+                if (existedImages[i].data_url){
+                  imageCollection.push(existedImages[i].data_url)
+                }
+                else if (existedImages){
+                  imageCollection.push(existedImages[i])
+                }
+              }
+            }
             let url = API_ROOT_POST.concat(
               "listing/",
               listingDetail.id
@@ -199,6 +226,7 @@ class ListingViewer extends Component {
               is_laundry_available: Boolean(values.is_laundry_available),
               is_pet_allowed: Boolean(values.is_pet_allowed),
               is_parking_available: Boolean(values.is_parking_available),
+              city: String(values.city)
             }
             const config = {
               headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
@@ -255,7 +283,10 @@ class ListingViewer extends Component {
               .required('Pet info is required'),
             is_parking_available: yup
               .string("Select is parking is available")
-              .required('Parking info is required')
+              .required('Parking info is required'),
+            city: yup
+              .string("Select location of the listing")
+              .required('Location info is required'),
           })}
         >
           {props => {
@@ -351,7 +382,7 @@ class ListingViewer extends Component {
                     variant="outlined"
                     margin="dense"
                     select
-                    style = {{width: 150}}
+                    style = {{width: 150, marginRight: 30}}
                     value = {values.num_bathroom}
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -359,6 +390,32 @@ class ListingViewer extends Component {
                     helperText={touched.num_bathroom && errors.num_bathroom}
                   >
                     {dropdownNumberOptions.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+
+                  <Tooltip title = "Location">
+                    <LocationOnIcon className = "listingIcon" fontSize = "large"/>
+                  </Tooltip>
+                  <TextField
+                    inputProps={{
+                      readOnly: this.props.readOnly
+                    }}
+                    label = "city"
+                    name="city"
+                    variant="outlined"
+                    margin="dense"
+                    select
+                    style = {{width: 150}}
+                    value = {values.city}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={touched.city && Boolean(errors.city)}
+                    helperText={touched.city && errors.city}
+                  >
+                    {dropDownCities.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -478,211 +535,28 @@ class ListingViewer extends Component {
           }}
         </Formik>
 
-        <div className="listingIconText" style={{marginTop:'10px', paddingBottom:'20px', display: 'inline'}}>
-          Questions and Answers:
-          {this.displayQnAInfo()}
-          <div style={{ marginTop: '10px' }}>Didn't find your answer? Post a question!</div>
-          <div style={{width:'60%'}}>
-          <TextField 
-            label="Add question" 
-            variant="outlined" 
-            size="small" 
-            multiline
-            style = {{
-              marginRight: 20
-            }}
-            inputProps={{ maxLength: 100 }}
-            value = {this.props.newQuestion}
-            onChange = {(event)=>{this.props.setNewQuestion(event.target.value)}}
-          />
-          <Button 
-            style = {{
-              width: 100,
-              height: "100%",
-              backgroundColor: "#f0c14b",
-              color: "black",
-              fontSize: 16,
-              fontWeight: 600
-            }}
-            onClick = {(event)=>{
-            this.handleCreateNewQuestion()
-          }}>Create</Button>
-          </div>
-        </div>
+        <QnA/>
       </Paper>
     )
   } // end of render
-
-  handleCreateNewQuestion = () =>{
-    if (this.props.newQuestion !== ""){
-      const url = API_ROOT_POST.concat(
-        "listing/",
-        this.props.selectedListing.id,
-        "/chain"
-      )
-      const body = {
-        comment: this.props.newQuestion
-      }
-      const config = {
-        headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
-      };
-      axios.post(url, body, config)
-      .then(response=>{
-        // if (response.data.message === "Comment has been created successfully!"){
-          this.fetchQnAInfo(this.props.selectedListing.id)
-          this.props.setNewQuestion("")
-        // }
-      })
-    }
-  }
-
-  handleReply = (chainid) =>{
-    if (this.props.comment !== ""){
-      const url = API_ROOT_POST.concat(
-        "listing/",
-        this.props.selectedListing.id,
-        "/chain/",
-        chainid,
-        "/comment"
-      )
-      const body = {
-        comment: this.props.comment
-      }
-      const config = {
-        headers: { Authorization: `Bearer ${this.props.cookies.get("status")}` }
-      };
-      axios.post(url, body, config)
-      .then(response=>{
-        if (response.data.message === "Comment has been created successfully!"){
-          this.fetchQnAInfo(this.props.selectedListing.id)
-          this.props.setComment("")
-        }
-      })
-    }
-  }
-
-  displayQnAInfo = () =>{
-    let result = []
-    if (this.props.qnaInfo !== null && this.props.qnaInfo.length !== 0){
-      for (let i = 0; i < this.props.qnaInfo.length; i++){
-        result.push(
-          <div className = "sectionPadding">
-            <div className="questionQnA">Q: {this.props.qnaInfo[i].questionBody}
-            
-                {this.displayQnAAnswer(this.props.qnaInfo[i])}
-                <div className = "detailListing-QnA-Comment-of-Questions">
-                  <TextField 
-                    key = {"newanswer".concat(i)}
-                    className="replyField" 
-                    label="Reply to thread" 
-                    variant="outlined" 
-                    size="small"
-                    multiline
-                    inputProps={{ maxLength: 100 }}
-                    style = {{
-                      marginRight: 20
-                    }}
-                    value = {this.props.comment}
-                    onChange = {(event)=>{this.props.setComment(event.target.value)}}
-                  />
-                  <Button 
-                    style = {{
-                      width: 50,
-                      height: "100%",
-                      backgroundColor: "#f0c14b",
-                      color: "black",
-                      fontSize: 16,
-                      fontWeight: 600
-                    }}
-                    onClick = {(event)=>{
-                    this.handleReply(this.props.qnaInfo[i].chainid)
-                  }}>Reply</Button>
-                </div>
-              </div>
-          </div>
-        )
-      }
-    }
-    return result
-  }
-
-  displayQnAAnswer = (question, index) =>{
-    let result = []
-    for (let i = 0 ; i < question.replies.length; i++){
-      result.push(
-        <div className="answerQnA" style={{backgroundColor: (i % 2 === 0) ? '#EEEFFF' : '#white' }}>
-          {(question.replies[i].userid === (this.props.selectedListing.userid).toString())
-            ?
-            <div className="landlordText">⭐landlord replied:</div>
-            :
-            <div className="userText">user replied:</div>
-          }
-          - {question.replies[i].content}
-        </div>
-      )
-    }
-    return result
-  }
-
-  fetchQnAInfo(listingId) {
-    const url = String(API_ROOT_GET).concat("listing/" + listingId.toString() + "/comment")
-    let result = [];
-    let chainid = -1
-    let counter
-    axios.get(url)
-    .then(response => {
-      const comments = response.data
-      counter = 0
-      for (let i = 0; i < comments.length; i++){
-        //start of a new question
-        if (chainid !== comments[i].chainid){
-          chainid = comments[i].chainid
-          result.push({
-            questionBody: String(comments[i].comment),
-            chainid : comments[i].chainid,
-            replies: []
-          })
-          counter ++
-        }
-        else{
-          result[counter-1].replies.push({
-            userid: comments[i].userid,
-            content: String(comments[i].comment)
-          })
-        }
-      }
-      this.props.setQnAInfo(result)
-    })
-  }
-
 }
 
 //REDUX
 const mapStateToProps = state => {
   return {
     listingArray: state.listingDetail.listingArray,
-    pageNum: state.listingDetail.pageNum,
-    numPerPage: state.listingDetail.numPerPage,
-    showListingDetail: state.listingDetail.showListingDetail,
     selectedListing: state.listingDetail.selectedListing,
     readOnly: state.listingDetail.readOnly,
     cookies: state.homeContent.cookies,
-    images: state.createListingContent.images,
-    qnaInfo: state.listingDetail.qnaInfo,
-    comment: state.listingDetail.comment,
-    newQuestion: state.listingDetail.newQuestion,
+    listingDetailImages: state.listingDetail.listingDetailImages
   };
 };
 
 const matchDispatchToProps = dispatch => {
   return bindActionCreators({
     setListingArray,
-    setPageNum,
-    setNumPerPage,
     setListingDetail,
-    setQnAInfo,
-    setComment,
-    setNewQuestion
+    setListingDetailImages
   }, dispatch);
 };
 export default connect(mapStateToProps, matchDispatchToProps)(ListingViewer);
