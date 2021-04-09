@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Selector } from 'testcafe';
+import XPathSelector from './xpath-selector';
 
 // buttons
 const loginBtn = '[id="homePage_Header_Login"]';
@@ -8,6 +7,19 @@ const loginFormLoginBtn =
 const addListingBtn = '[id="homePage_Header_Login"]';
 const addListingSubmissionBtn =
   'body > div.MuiDialog-root > div.MuiDialog-container.MuiDialog-scrollPaper > div > div.MuiDialogContent-root.homeDialog-Content > form > div.MuiDialogActions-root.createlistingDialog-Actions.MuiDialogActions-spacing > button > span.MuiButton-label';
+const newListingPanelQnAQuestionAskingSubmissionBtn =
+  '//button[@class="MuiButtonBase-root MuiButton-root MuiButton-text" and span[contains(text(), "Create")]]';
+const newListingPanelClosingBtn =
+  'button.MuiButtonBase-root.MuiIconButton-root.listingDetailHeader-closeButton';
+const loggedInHeaderGoodAfternoonBtn =
+  '//button[@class="MuiButtonBase-root MuiButton-root MuiButton-text"]';
+const loggedInHeaderProfileBtn =
+  '//span[text()="Profile"]/parent::div/parent::li';
+const profileListingDeletionBtn =
+  '//span[@class="listingTitle" and contains(text(), "QnA Test Listing - Title")]/parent::span/parent::div/following-sibling::div/div[@class="removeListingButton"]/button';
+const profileClosingBtn =
+  'button.MuiButtonBase-root.MuiIconButton-root.profile-title-closeButton';
+const loggedInHeaderLogoutBtn = '//span[text()="Log Out"]/parent::div';
 
 // add listing - form fields
 const addListingFormTitleTextField = '[id="title"]';
@@ -30,44 +42,23 @@ const addListingFormIsParkingAvailableValSelr = '[data-value="true"]';
 
 // listing panel
 const newListingPanelDiv =
-  '#root > div > div > div > div > div.leftPanel-noDetails';
-// div[text="QnA Test Listing - Title"] | div[innertext="QnA Test Listing - Title"]';
+  '//div[@class="listingTitle" and contains(text(), "QnA Test Listing - Title")]';
+const newListingPanelQnAQuestionAskingTextField =
+  '//button[@class="MuiButtonBase-root MuiButton-root MuiButton-text" and span[contains(text(), "Create")]]/preceding-sibling::div';
+const newListingPanelQnAQuestionOne =
+  '//div[@class="listingIconText"]/div[1]/div[@class="questionQnA"]';
 
 fixture.disablePageCaching`QnA Section - Pose a new question (login required)`.page(
   'https://rentr-front-end.herokuapp.com/'
 );
 
-// const newListingPanelDiv = Selector(() => {
-//   return document.get
-// })
-// const article = Selector(() => {
-//   return document.getElementById('article-content');
-// });
-
-// const demoRole = Role(
-//   'https://rentr-front-end.herokuapp.com/login',
-//   async (t) => {
-//     await t
-//       // .expect(loginBtn.exists).ok()
-//       .click(loginBtn)
-//       .typeText('#loginEmail', 'test@gmail.com')
-//       .typeText('#loginPassword', '123456789')
-//       .click(loginFormLoginBtn)
-//       .wait(6000);
-//   }
-// );
-
-// test('[1] Login as a registered user', async (t) => {
-//   await t.useRole(demoRole);
-// });
-
-test('[2] Add a new listing', async (t) => {
+test('Pose a new Question (login -> add listing -> add question)', async (t) => {
   await t
 
     // [1] login
     .click(loginBtn)
-    .typeText('#loginEmail', 'test@gmail.com')
-    .typeText('#loginPassword', '123456789')
+    .typeText('#loginEmail', 'demo@gmail.com')
+    .typeText('#loginPassword', 'test123')
     .click(loginFormLoginBtn)
     .wait(6000)
 
@@ -95,8 +86,33 @@ test('[2] Add a new listing', async (t) => {
     .wait(6000)
 
     // [3] pose questions
-    .click(
-      Selector(newListingPanelDiv).withExactText('QnA Test Listing - Title')
+    .click(XPathSelector(newListingPanelDiv))
+    .typeText(
+      XPathSelector(newListingPanelQnAQuestionAskingTextField),
+      'Would there be a park nearby?'
     )
-    .wait(6000);
+    .click(XPathSelector(newListingPanelQnAQuestionAskingSubmissionBtn))
+    .wait(10000)
+
+    .expect(XPathSelector(newListingPanelQnAQuestionOne).exists)
+    .ok()
+    .expect(
+      XPathSelector(newListingPanelQnAQuestionOne).withText(
+        'Would there be a park nearby?'
+      ).exists
+    )
+    .ok()
+
+    // [4] clean up (close listing panel -> my profile -> delete listing)
+    .click(newListingPanelClosingBtn)
+    .click(XPathSelector(loggedInHeaderGoodAfternoonBtn))
+    .click(XPathSelector(loggedInHeaderProfileBtn))
+    .wait(6000)
+    .setNativeDialogHandler(() => true)
+    .click(XPathSelector(profileListingDeletionBtn))
+    .wait(6000)
+    .click(profileClosingBtn)
+    .wait(3000)
+    .click(XPathSelector(loggedInHeaderGoodAfternoonBtn))
+    .wait(3000);
 });
