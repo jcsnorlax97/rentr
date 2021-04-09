@@ -406,3 +406,47 @@
 
 - TODO:
   - Finalize all the tasks and finish by tomorrow morning
+
+
+## Sprint 4
+
+### Week 11: meeting 1
+
+##### April 1st, 2021 (Thursday)
+- Participants: all team members
+
+- What we discussed: 
+  - Ronnie: Cypress vs testcafe for token cookies
+  - Justin:(high priority) TravisCI Setup for Acceptance Test
+           (med priority) integration test for backend
+  - Nathan: I will be working on the front end of the cities user story. First, just the displays. Then depending on the backend, I will add input fields.
+  - Aziz: Started implementing the availability functionality. Get all the listings that are available works, need to test the update and post routes. After that, will start with the second user story (Add "Search by city" functionality).
+  - Mike: Add notification for add comment and question for QnA section, add available or not for listings.
+
+### Week 12: meeting 2
+
+##### April 4th, 2021 (Sunday)
+- Participants: all team members
+
+- What we discussed: 
+  - Ronnie: Presentation draft and if possible convert cypress acceptance tests to testcafe.
+  - Justin: TestCafe setup (used for project acceptance test & back-end integration test) & Integrate with Travis CI. Back-end Integration Tests
+  - Nathan: I will be adding a switch component to a listing full view so that a listing owner can use to mark it as unavailable, and on hiding a listing if a user does not own it and if the listing is unavailable
+  - Aziz: 1. Started with "Search by City" functionality.
+          2. Implemented the backend and tested with postman.
+          3. Will finalize and write the PR by tonight.
+  - Mike: Fix the pic upload bug, and work on add cites dropdown to:
+          1. profile page
+          2. add listing page
+          3. update listing page
+
+### Week 12: meeting 3
+
+##### April 8th, 2021 (Thursday)
+- Participants: all team members
+
+- What we discussed: 
+  - Ronnie: User Acc and Listing creation acceptance test
+  - Justin: QnA acceptance test 
+  - Nathan: Search and Advance search acceptance test
+  - Aziz: Modification acceptance test.
