@@ -1,13 +1,13 @@
 import { Selector } from 'testcafe';
 
-fixture('Modify a listing (Update, delete, edit availability)').page(
+fixture('Modify a listing (Update & edit availability)').page(
   'https://rentr-front-end.herokuapp.com/'
 );
 
 test('Update test', async (t) => {
   await t
     .click('[id="homePage_Header_Login"]')
-    .typeText('[id="loginEmail"]', 'demo@gmail.com')
+    .typeText('[id="loginEmail"]', 'modification.tester@gmail.com')
     .typeText('[id="loginPassword"]', 'test123')
     .click(
       '#loginDialog > div.MuiDialog-container.MuiDialog-scrollPaper > div > div.MuiDialogContent-root.homeDialog-Content > form > div.MuiDialogActions-root.homeDialog-Actions.MuiDialogActions-spacing > button.MuiButtonBase-root.MuiButton-root.MuiButton-text.homeDialog-normalButton > span.MuiButton-label'
@@ -67,25 +67,25 @@ test('Update test', async (t) => {
     .wait(5000);
 });
 
-// test('Availability test', async (t) => {
-//   await t
-//     .click('[id="homePage_Header_Login"]')
-//     .typeText('[id="loginEmail"]', 'demo@gmail.com')
-//     .typeText('[id="loginPassword"]', 'test123')
-//     .click(
-//       '#loginDialog > div.MuiDialog-container.MuiDialog-scrollPaper > div > div.MuiDialogContent-root.homeDialog-Content > form > div.MuiDialogActions-root.homeDialog-Actions.MuiDialogActions-spacing > button.MuiButtonBase-root.MuiButton-root.MuiButton-text.homeDialog-normalButton > span.MuiButton-label'
-//     )
-//     .wait(500)
+test('Availability test', async (t) => {
+  await t
+    .click('[id="homePage_Header_Login"]')
+    .typeText('[id="loginEmail"]', 'modification.availability.tester@gmail.com')
+    .typeText('[id="loginPassword"]', 'test123')
+    .click(
+      '#loginDialog > div.MuiDialog-container.MuiDialog-scrollPaper > div > div.MuiDialogContent-root.homeDialog-Content > form > div.MuiDialogActions-root.homeDialog-Actions.MuiDialogActions-spacing > button.MuiButtonBase-root.MuiButton-root.MuiButton-text.homeDialog-normalButton > span.MuiButton-label'
+    )
+    .wait(500)
 
-//     // availability test
-//     .click(
-//       '#homePage_Header > div > button.MuiButtonBase-root.MuiButton-root.MuiButton-text'
-//     )
-//     .click(
-//       'body > div.MuiPopover-root > div.MuiPaper-root.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded > div > ul > div > li > div.MuiListItemIcon-root > svg'
-//     )
-//     .click(
-//       'body > div.MuiDialog-root > div.MuiDialog-container.MuiDialog-scrollPaper > div > div.MuiDialogContent-root > div:nth-child(1) > div.removeListingButtonGroup > div.listingAvailableSwitch > div > div.react-switch-bg'
-//     )
-//     .wait(5000);
-// });
+    // availability test
+    .click(
+      '#homePage_Header > div > button.MuiButtonBase-root.MuiButton-root.MuiButton-text'
+    )
+    .click(
+      'body > div.MuiPopover-root > div.MuiPaper-root.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded > div > ul > div > li > div.MuiListItemIcon-root > svg'
+    )
+    .click(
+      'body > div.MuiDialog-root > div.MuiDialog-container.MuiDialog-scrollPaper > div > div.MuiDialogContent-root > div:nth-child(1) > div.removeListingButtonGroup > div.listingAvailableSwitch > div > div.react-switch-bg'
+    )
+    .wait(5000);
+});
