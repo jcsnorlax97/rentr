@@ -48,7 +48,8 @@ INSERT INTO rentr_listing(userid, is_available, title, price, city, num_bedroom,
 - $600 Per month.
 
 Welcome to leave a comment in the QnA Section if you have any question! 
-');
+'),
+(1, TRUE, 'Apartment next to Polo Park!', 3000, 'Winnipeg', 2, 2, FALSE, FALSE, FALSE, ARRAY[]::TEXT[], 'Next to the Polo Park mall!');
 
 CREATE TABLE IF NOT EXISTS rentr_chain (
     id BIGSERIAL PRIMARY KEY NOT NULL,
