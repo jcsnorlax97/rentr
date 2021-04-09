@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS rentr_user (
 );
 
 INSERT INTO rentr_user(email, password) VALUES 
-('demo@gmail.com', '$2b$10$VcG9Jd24EM.wOH6EIBXY5uKvuV7wOr7wyqIilOOil/uJCUvQTIxKG');
+('demo@gmail.com', '$2b$10$VcG9Jd24EM.wOH6EIBXY5uKvuV7wOr7wyqIilOOil/uJCUvQTIxKG'),
+('creationtester@gmail.com', '$2b$10$VcG9Jd24EM.wOH6EIBXY5uKvuV7wOr7wyqIilOOil/uJCUvQTIxKG');
 
 CREATE TABLE IF NOT EXISTS rentr_listing (
     id BIGSERIAL PRIMARY KEY, 
@@ -59,6 +60,8 @@ CREATE TABLE IF NOT EXISTS rentr_chain (
     CONSTRAINT fk_listing FOREIGN KEY (listingid) REFERENCES rentr_listing(id) ON DELETE CASCADE
 );
 
+INSERT INTO rentr_chain(userid, listingid) VALUES (1, 1);
+
 CREATE TABLE IF NOT EXISTS rentr_comment (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     userid BIGINT NOT NULL,
@@ -69,3 +72,5 @@ CREATE TABLE IF NOT EXISTS rentr_comment (
     CONSTRAINT fk_listing FOREIGN KEY (listingid) REFERENCES rentr_listing(id) ON DELETE CASCADE,
     CONSTRAINT fk_chain FOREIGN KEY (chainid) REFERENCES rentr_chain(id)
 );
+
+INSERT INTO rentr_comment(userid, listingid, chainid, comment) VALUES (1, 1, 1, 'Is there a pool?');
