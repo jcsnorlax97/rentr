@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
-import ImageUploading from 'react-images-uploading';
+
+import { 
+  Button,
+  Typography,
+  Snackbar
+} from "@material-ui/core";
+
 import ImageIcon from '@material-ui/icons/Image';
-import { Button } from "@material-ui/core";
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import Typography from '@material-ui/core/Typography';
-import Snackbar from '@material-ui/core/Snackbar';
+import ImageUploading from 'react-images-uploading';
+
 import MuiAlert from '@material-ui/lab/Alert';
 
 import '../../styles/ImageUploader.css'
@@ -13,8 +18,7 @@ import "../../styles/CreateListing.css"
 
 class ImageUploader extends Component {
   
-  onChange = (imageList, addUpdateIndex) => {
-    console.log(imageList, addUpdateIndex);
+  onChange = (imageList) => {
     this.props.setImages(imageList)
   };
 
@@ -40,6 +44,7 @@ class ImageUploader extends Component {
           <div
             className="createListingImage-preview"
           >
+            {/* Show the images */}
             {
               imageList[i].data_url || String(imageList[i]).includes("data:image")
               ?
@@ -61,7 +66,7 @@ class ImageUploader extends Component {
           </div>
           <div className = "createListingImage-tool">
             <Button 
-              variant="contained" 
+              variant="contained"
               color="primary" 
               component="span"
               disabled = {this.props.disabled}
@@ -100,10 +105,10 @@ class ImageUploader extends Component {
       <ImageUploading
         multiple
         value={this.props.value}
-        onChange={this.onChange}
-        maxNumber={3}
-        dataURLKey="data_url"
-        acceptType={['jpg','png','gif']}
+        onChange={this.onChange} // defines how it works when there's an image upload
+        maxNumber={3} // This upload place supports up to three images 
+        dataURLKey="data_url" // extract the data url from a file
+        acceptType={['jpg','png','gif']} // supported image types
         maxFileSize = {524288} //max of 1 MB supported
       >
         {({
@@ -121,7 +126,7 @@ class ImageUploader extends Component {
           ?
           <Snackbar
             open={errors.maxFileSize}
-            autoHideDuration={1000}
+            autoHideDuration={1000}   // shows this alert when the image uploaded is too big, more than 500kb
           >
             <MuiAlert elevation={6} variant="filled" severity="warning">
               Images you uploaded is too big, please choose images less than 500 KB
@@ -132,6 +137,8 @@ class ImageUploader extends Component {
           }
           <div className = "ImageUploadContainer">
             <div className = "OperationZone">
+
+              {/* This is the button for upload pictures */}
               <Button
                 variant = "contained"
                 color = "primary"
@@ -151,6 +158,8 @@ class ImageUploader extends Component {
                 />
                 Upload
               </Button>
+
+              {/* This is the button to remove all the pictures */}
               <Button
                 variant = "contained"
                 color = "primary" 
@@ -170,6 +179,7 @@ class ImageUploader extends Component {
               {...dragProps} 
               className = "ImageArea"
             >
+              {/* Display the images */}
               {this.displayImages(imageList, onImageRemove, onImageUpdate)}
             </div>
           </div>

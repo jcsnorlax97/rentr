@@ -116,6 +116,7 @@ class CreateListingButton extends Component {
           }}
           maxWidth = "lg"
         > 
+        {/* This shows the infomation about post a listing, whether it is successful or not. */}
           <DisplayInfo
             displayMessage = {this.state.postListingMessage}
             displaySuccess = {this.state.postListingSuccess}
@@ -125,8 +126,10 @@ class CreateListingButton extends Component {
             WarningMessage = {""}
             handleCloseMessage = {this.handleCloseCreateListing}
           />
+          {/* This is the title area for creating a listing */}
           <DialogTitle className="createListing-title">
             Create a Listing
+            {/* The "X", cancel button on the top right*/}
             <IconButton
               disabled={this.props.creatingListing}
               className="createListing-title-closeButton"
@@ -134,18 +137,26 @@ class CreateListingButton extends Component {
                 this.resetDialogStatus()
               }}
             >
+              {/* The actual icon */}
               <CloseIcon />
             </IconButton>
           </DialogTitle>
 
+          {/* The content of the dialog */}
           <DialogContent
             className="homeDialog-Content"
           >
+            {/* This is the image uploader, which is not included in formik */}
             <ImageUploader 
               value = {this.props.images}
               disabled = {this.props.creatingListing}
               setImages = {this.props.setImages}
             />
+
+            {/* This is the formik, which includes all other information of the listing, 
+              such as title, description, price, number of bathrooms etc.
+              It is also responsible for validating those fields
+            */}
             <Formik
               initialValues={{
                 title: "", 
@@ -158,6 +169,8 @@ class CreateListingButton extends Component {
                 is_parking_available: false,
                 city: ""
               }}
+              // On submit is responsible for the post request, defines what happens 
+              // when doing the post request
               onSubmit={(values, { setSubmitting }) => {
                 setSubmitting(false)
                 this.props.setCreatingListing(true)
@@ -168,6 +181,7 @@ class CreateListingButton extends Component {
                     imageCollection.push(this.props.images[i].data_url)
                   }
                 }
+                // url, body and config of the post request
                 let url = API_ROOT_POST.concat("listing")
                 let body = {
                   images: imageCollection,
@@ -222,6 +236,10 @@ class CreateListingButton extends Component {
                   console.log(error)
                 })
               }}
+
+              // the validation scheme of the formik
+              // defines how those field are checked before a user is able to create 
+              // a listing
               validationSchema={yup.object().shape({
                 title: yup
                   .string('Enter your listing title')
@@ -263,6 +281,7 @@ class CreateListingButton extends Component {
               } = props;
                 return(
                   <form onSubmit={handleSubmit}>
+                    {/* textfield, title of the listing, limit of 100 chars*/}
                     <div className="homeDialog-textContent">
                       <TextField
                         disabled={this.props.creatingListing}
@@ -282,6 +301,7 @@ class CreateListingButton extends Component {
                     </div>
 
                     <div className="homeDialog-textContent">
+                      {/* textfield, description of the listing, limit of 5000 chars */}
                       <TextField
                         disabled={this.props.creatingListing}
                         label="Description"
@@ -302,6 +322,7 @@ class CreateListingButton extends Component {
                       />
                     </div>
 
+                    {/* textfield, number of bedrooms of the listing, from 1-5*/}
                     <TextField
                       disabled={this.props.creatingListing}
                       label="Bedrooms"
@@ -324,7 +345,8 @@ class CreateListingButton extends Component {
                         </MenuItem>
                       ))}
                     </TextField>
-
+                    
+                    {/* selection, number of bathrooms of the listing from 1-5 */}
                     <TextField
                       disabled={this.props.creatingListing}
                       id="num_bathroom"
@@ -347,6 +369,7 @@ class CreateListingButton extends Component {
                       ))}
                     </TextField>
                     
+                    {/* selection, city of the listing, currently support cities from Manitoba */}
                     <TextField
                       disabled={this.props.creatingListing}
                       id="city"
@@ -368,7 +391,8 @@ class CreateListingButton extends Component {
                         </MenuItem>
                       ))}
                     </TextField>
-
+                    
+                    {/* textfield, price of the listing */}
                     <div className = "createListing-priceArea">
                       <AttachMoneyIcon fontSize = "large" style = {{paddingTop: "10px"}}/>
                       <TextField
@@ -388,6 +412,7 @@ class CreateListingButton extends Component {
                       />
                     </div>
 
+                    {/* This is the button that defines whether laundry room is available */}
                     <TextField
                       disabled={this.props.creatingListing}
                       label="Laundry Room"
@@ -410,6 +435,7 @@ class CreateListingButton extends Component {
                       ))}
                     </TextField>
 
+                    {/* This is the button that defines whether pet is allowed in the apartment */}
                     <TextField
                       disabled={this.props.creatingListing}
                       label="Pets allowed"
@@ -432,6 +458,7 @@ class CreateListingButton extends Component {
                       ))}
                     </TextField>
 
+                    {/* This is the button that defines whether parking lot is available */}
                     <TextField
                       disabled={this.props.creatingListing}
                       label="Parking"
@@ -457,6 +484,7 @@ class CreateListingButton extends Component {
                     <DialogActions
                       className="createlistingDialog-Actions"
                     >
+                      {/* This is the button to trigger the submit action */}
                       <Button
                         className={
                           this.props.creatingListing
@@ -480,6 +508,7 @@ class CreateListingButton extends Component {
     )
   }
 
+  // This is the action to close the listing
   handleCloseCreateListing = (event, reason) => {
     if (reason === "clickaway")
       return
@@ -488,16 +517,20 @@ class CreateListingButton extends Component {
     })
   }
 
+  // this is what happens when user click on "X" button in the 
+  // Dialog title, which closes the dialog
   handleCloseDialog = () => {
     this.setState({
       dialogOpen: false
     })
   }
 
+  // This is what happens when user click on cancel
   handleClickCancel = () => {
     this.resetDialogStatus();
   }
 
+  // helper function to help reset the dialog status
   resetDialogStatus = () => {
     this.props.setDialogOpen(false);
     this.props.setImages([]);
