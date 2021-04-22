@@ -8,7 +8,7 @@ Server: https://rentr-dev.herokuapp.com/
 
 ## The Team
 
-- Ronnie D'Souza (RonnieDsouza)
+- Ronnie D'Souza (RonnieDsouza) Leader
 - Justin Choi (jcsnorlax97)
 - Hualong Qiao (Mik3Qiao)
 - Azizul Hakim (AzizulHakim96)
